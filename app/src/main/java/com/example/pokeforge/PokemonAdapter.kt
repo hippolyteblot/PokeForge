@@ -18,7 +18,7 @@ class PokemonAdapter (private val context: Context, private val contactList: Lis
         fun bind(pokemon: Pokemon) {
             var spriteName = "s" + pokemon.dna[0].toString()
             if (pokemon.dna[1] != 0) {
-                spriteName += "." + pokemon.dna[1].toString()
+                spriteName += "_" + pokemon.dna[1].toString()
             }
             System.out.println("spriteee :" + spriteName)
             val rscId = context.resources.getIdentifier(spriteName, "drawable", context.packageName)
