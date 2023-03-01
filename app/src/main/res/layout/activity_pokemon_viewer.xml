@@ -32,7 +32,7 @@
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="2dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +41,9 @@
         <ImageView
             android:id="@+id/pokemon_type_sprite_1"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
+            android:maxHeight="70dp"
+            android:maxWidth="70dp"
             android:layout_weight="1"
             android:padding="5dp"
             app:srcCompat="@drawable/ic_home_black_24dp" />
@@ -49,7 +51,9 @@
         <ImageView
             android:id="@+id/pokemon_type_sprite_2"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
+            android:maxHeight="70dp"
+            android:maxWidth="70dp"
             android:layout_weight="1"
             android:padding="5dp"
             app:srcCompat="@drawable/ic_home_black_24dp" />
