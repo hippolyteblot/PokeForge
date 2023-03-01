@@ -36,33 +36,7 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-        val call: Call<MultipleResource?>? = client!!.create(APIInterface::class.java).doGetListResources()
-        if (call != null) {
-            call.enqueue(object : Callback<MultipleResource?> {
-                override fun onResponse(call: Call<MultipleResource?>?, response: Response<MultipleResource?>) {
-                    Log.d("TAG", response.code().toString() + "")
-                    var displayResponse = ""
-                    val resource: MultipleResource? = response.body()
-                    val res = resource?.results
-                    //loop in results
-                    for (i in res!!.indices) {
-                        val text = res[i].name
-                        val url = res[i].url
-                        displayResponse += """${text.toString()} ${url.toString()}
-    """
-                        Log.d("TAG", response.code().toString() + "")
-                        Log.d("TAG", "onResponse: $displayResponse")
-                    }
-                    //displayResponse += """${text.toString()} ${url.toString()}
-                    //"""
 
-                }
-
-                override fun onFailure(call: Call<MultipleResource?>, t: Throwable?) {
-                    call.cancel()
-                }
-            })
-        }
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
