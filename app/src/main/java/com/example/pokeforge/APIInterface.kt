@@ -6,8 +6,8 @@ import retrofit2.http.*
 
 
 interface APIInterface {
-    @GET("/api/v2/pokemon")
-    fun doGetListResources(): Call<MultipleResource?>?
+    @GET("/api/v2/pokemon/{int}")
+    fun doGetListResources(int: Int): Call<MultipleResource?>?
 
 
 
