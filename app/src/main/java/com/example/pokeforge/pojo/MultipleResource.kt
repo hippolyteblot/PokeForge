@@ -2,13 +2,14 @@ package com.example.pokeforge.pojo
 
 
 import com.google.gson.annotations.SerializedName
+import java.util.Objects
 
 
 data class MultipleResource (
-    var results: List<Pokemon>
+    var species: Objects
 )
 
-data class Pokemon(
+data class Species (
     val name: String,
     val url: String
 )
