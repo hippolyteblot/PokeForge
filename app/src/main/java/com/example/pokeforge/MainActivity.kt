@@ -1,5 +1,6 @@
 package com.example.pokeforge
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -69,5 +70,11 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
 
+    }
+
+    fun startPokemonViewerActivity(pokemon: Pokemon) {
+        val intent = Intent(this, PokemonViewerActivity::class.java)
+        intent.putExtra("pokemon", pokemon)
+        startActivity(intent)
     }
 }

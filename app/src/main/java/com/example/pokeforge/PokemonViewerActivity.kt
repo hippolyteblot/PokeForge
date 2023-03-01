@@ -19,9 +19,29 @@ import retrofit2.Response
 class PokemonViewerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPokemonViewerBinding
+    private lateinit var pokemon: Pokemon
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        binding = ActivityPokemonViewerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        pokemon = intent.getSerializableExtra("pokemon") as Pokemon
+
+        binding.pokemonName.text = pokemon.name
+
+        APISpritesClient().getSpriteImage(pokemon.dna[0], pokemon.dna[1]) { bitmap ->
+            runOnUiThread {
+                if (bitmap != null) {
+                    binding.pokemonSprite.setImageBitmap(bitmap)
+                } else {
+                    System.out.println("Erreur lors du chargement de l'image")
+                }
+            }
+        }
+
+
 
     }
 }
