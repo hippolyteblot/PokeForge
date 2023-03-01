@@ -1,6 +1,7 @@
 package com.example.pokeforge
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -16,15 +17,17 @@ class PokemonAdapter (private val context: Context, private val contactList: Lis
         private val income = itemView.findViewById<TextView>(R.id.income)
 
         fun bind(pokemon: Pokemon) {
-            var spriteName = "s" + pokemon.dna[0].toString()
-            if (pokemon.dna[1] != 0) {
-                spriteName += "_" + pokemon.dna[1].toString()
+
+            APISpritesClient().getSpriteImage(pokemon.dna[0], pokemon.dna[1]) { bitmap ->
+                activity.runOnUiThread {
+                    if (bitmap != null) {
+                        sprite.setImageBitmap(bitmap)
+                    } else {
+                        System.out.println("Erreur lors du chargement de l'image")
+                    }
+                }
             }
-            System.out.println("spriteee :" + spriteName)
-            val rscId = context.resources.getIdentifier(spriteName, "drawable", context.packageName)
-            System.out.println("rscId :" + rscId)
-            // Get the image named s8.png in the drawable folder
-            sprite.setImageResource(rscId)
+
             name.text = pokemon.name
             income.text = pokemon.income.toString() + " P/H"
         }
