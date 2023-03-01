@@ -30,6 +30,10 @@ class PokemonAdapter (private val context: Context, private val contactList: Lis
 
             name.text = pokemon.name
             income.text = pokemon.income.toString() + " P/H"
+
+            itemView.setOnClickListener {
+                activity.startPokemonViewerActivity(pokemon)
+            }
         }
     }
 
