@@ -6,10 +6,5 @@ import java.util.Objects
 
 
 data class MultipleResource (
-    var species: Objects
-)
-
-data class Species (
-    val name: String,
-    val url: String
+    var name: String
 )
