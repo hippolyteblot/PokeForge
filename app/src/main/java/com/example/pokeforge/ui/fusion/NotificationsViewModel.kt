@@ -1,4 +1,4 @@
-package com.example.pokeforge.ui.notifications
+package com.example.pokeforge.ui.fusion
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -56,7 +56,7 @@ class PokemonViewerActivity : AppCompatActivity() {
         }
 
         // Bind sprite
-        APISpritesClient().getSpriteImage(pokemon.dna[0], pokemon.dna[1]) { bitmap ->
+        APISpritesClient().getSpriteImage(pokemon.dna[0], pokemon.dna[1], this) { bitmap ->
             runOnUiThread {
                 if (bitmap != null) {
                     binding.pokemonSprite.setImageBitmap(bitmap)
