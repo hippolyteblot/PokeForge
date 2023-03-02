@@ -3,8 +3,9 @@ package com.example.pokeforge
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.pokeforge.databinding.ActivityLocalFusionBinding
 import android.Manifest
+import androidx.recyclerview.widget.RecyclerView
+import com.example.pokeforge.databinding.ActivityLocalFusionBinding
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
 
@@ -13,6 +14,9 @@ class LocalFusionActivity : AppCompatActivity() {
 
 
     private lateinit var binding: ActivityLocalFusionBinding
+
+    private lateinit var playerRecyclerView: RecyclerView
+    private lateinit var playerList: ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +39,18 @@ class LocalFusionActivity : AppCompatActivity() {
 
         binding = ActivityLocalFusionBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        playerRecyclerView = binding.playerRecyclerView
+        playerRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        playerList = ArrayList()
+        playerList.add("Player 1")
+        playerList.add("Player 2")
+
+        var playerAdapter = PlayerAdapter(this, playerList, this)
+        playerRecyclerView.adapter = playerAdapter
+
+
+
 
         val connectionsClient: ConnectionsClient = Nearby.getConnectionsClient(this)
 
@@ -80,16 +96,24 @@ class LocalFusionActivity : AppCompatActivity() {
         )
             .addOnSuccessListener {
                 // We're advertising!
-                System.out.println("We're advertising!")
+                println("We're advertising!")
             }
             .addOnFailureListener {
                 // We were unable to start advertising.
-                System.out.println("We were unable to start advertising.")
+                println("We were unable to start advertising.")
             }
 
         val endpointDiscoveryCallback = object : EndpointDiscoveryCallback() {
             override fun onEndpointFound(endpointId: String, info: DiscoveredEndpointInfo) {
-                // An endpoint was found. We request a connection to it.
+                // Add the discovered endpoint to the list
+                val name = info.endpointName
+                playerList.add(name)
+
+                System.out.println("We found an endpoint!")
+                playerAdapter = PlayerAdapter(this@LocalFusionActivity, playerList, this@LocalFusionActivity)
+                playerRecyclerView.adapter = playerAdapter
+
+                // Request a connection to the endpoint
                 connectionsClient.requestConnection(
                     "PokeForge",
                     endpointId,
@@ -105,11 +129,13 @@ class LocalFusionActivity : AppCompatActivity() {
             }
 
             override fun onEndpointLost(endpointId: String) {
-                // A previously discovered endpoint has gone away.
+                // Remove the lost endpoint from the list
+                playerList.remove(endpointId)
+                playerAdapter = PlayerAdapter(this@LocalFusionActivity, playerList, this@LocalFusionActivity)
+                playerRecyclerView.adapter = playerAdapter
             }
         }
 
-        // Print all nearby devices
         connectionsClient.startDiscovery(
             "com.example.pokeforge",
             endpointDiscoveryCallback,
@@ -123,6 +149,7 @@ class LocalFusionActivity : AppCompatActivity() {
                 // We were unable to start discovering.
                 System.out.println("We were unable to start discovering.")
             }
+
 
     }
 

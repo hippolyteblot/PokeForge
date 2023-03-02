@@ -41,7 +41,7 @@ class APISpritesClient {
 
     fun loadSpriteFromStorage(id1: Int, id2: Int, activity: Activity): Bitmap? {
         // Check in the local storage if the sprite is already saved (id1.id2.png)
-        for (file in activity?.filesDir?.listFiles()!!) {
+        for (file in activity.filesDir?.listFiles()!!) {
             if (file.name == "$id1.$id2.png") {
                 return BitmapFactory.decodeFile(file.absolutePath)
             }
