@@ -18,7 +18,7 @@ class PokemonAdapter (private val context: Context, private val contactList: Lis
 
         fun bind(pokemon: Pokemon) {
 
-            APISpritesClient().getSpriteImage(pokemon.dna[0], pokemon.dna[1]) { bitmap ->
+            APISpritesClient().getSpriteImage(pokemon.dna[0], pokemon.dna[1], activity) { bitmap ->
                 activity.runOnUiThread {
                     if (bitmap != null) {
                         sprite.setImageBitmap(bitmap)

@@ -2,5 +2,5 @@
     <string name="app_name">PokeForge</string>
     <string name="title_pokemons">Pokémons</string>
     <string name="title_shop">Boutique</string>
-    <string name="title_exchange">Échanges</string>
+    <string name="title_fusion">Fusion</string>
 </resources>
