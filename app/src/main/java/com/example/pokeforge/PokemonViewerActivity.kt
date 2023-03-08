@@ -5,6 +5,16 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+<<<<<<< HEAD
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
+import com.example.pokeforge.APIClient.client
+import com.example.pokeforge.databinding.ActivityMainBinding
+=======
+>>>>>>> 3792d167db470e67db03570442e870db6d0037a8
 import com.example.pokeforge.databinding.ActivityPokemonViewerBinding
 import com.example.pokeforge.pojo.PokemonAPI
 import kotlinx.coroutines.*
@@ -72,15 +82,8 @@ class PokemonViewerActivity : AppCompatActivity() {
         }
 
         // Bind sprite
-        APISpritesClient().getSpriteImage(pokemon.dna[0], pokemon.dna[1], this) { bitmap ->
-            runOnUiThread {
-                if (bitmap != null) {
-                    binding.pokemonSprite.setImageBitmap(bitmap)
-                } else {
-                    System.out.println("Erreur lors du chargement de l'image")
-                }
-            }
-        }
+        APISpritesClient.setSpriteImage(pokemon.dna, binding.pokemonSprite, this)
+
 
     }
 

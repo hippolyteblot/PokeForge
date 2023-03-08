@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "644046499232",
+    "project_id": "pokeforge-d28f2",
+    "storage_bucket": "pokeforge-d28f2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644046499232:android:1a77158d899f9386cc08c5",
+        "android_client_info": {
+          "package_name": "com.example.pokeforge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "644046499232-njtr5im6qb5eesl6761dhnq198pcj010.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsqoZckxB-Y_XBi4mXExkAt8ABzlqaaac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "644046499232-njtr5im6qb5eesl6761dhnq198pcj010.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

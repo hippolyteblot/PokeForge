@@ -57,6 +57,7 @@ class HomeFragment : Fragment() {
         pokemons.add(Pokemon("Squirtle", 7, mutableListOf(), 5, 88, 64, listOf(44, 48, 65, 50, 64, 43), 5, listOf(132, 133)))
         pokemons.add(Pokemon("Wartortle", 8, mutableListOf(), 16, 155, 142, listOf(59, 63, 80, 65, 80, 58), 5, listOf(133, 76)))
         pokemons.add(Pokemon("Blastoise", 9, mutableListOf(), 36, 239, 240, listOf(79, 83, 100, 85, 105, 78), 5, listOf(6, 13)))
+
         recyclerView.adapter = PokemonAdapter(this.requireContext(), pokemons, this.activity as MainActivity)
         recyclerView.layoutManager = GridLayoutManager(this.requireContext(), 2)
 

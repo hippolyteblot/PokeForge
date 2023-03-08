@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.pokeforge.ui.fusion.NotificationsFragment"
+        android:name="com.example.pokeforge.ui.fusion.FusionFragment"
         android:label="@string/title_fusion"
         tools:layout="@layout/fragment_fusion" />
 </navigation>

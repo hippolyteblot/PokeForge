@@ -1,14 +1,18 @@
 package com.example.pokeforge
 
+import android.app.Activity
 import android.content.Context
-import android.graphics.Bitmap
+import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pokeforge.com.example.pokeforge.LocalSelectionActivity
+import com.example.pokeforge.com.example.pokeforge.RemoteSelectionActivity
 
-class PokemonAdapter (private val context: Context, private val contactList: List<Pokemon>, private val activity: MainActivity) :
+class PokemonAdapter (private val context: Context, private val contactList: List<Pokemon>, private val activity: Activity) :
     RecyclerView.Adapter<PokemonAdapter.PokemonViewHolder>() {
 
     inner class PokemonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -16,23 +20,37 @@ class PokemonAdapter (private val context: Context, private val contactList: Lis
         private val name = itemView.findViewById<TextView>(R.id.name)
         private val income = itemView.findViewById<TextView>(R.id.income)
 
+        @RequiresApi(Build.VERSION_CODES.M)
         fun bind(pokemon: Pokemon) {
 
-            APISpritesClient().getSpriteImage(pokemon.dna[0], pokemon.dna[1], activity) { bitmap ->
-                activity.runOnUiThread {
-                    if (bitmap != null) {
-                        sprite.setImageBitmap(bitmap)
-                    } else {
-                        System.out.println("Erreur lors du chargement de l'image")
-                    }
-                }
-            }
+            APISpritesClient.setSpriteImage(pokemon.dna, sprite, context)
+
 
             name.text = pokemon.name
             income.text = pokemon.income.toString() + " P/H"
 
             itemView.setOnClickListener {
-                activity.startPokemonViewerActivity(pokemon)
+                // If activiy is of type MainActivity, we want to start PokemonViewerActivity
+                if (activity is MainActivity)
+                    activity.startPokemonViewerActivity(pokemon)
+                if (activity is RemoteSelectionActivity) {
+                    if (activity.getSelectedPokemon() == null) {
+                        activity.setSelectedPokemon(pokemon)
+                        activity.setLastItemView(itemView)
+                        //itemView.setBackgroundColor(activity.getColor(R.color.purple_200))
+                    } else if (activity.getSelectedPokemon() == pokemon) {
+                        activity.setSelectedPokemon(null)
+                        activity.setLastItemView(null)
+                        //itemView.setBackgroundColor(activity.getColor(R.color.white))
+                    } else {
+                        //activity.getLastItemView()?.setBackgroundColor(activity.getColor(R.color.white))
+                        activity.setSelectedPokemon(pokemon)
+                        //itemView.setBackgroundColor(activity.getColor(R.color.purple_200))
+                        activity.setLastItemView(itemView)
+                    }
+                } else if (activity is LocalSelectionActivity) {
+                    activity.setSelectedPokemon(pokemon)
+                }
             }
         }
     }

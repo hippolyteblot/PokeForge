@@ -1,13 +1,15 @@
 package com.example.pokeforge
 
+import android.app.Dialog
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class PlayerAdapter (private val context: Context, private val contactList: List<String>, private val activity: LocalFusionActivity) :
+class PlayerAdapter (private val context: Context, private val contactList: List<Map<String,String>>, private val activity: RemoteFusionActivity) :
     RecyclerView.Adapter<PlayerAdapter.PlayerViewHolder>() {
 
     inner class PlayerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -20,6 +22,24 @@ class PlayerAdapter (private val context: Context, private val contactList: List
             pokepieces.text = "0 P"
         }
 
+        init {
+            itemView.setOnClickListener {
+                contactList[adapterPosition].get("id")?.let { it1 -> activity.connectToPlayer(it1) }
+                println("Requesting connection to player ${contactList[adapterPosition].get("id")}")
+                // Display a loading screen
+                val dialog = Dialog(context)
+                dialog.setContentView(R.layout.loading_screen)
+                val msg = "En attente de l'autre joueur..."
+                dialog.findViewById<TextView>(R.id.message).text = msg
+
+                dialog.findViewById<Button>(R.id.cancel).setOnClickListener {
+                    dialog.dismiss()
+                }
+
+
+            }
+        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerViewHolder {
@@ -28,7 +48,7 @@ class PlayerAdapter (private val context: Context, private val contactList: List
     }
 
     override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
-        holder.bind(contactList[position])
+        holder.bind(contactList[position].get("name")!!)
 
     }
 
