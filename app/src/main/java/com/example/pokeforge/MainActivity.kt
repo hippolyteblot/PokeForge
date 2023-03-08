@@ -9,9 +9,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.pokeforge.APIClient.client
+import com.example.pokeforge.APIClient
 import com.example.pokeforge.databinding.ActivityMainBinding
-import com.example.pokeforge.pojo.MultipleResource
+import com.example.pokeforge.pojo.PokemonAPI
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,34 +27,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        val call: Call<MultipleResource?>? = client!!.create(APIInterface::class.java).doGetListResources(1)
-        if (call != null) {
-            call.enqueue(object : Callback<MultipleResource?> {
-                override fun onResponse(call: Call<MultipleResource?>?, response: Response<MultipleResource?>) {
-                    Log.d("TAG", response.code().toString() + "")
-                    var displayResponse = ""
-                    val resource: MultipleResource? = response.body()
-                    val res = resource?.name
-                    displayResponse += """${res}"""
-                    //loop in results
-                    //for (i in res!!.indices) {
-                        //val text = res[i].name
-                        //val url = res[i].url
-                        //displayResponse += """${text} ${url}"""
 
-                    //}
-                    Log.d("TAG", response.code().toString() + "")
-                    Log.d("TAG", "onResponse: $displayResponse")
-                    //displayResponse += """${text.toString()} ${url.toString()}
-                    //"""
-
-                }
-
-                override fun onFailure(call: Call<MultipleResource?>, t: Throwable?) {
-                    call.cancel()
-                }
-            })
-        }
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -75,6 +48,7 @@ class MainActivity : AppCompatActivity() {
     fun startPokemonViewerActivity(pokemon: Pokemon) {
         val intent = Intent(this, PokemonViewerActivity::class.java)
         intent.putExtra("pokemon", pokemon)
+        Log.d("poke", pokemon.toString())
         startActivity(intent)
     }
 }

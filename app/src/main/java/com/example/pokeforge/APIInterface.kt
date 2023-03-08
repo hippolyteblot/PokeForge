@@ -1,15 +1,14 @@
 package com.example.pokeforge
 
-import com.example.pokeforge.pojo.MultipleResource
+import com.example.pokeforge.pojo.PokemonAPI
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
+import retrofit2.http.GET
 
 
 interface APIInterface {
     @GET("/api/v2/pokemon/{id}")
-    fun doGetListResources(@Path("id") int: Int): Call<MultipleResource?>?
-
-
-
+    suspend fun doGetListResources(@Path("id") int: Int): PokemonAPI?
 
 }

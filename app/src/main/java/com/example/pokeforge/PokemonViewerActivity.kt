@@ -4,23 +4,18 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
-import android.widget.ImageView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import com.example.pokeforge.APIClient.client
-import com.example.pokeforge.databinding.ActivityMainBinding
 import com.example.pokeforge.databinding.ActivityPokemonViewerBinding
-import com.example.pokeforge.pojo.MultipleResource
+import com.example.pokeforge.pojo.PokemonAPI
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PokemonViewerActivity : AppCompatActivity() {
 
+class PokemonViewerActivity : AppCompatActivity() {
+    private lateinit var statArr1 : ArrayList<String>
+    private lateinit var statArr2 : ArrayList<String>
     private lateinit var binding: ActivityPokemonViewerBinding
     private lateinit var pokemon: Pokemon
 
@@ -31,8 +26,27 @@ class PokemonViewerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         pokemon = intent.getSerializableExtra("pokemon") as Pokemon
+        Log.d("poke", pokemon.toString())
+        GlobalScope.launch {
+            pokemon.stats = getStatsOf(pokemon.dna[0], pokemon.dna[1])
+            runOnUiThread() {
+                bind(pokemon)
+                binding.statPvNb.text = pokemon.stats[0].toString()
+                binding.statPvDef.text = pokemon.stats[1].toString()
+                binding.statPvDefSpe.text = pokemon.stats[2].toString()
+                binding.statPvAttack.text = pokemon.stats[3].toString()
+                binding.statPvAttackSpe.text = pokemon.stats[4].toString()
+                binding.statPvSpeed.text = pokemon.stats[5].toString()
+            }
 
-        bind(pokemon)
+
+
+
+
+
+        }
+        //bind(pokemon)
+
     }
 
     private fun bind(pokemon: Pokemon) {
@@ -93,4 +107,47 @@ class PokemonViewerActivity : AppCompatActivity() {
             }
         }
     }
+
+
+
+    @OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
+    private suspend fun getStatById(id: Int): ArrayList<Int>? {
+        var list = ArrayList<Int>()
+        val pokemonRes = APIClient.apiService
+        val result = try {
+            pokemonRes.doGetListResources(id)?.stats
+        } catch (e: Exception) {
+            Log.d("TAG", "getStatsOf: ${e.toString()}")
+            null
+        }
+        for (i in result?.indices!!) {
+            Log.d("TAG", "getStatsOf: ${result[i].base_stat}")
+            result[i].base_stat?.let { list.add(it) }
+        }
+        return list
+    }
+
+    private suspend fun getStatsOf(id1:Int, id2:Int) : ArrayList<Int> {
+        val pokemonStat1 = getStatById(id1)
+        val pokemonStat2 = getStatById(id2)
+        val intPokemonStat1 = ArrayList<Int>()
+        val intPokemonStat2 = ArrayList<Int>()
+        val finalPokemonStat = ArrayList<Int>()
+        pokemonStat1?.forEach { stat ->
+            intPokemonStat1.add(stat.toInt())
+        }
+        pokemonStat2?.forEach { stat ->
+            intPokemonStat2.add(stat.toInt())
+        }
+        for (i in intPokemonStat1.indices) {
+            finalPokemonStat.add((intPokemonStat1[i] + intPokemonStat2[i]) / 2)
+            Log.d("TAG", "getStatsOf: ${finalPokemonStat[i]} ${intPokemonStat1[i]} ${intPokemonStat2[i]}")
+        }
+
+
+
+        return finalPokemonStat
+    }
+
+
 }
