@@ -5,16 +5,12 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-<<<<<<< HEAD
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
-import com.example.pokeforge.APIClient.client
 import com.example.pokeforge.databinding.ActivityMainBinding
-=======
->>>>>>> 3792d167db470e67db03570442e870db6d0037a8
 import com.example.pokeforge.databinding.ActivityPokemonViewerBinding
 import com.example.pokeforge.pojo.PokemonAPI
 import kotlinx.coroutines.*
@@ -40,6 +36,8 @@ class PokemonViewerActivity : AppCompatActivity() {
         GlobalScope.launch {
             pokemon.stats = getStatsOf(pokemon.dna[0], pokemon.dna[1])
             pokemon.types = getTypeOf(pokemon)
+            pokemon.weight = getWeightOf(pokemon)
+            pokemon.height = getHeightOf(pokemon)
             runOnUiThread() {
                 bind(pokemon)
                 binding.statPvNb.text = pokemon.stats[0].toString()
@@ -48,6 +46,12 @@ class PokemonViewerActivity : AppCompatActivity() {
                 binding.statPvAttack.text = pokemon.stats[3].toString()
                 binding.statPvAttackSpe.text = pokemon.stats[4].toString()
                 binding.statPvSpeed.text = pokemon.stats[5].toString()
+                binding.pokemonHeight.text = pokemon.height.toString() + "0 cm"
+                var res = pokemon.weight.toString()
+                if (res.length > 1) {
+                    res = res.substring(0, res.length - 1) + "." + res.substring(res.length - 1)
+                }
+                binding.pokemonWeight.text = res + " kg"
                 Log.d("poke", pokemon.toString())
 
             }
@@ -231,6 +235,43 @@ class PokemonViewerActivity : AppCompatActivity() {
 
 
 
+    }
+    public suspend fun getWeightOf(pokemon: Pokemon): Int {
+        var height : String? = null
+        var weight : String? = null
+        val pokemonRes = APIClient.apiService
+        val result = try {
+            pokemonRes.doGetListWeight(pokemon.dna[0])
+            if (pokemonRes.doGetListWeight(pokemon.dna[0]) != null) {
+                weight = pokemonRes.doGetListWeight(pokemon.dna[0])?.weight
+            } else {
+                weight = pokemonRes.doGetListWeight(pokemon.dna[1])?.weight
+            }
+
+        } catch (e: Exception) {
+            Log.d("TAG", "getStatsOf: ${e.toString()}")
+            null
+        }
+        return weight?.toInt() ?: 0
+    }
+
+    public suspend fun getHeightOf(pokemon: Pokemon): Int {
+        var height : String? = null
+        var weight : String? = null
+        val pokemonRes = APIClient.apiService
+        val result = try {
+            pokemonRes.doGetListWeight(pokemon.dna[0])
+            if (pokemonRes.doGetListWeight(pokemon.dna[0]) != null) {
+                height = pokemonRes.doGetListWeight(pokemon.dna[1])?.height
+            } else {
+                height = pokemonRes.doGetListWeight(pokemon.dna[1])?.height
+            }
+
+        } catch (e: Exception) {
+            Log.d("TAG", "getStatsOf: ${e.toString()}")
+            null
+        }
+        return height?.toInt() ?: 0
     }
 
 
