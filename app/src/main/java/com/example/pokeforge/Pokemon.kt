@@ -7,7 +7,7 @@ data class Pokemon (
     val height: Int,
     val weight: Int,
     val exp: Int,
-    val stats: List<Int>,
+    var stats: List<Int>,
     val income: Int,
     val dna: List<Int> = listOf(0, 0)
 ) : java.io.Serializable
