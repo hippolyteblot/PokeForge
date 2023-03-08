@@ -9,7 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:id="@+id/linearLayoutHeader"
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         android:orientation="horizontal">
 
         <Button
@@ -25,7 +27,7 @@
             android:layout_margin="10dp"
 
             />
-        <View android:layout_width="wrap_content"
+        <View android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
@@ -51,7 +53,8 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayoutHeader"
-        app:srcCompat="@drawable/ic_home_black_24dp" />
+        app:srcCompat="@drawable/ic_home_black_24dp"
+        android:contentDescription="@string/pokemon_sprite" />
 
     <TextView
         android:id="@+id/pokemon_name"
@@ -82,7 +85,8 @@
             android:maxWidth="70dp"
             android:layout_weight="1"
             android:padding="5dp"
-            app:srcCompat="@drawable/ic_home_black_24dp" />
+            app:srcCompat="@drawable/ic_home_black_24dp"
+            android:contentDescription="@string/first_type" />
 
         <ImageView
             android:id="@+id/pokemon_type_sprite_2"
@@ -92,7 +96,9 @@
             android:maxWidth="70dp"
             android:layout_weight="1"
             android:padding="5dp"
-            app:srcCompat="@drawable/ic_home_black_24dp" />
+            app:srcCompat="@drawable/ic_home_black_24dp"
+            android:contentDescription="@string/second_type" />
+
 
 
     </LinearLayout>
@@ -113,7 +119,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Statistiques"
+        android:text="@string/statistiques"
         android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pokemon_weight" />
@@ -123,7 +129,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="PV:"
+        android:text="@string/pv"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -133,7 +139,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="x"
+        android:text="@string/x"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toTopOf="@+id/textView6" />
@@ -143,7 +149,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="x"
+        android:text="@string/x"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView9"
         app:layout_constraintTop_toTopOf="@+id/textView9" />
@@ -153,7 +159,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="x"
+        android:text="@string/x"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView11"
         app:layout_constraintTop_toTopOf="@+id/textView11" />
@@ -163,7 +169,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="x"
+        android:text="@string/x"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView7"
         app:layout_constraintTop_toTopOf="@+id/textView7" />
@@ -173,7 +179,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="x"
+        android:text="@string/x"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView10"
         app:layout_constraintTop_toTopOf="@+id/textView10" />
@@ -183,7 +189,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="x"
+        android:text="@string/x"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView12"
         app:layout_constraintTop_toTopOf="@+id/textView12" />
@@ -193,7 +199,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="172dp"
-        android:text="Attaque:"
+        android:text="@string/attaque"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toTopOf="@+id/textView6" />
@@ -204,7 +210,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="172dp"
         android:layout_marginTop="32dp"
-        android:text="Attaque spé:"
+        android:text="@string/attaque_sp"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toTopOf="@+id/textView6" />
@@ -215,7 +221,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="172dp"
         android:layout_marginTop="64dp"
-        android:text="Vitesse:"
+        android:text="@string/vitesse"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toTopOf="@+id/textView6" />
@@ -225,7 +231,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Défense:"
+        android:text="@string/d_fense"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -235,7 +241,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="Défense spé:"
+        android:text="@string/d_fense_sp"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
