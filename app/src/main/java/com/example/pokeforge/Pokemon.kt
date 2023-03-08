@@ -3,7 +3,7 @@ package com.example.pokeforge
 data class Pokemon (
     val name: String,
     val id: Int,
-    val types: List<PokemonType>,
+    var types: MutableList<PokemonType>,
     val height: Int,
     val weight: Int,
     val exp: Int,

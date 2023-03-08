@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pokeforge.databinding.ActivityLocalFusionBinding
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
+import com.google.android.gms.nearby.connection.ConnectionsClient
 
 
 class LocalFusionActivity : AppCompatActivity() {

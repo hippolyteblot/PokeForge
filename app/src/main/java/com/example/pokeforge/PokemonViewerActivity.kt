@@ -29,6 +29,7 @@ class PokemonViewerActivity : AppCompatActivity() {
         Log.d("poke", pokemon.toString())
         GlobalScope.launch {
             pokemon.stats = getStatsOf(pokemon.dna[0], pokemon.dna[1])
+            pokemon.types = getTypeOf(pokemon)
             runOnUiThread() {
                 bind(pokemon)
                 binding.statPvNb.text = pokemon.stats[0].toString()
@@ -37,6 +38,8 @@ class PokemonViewerActivity : AppCompatActivity() {
                 binding.statPvAttack.text = pokemon.stats[3].toString()
                 binding.statPvAttackSpe.text = pokemon.stats[4].toString()
                 binding.statPvSpeed.text = pokemon.stats[5].toString()
+                Log.d("poke", pokemon.toString())
+
             }
 
 
@@ -52,7 +55,6 @@ class PokemonViewerActivity : AppCompatActivity() {
     private fun bind(pokemon: Pokemon) {
         // Bind infos
         binding.pokemonName.text = pokemon.name
-
         // Bind types
         val type1 = pokemon.types[0]
         val bitmap1 = BitmapFactory.decodeResource(resources, getTypeSprite(type1))
@@ -147,6 +149,85 @@ class PokemonViewerActivity : AppCompatActivity() {
 
 
         return finalPokemonStat
+    }
+
+    private suspend fun getTypeOf(pokemon: Pokemon): MutableList<PokemonType> {
+        val types : MutableList<PokemonType> = mutableListOf()
+        val pokemonRes = APIClient.apiService
+        try {
+
+            val res = pokemonRes.doGetListType(pokemon.dna[0])?.types
+            val res2 = pokemonRes.doGetListType(pokemon.dna[1])?.types
+            if (res2 != null) {
+                    var resType = res2[0].type
+                    var name = resType?.name
+                    when(name){
+                        "normal" -> types.add(PokemonType.NORMAL)
+                        "fire" -> types.add(PokemonType.FIRE)
+                        "water" -> types.add(PokemonType.WATER)
+                        "electric" -> types.add(PokemonType.ELECTRIC)
+                        "grass" -> types.add(PokemonType.GRASS)
+                        "ice" -> types.add(PokemonType.ICE)
+                        "fighting" -> types.add(PokemonType.FIGHTING)
+                        "poison" -> types.add(PokemonType.POISON)
+                        "ground" -> types.add(PokemonType.GROUND)
+                        "flying" -> types.add(PokemonType.FLYING)
+                        "psychic" -> types.add(PokemonType.PSYCHIC)
+                        "bug" -> types.add(PokemonType.BUG)
+                        "rock" -> types.add(PokemonType.ROCK)
+                        "ghost" -> types.add(PokemonType.GHOST)
+                        "dragon" -> types.add(PokemonType.DRAGON)
+                        "dark" -> types.add(PokemonType.DARK)
+                        "steel" -> types.add(PokemonType.STEEL)
+                        "fairy" -> types.add(PokemonType.FAIRY)
+                        else -> {
+                            types.add(PokemonType.UNKNOWN)
+                        }
+
+                }
+            } else {
+                types.add(PokemonType.UNKNOWN)
+            }
+            if (res != null) {
+                    var resType = res[0].type
+                    var name = resType?.name
+                    when(name){
+                        "normal" -> types.add(PokemonType.NORMAL)
+                        "fire" -> types.add(PokemonType.FIRE)
+                        "water" -> types.add(PokemonType.WATER)
+                        "electric" -> types.add(PokemonType.ELECTRIC)
+                        "grass" -> types.add(PokemonType.GRASS)
+                        "ice" -> types.add(PokemonType.ICE)
+                        "fighting" -> types.add(PokemonType.FIGHTING)
+                        "poison" -> types.add(PokemonType.POISON)
+                        "ground" -> types.add(PokemonType.GROUND)
+                        "flying" -> types.add(PokemonType.FLYING)
+                        "psychic" -> types.add(PokemonType.PSYCHIC)
+                        "bug" -> types.add(PokemonType.BUG)
+                        "rock" -> types.add(PokemonType.ROCK)
+                        "ghost" -> types.add(PokemonType.GHOST)
+                        "dragon" -> types.add(PokemonType.DRAGON)
+                        "dark" -> types.add(PokemonType.DARK)
+                        "steel" -> types.add(PokemonType.STEEL)
+                        "fairy" -> types.add(PokemonType.FAIRY)
+                        else -> {
+                            types.add(PokemonType.UNKNOWN)
+                        }
+
+                }
+            } else {
+                types.add(PokemonType.UNKNOWN)
+            }
+
+        } catch (e: Exception) {
+            Log.d("TAG", "getStatsOf: ${e.toString()}")
+            null
+        }
+        Log.d("TAG", "getTypeOf: ${types[0]} ${types[1]}")
+        return types
+
+
+
     }
 
 
