@@ -9,12 +9,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.pokeforge.APIClient
 import com.example.pokeforge.databinding.ActivityMainBinding
-import com.example.pokeforge.pojo.PokemonAPI
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class MainActivity : AppCompatActivity() {
 

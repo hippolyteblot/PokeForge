@@ -5,7 +5,6 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -13,7 +12,6 @@ class PlayerAdapter (private val context: Context, private val contactList: List
     RecyclerView.Adapter<PlayerAdapter.PlayerViewHolder>() {
 
     inner class PlayerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val sprite = itemView.findViewById<ImageView>(R.id.sprite)
         private val name = itemView.findViewById<TextView>(R.id.name)
         private val pokepieces = itemView.findViewById<TextView>(R.id.pokepieces)
 

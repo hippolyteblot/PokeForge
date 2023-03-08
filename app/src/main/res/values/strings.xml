@@ -5,4 +5,8 @@
     <string name="title_fusion">Fusion</string>
     <string name="poids">Poids</string>
     <string name="taille">Taille</string>
+    <string name="suivant">Suivant</string>
+    <string name="retour"><![CDATA[< Retour]]></string>
+    <string name="pokepiece">pokepiece</string>
+    <string name="_99999">99999</string>
 </resources>

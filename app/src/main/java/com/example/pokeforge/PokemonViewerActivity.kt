@@ -1,44 +1,53 @@
 package com.example.pokeforge
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import com.bumptech.glide.Glide
-import com.example.pokeforge.databinding.ActivityMainBinding
 import com.example.pokeforge.databinding.ActivityPokemonViewerBinding
-import com.example.pokeforge.pojo.PokemonAPI
 import kotlinx.coroutines.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class PokemonViewerActivity : AppCompatActivity() {
-    private lateinit var statArr1 : ArrayList<String>
-    private lateinit var statArr2 : ArrayList<String>
     private lateinit var binding: ActivityPokemonViewerBinding
     private lateinit var pokemon: Pokemon
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityPokemonViewerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         pokemon = intent.getSerializableExtra("pokemon") as Pokemon
+
+
+
+
+
+        binding.buttonBack.setOnClickListener {
+            finish()
+        }
+
+
+
+
+
+
+
+
+
         Log.d("poke", pokemon.toString())
         GlobalScope.launch {
             pokemon.stats = getStatsOf(pokemon.dna[0], pokemon.dna[1])
             pokemon.types = getTypeOf(pokemon)
             pokemon.weight = getWeightOf(pokemon)
             pokemon.height = getHeightOf(pokemon)
-            runOnUiThread() {
+            pokemon.name = getNameOf(pokemon)
+            runOnUiThread {
                 bind(pokemon)
                 binding.statPvNb.text = pokemon.stats[0].toString()
                 binding.statPvDef.text = pokemon.stats[1].toString()
@@ -46,12 +55,13 @@ class PokemonViewerActivity : AppCompatActivity() {
                 binding.statPvAttack.text = pokemon.stats[3].toString()
                 binding.statPvAttackSpe.text = pokemon.stats[4].toString()
                 binding.statPvSpeed.text = pokemon.stats[5].toString()
+                binding.pokemonName.text = pokemon.name
                 binding.pokemonHeight.text = pokemon.height.toString() + "0 cm"
                 var res = pokemon.weight.toString()
                 if (res.length > 1) {
                     res = res.substring(0, res.length - 1) + "." + res.substring(res.length - 1)
                 }
-                binding.pokemonWeight.text = res + " kg"
+                binding.pokemonWeight.text = "$res kg"
                 Log.d("poke", pokemon.toString())
 
             }
@@ -67,7 +77,7 @@ class PokemonViewerActivity : AppCompatActivity() {
     }
 
     private fun bind(pokemon: Pokemon) {
-        // Bind infos
+        // Bind info
         binding.pokemonName.text = pokemon.name
         // Bind types
         val type1 = pokemon.types[0]
@@ -75,7 +85,7 @@ class PokemonViewerActivity : AppCompatActivity() {
         val resizedBitmap1 = Bitmap.createScaledBitmap(bitmap1, 180, 180, false)
         binding.pokemonTypeSprite1.setImageBitmap(resizedBitmap1)
         if (pokemon.types.size > 1) {
-            var type2 = pokemon.types[1]
+            val type2 = pokemon.types[1]
             // Rescale the second type sprite
             val bitmap2 = BitmapFactory.decodeResource(resources, getTypeSprite(type2))
             val resizedBitmap2 = Bitmap.createScaledBitmap(bitmap2, 180, 180, false)
@@ -119,19 +129,18 @@ class PokemonViewerActivity : AppCompatActivity() {
 
 
 
-    @OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
-    private suspend fun getStatById(id: Int): ArrayList<Int>? {
-        var list = ArrayList<Int>()
+    private suspend fun getStatById(id: Int): ArrayList<Int> {
+        val list = ArrayList<Int>()
         val pokemonRes = APIClient.apiService
         val result = try {
             pokemonRes.doGetListResources(id)?.stats
         } catch (e: Exception) {
-            Log.d("TAG", "getStatsOf: ${e.toString()}")
+            Log.d("TAG", "getStatsOf: $e")
             null
         }
         for (i in result?.indices!!) {
-            Log.d("TAG", "getStatsOf: ${result[i].base_stat}")
-            result[i].base_stat?.let { list.add(it) }
+            Log.d("TAG", "getStatsOf: ${result[i].baseStat}")
+            result[i].baseStat?.let { list.add(it) }
         }
         return list
     }
@@ -142,11 +151,11 @@ class PokemonViewerActivity : AppCompatActivity() {
         val intPokemonStat1 = ArrayList<Int>()
         val intPokemonStat2 = ArrayList<Int>()
         val finalPokemonStat = ArrayList<Int>()
-        pokemonStat1?.forEach { stat ->
-            intPokemonStat1.add(stat.toInt())
+        pokemonStat1.forEach { stat ->
+            intPokemonStat1.add(stat)
         }
-        pokemonStat2?.forEach { stat ->
-            intPokemonStat2.add(stat.toInt())
+        pokemonStat2.forEach { stat ->
+            intPokemonStat2.add(stat)
         }
         for (i in intPokemonStat1.indices) {
             finalPokemonStat.add((intPokemonStat1[i] + intPokemonStat2[i]) / 2)
@@ -166,9 +175,8 @@ class PokemonViewerActivity : AppCompatActivity() {
             val res = pokemonRes.doGetListType(pokemon.dna[0])?.types
             val res2 = pokemonRes.doGetListType(pokemon.dna[1])?.types
             if (res2 != null) {
-                    var resType = res2[0].type
-                    var name = resType?.name
-                    when(name){
+                    val resType = res2[0].type
+                when(resType?.name){
                         "normal" -> types.add(PokemonType.NORMAL)
                         "fire" -> types.add(PokemonType.FIRE)
                         "water" -> types.add(PokemonType.WATER)
@@ -196,9 +204,8 @@ class PokemonViewerActivity : AppCompatActivity() {
                 types.add(PokemonType.UNKNOWN)
             }
             if (res != null) {
-                    var resType = res[0].type
-                    var name = resType?.name
-                    when(name){
+                    val resType = res[0].type
+                when(resType?.name){
                         "normal" -> types.add(PokemonType.NORMAL)
                         "fire" -> types.add(PokemonType.FIRE)
                         "water" -> types.add(PokemonType.WATER)
@@ -227,8 +234,8 @@ class PokemonViewerActivity : AppCompatActivity() {
             }
 
         } catch (e: Exception) {
-            Log.d("TAG", "getStatsOf: ${e.toString()}")
-            null
+            Log.d("TAG", "getStatsOf: $e")
+
         }
         Log.d("TAG", "getTypeOf: ${types[0]} ${types[1]}")
         return types
@@ -236,42 +243,61 @@ class PokemonViewerActivity : AppCompatActivity() {
 
 
     }
-    public suspend fun getWeightOf(pokemon: Pokemon): Int {
-        var height : String? = null
+    private suspend fun getWeightOf(pokemon: Pokemon): Int {
         var weight : String? = null
         val pokemonRes = APIClient.apiService
-        val result = try {
-            pokemonRes.doGetListWeight(pokemon.dna[0])
-            if (pokemonRes.doGetListWeight(pokemon.dna[0]) != null) {
-                weight = pokemonRes.doGetListWeight(pokemon.dna[0])?.weight
+        try {
+            pokemonRes.doGetListInfos(pokemon.dna[0])
+            weight = if (pokemonRes.doGetListInfos(pokemon.dna[0]) != null) {
+                pokemonRes.doGetListInfos(pokemon.dna[0])?.weight
             } else {
-                weight = pokemonRes.doGetListWeight(pokemon.dna[1])?.weight
+                pokemonRes.doGetListInfos(pokemon.dna[1])?.weight
             }
 
         } catch (e: Exception) {
-            Log.d("TAG", "getStatsOf: ${e.toString()}")
-            null
+            Log.d("TAG", "getStatsOf: $e")
         }
         return weight?.toInt() ?: 0
     }
 
-    public suspend fun getHeightOf(pokemon: Pokemon): Int {
+    private suspend fun getHeightOf(pokemon: Pokemon): Int {
         var height : String? = null
-        var weight : String? = null
         val pokemonRes = APIClient.apiService
-        val result = try {
-            pokemonRes.doGetListWeight(pokemon.dna[0])
-            if (pokemonRes.doGetListWeight(pokemon.dna[0]) != null) {
-                height = pokemonRes.doGetListWeight(pokemon.dna[1])?.height
+        try {
+            pokemonRes.doGetListInfos(pokemon.dna[0])
+            height = if (pokemonRes.doGetListInfos(pokemon.dna[0]) != null) {
+                pokemonRes.doGetListInfos(pokemon.dna[1])?.height
             } else {
-                height = pokemonRes.doGetListWeight(pokemon.dna[1])?.height
+                pokemonRes.doGetListInfos(pokemon.dna[1])?.height
             }
 
         } catch (e: Exception) {
-            Log.d("TAG", "getStatsOf: ${e.toString()}")
-            null
+            Log.d("TAG", "getStatsOf: $e")
         }
         return height?.toInt() ?: 0
+    }
+
+    private suspend fun getNameOf(pokemon: Pokemon): String {
+        val pokemonRes = APIClient.apiService
+        var name : String? = null
+        try {
+            pokemonRes.doGetListInfos(pokemon.dna[0])
+            val name0 = pokemonRes.doGetListInfos(pokemon.dna[0])?.name
+            //name0 first char to upper case and the rest to lower case
+            val name0UpperCase = pokemonRes.doGetListInfos(pokemon.dna[0])?.name?.substring(0,1)
+                ?.uppercase(
+                    Locale.ROOT
+                ) + pokemonRes.doGetListInfos(pokemon.dna[0])?.name?.substring(1)
+                ?.lowercase(Locale.ROOT)
+            name = name0UpperCase + "/" + pokemonRes.doGetListInfos(pokemon.dna[1])?.name?.substring(0,1)
+                ?.uppercase(Locale.ROOT) + pokemonRes.doGetListInfos(pokemon.dna[1])?.name?.substring(1)
+                ?.lowercase(Locale.ROOT)
+            //
+
+        } catch (e: Exception) {
+            Log.d("TAG", "getStatsOf: $e")
+        }
+        return name ?: "Unknown"
     }
 
 
