@@ -12,6 +12,8 @@ class PokemonAPI {
     inner class Datum {
 
         @SerializedName("base_stat")
-        var base_stat: Int? = null
+        var baseStat: Int? = null
     }
+
+
 }
