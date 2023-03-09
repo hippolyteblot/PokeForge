@@ -1,6 +1,31 @@
-    // Top-level build file where you can add configuration options common to all sub-projects/modules.
+// Fichier build.gradle au niveau supérieur où vous pouvez ajouter des options de configuration communes à tous les sous-projets / modules.
+buildscript {
+    repositories {
+        // Assurez-vous que vous avez les deux référentiels suivants
+        google()  // Référentiel Maven de Google
+
+        mavenCentral()  // Référentiel Maven Central
+
+    }
+    dependencies {
+        // Ajoutez la dépendance pour le plugin Gradle des services Google
+        classpath 'com.google.gms:google-services:4.3.15'
+
+    }
+}
+
 plugins {
     id 'com.android.application' version '7.4.1' apply false
     id 'com.android.library' version '7.4.1' apply false
     id 'org.jetbrains.kotlin.android' version '1.8.20-Beta' apply false
+}
+
+allprojects {
+    repositories {
+        // Assurez-vous que vous avez les deux référentiels suivants
+        //google()  // Référentiel Maven de Google
+
+        //mavenCentral()  // Référentiel Maven Central
+
+    }
 }

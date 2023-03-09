@@ -53,7 +53,7 @@ object APISpritesClient {
         println("Sprite loaded from remote server")//4002
     }
 
-    fun getSpriteFromStorage(id1: Int, id2: Int, context: Context): Bitmap? {
+    private fun getSpriteFromStorage(id1: Int, id2: Int, context: Context): Bitmap? {
         val filename = "$id1.$id2.png"
         val file = File(context.filesDir, filename)
         if (file.exists()) {
