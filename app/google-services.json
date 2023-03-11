@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "644046499232",
-    "project_id": "pokeforge-d28f2",
-    "storage_bucket": "pokeforge-d28f2.appspot.com"
+    "project_number": "161947728523",
+    "project_id": "pokeforge-67986",
+    "storage_bucket": "pokeforge-67986.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:644046499232:android:1a77158d899f9386cc08c5",
+        "mobilesdk_app_id": "1:161947728523:android:008c76239d9eb560e0328e",
         "android_client_info": {
           "package_name": "com.example.pokeforge"
         }
       },
       "oauth_client": [
         {
-          "client_id": "644046499232-njtr5im6qb5eesl6761dhnq198pcj010.apps.googleusercontent.com",
+          "client_id": "161947728523-drut3794r7pa5o6u7hsh05lq4s7po7v7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pokeforge",
+            "certificate_hash": "a7472876cd46868f893493fc48b92fd59cb0444a"
+          }
+        },
+        {
+          "client_id": "161947728523-1rb3o0rb1perdg4rt5og4hv23s3eo97i.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCsqoZckxB-Y_XBi4mXExkAt8ABzlqaaac"
+          "current_key": "AIzaSyAV0w997vX3-J0ozCNA7DjUYqpuIiCYzAc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "644046499232-njtr5im6qb5eesl6761dhnq198pcj010.apps.googleusercontent.com",
+              "client_id": "161947728523-1rb3o0rb1perdg4rt5og4hv23s3eo97i.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
