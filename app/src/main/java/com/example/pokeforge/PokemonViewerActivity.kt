@@ -24,20 +24,9 @@ class PokemonViewerActivity : AppCompatActivity() {
         setContentView(binding.root)
         pokemon = intent.getSerializableExtra("pokemon") as Pokemon
 
-
-
-
-
         binding.buttonBack.setOnClickListener {
             finish()
         }
-
-
-
-
-
-
-
 
 
         Log.d("poke", pokemon.toString())
@@ -46,7 +35,7 @@ class PokemonViewerActivity : AppCompatActivity() {
             pokemon.types = getTypeOf(pokemon)
             pokemon.weight = getWeightOf(pokemon)
             pokemon.height = getHeightOf(pokemon)
-            pokemon.name = getNameOf(pokemon)
+            //pokemon.name = getNameOf(pokemon)
             runOnUiThread {
                 bind(pokemon)
                 binding.statPvNb.text = pokemon.stats[0].toString()
@@ -145,7 +134,12 @@ class PokemonViewerActivity : AppCompatActivity() {
         return list
     }
 
-    private suspend fun getStatsOf(id1:Int, id2:Int) : ArrayList<Int> {
+    private suspend fun getStatsOf(dna1:Int, dna2:Int) : ArrayList<Int> {
+        val id1 = dna1
+        var id2 = dna2
+        if (dna2 == 0) {
+            id2 = id1
+        }
         val pokemonStat1 = getStatById(id1)
         val pokemonStat2 = getStatById(id2)
         val intPokemonStat1 = ArrayList<Int>()
@@ -173,7 +167,11 @@ class PokemonViewerActivity : AppCompatActivity() {
         try {
 
             val res = pokemonRes.doGetListType(pokemon.dna[0])?.types
-            val res2 = pokemonRes.doGetListType(pokemon.dna[1])?.types
+            var id2 = pokemon.dna[1]
+            if(pokemon.dna[1] == 0) {
+                id2 = pokemon.dna[0]
+            }
+            val res2 = pokemonRes.doGetListType(id2)?.types
             if (res2 != null) {
                     val resType = res2[0].type
                 when(resType?.name){
@@ -237,7 +235,7 @@ class PokemonViewerActivity : AppCompatActivity() {
             Log.d("TAG", "getStatsOf: $e")
 
         }
-        Log.d("TAG", "getTypeOf: ${types[0]} ${types[1]}")
+        //Log.d("TAG", "getTypeOf: ${types[0]} ${types[1]}")
         return types
 
 

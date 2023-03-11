@@ -10,14 +10,20 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.pokeforge.databinding.ActivityMainBinding
+import com.example.pokeforge.ui.login.LoginActivity
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    lateinit var userUID: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        userUID = intent.getStringExtra("userUID").toString()
+
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -47,4 +53,5 @@ class MainActivity : AppCompatActivity() {
         Log.d("poke", pokemon.toString())
         startActivity(intent)
     }
+
 }
