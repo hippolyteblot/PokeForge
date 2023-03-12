@@ -18,6 +18,7 @@ import com.example.pokeforge.databinding.ActivityLoginBinding
 
 import com.example.pokeforge.R
 import com.example.pokeforge.StartingGameActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -29,6 +30,12 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+            intent.putExtra("userUID", currentUser.uid)
+            startActivity(intent)
+        }
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)

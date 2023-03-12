@@ -73,9 +73,10 @@ class StartingGameActivity : AppCompatActivity() {
             db.collection("users").document(userUID).set(user)
         }
         // add starter pokemon to the database
+        val adapter = binding.starterList.adapter as StarterSelectionAdapter
         val starter = hashMapOf(
             "name" to "Bulbasaur",
-            "dna" to arrayListOf(1,0),
+            "dna" to adapter.selectedDna,
             "owner" to userUID
         )
         db.collection("pokemons").add(starter)
