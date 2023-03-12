@@ -1,12 +1,20 @@
 package com.example.pokeforge.ui.dashboard
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.pokeforge.APISpritesClient
+import com.example.pokeforge.MainActivity
+import com.example.pokeforge.R
 import com.example.pokeforge.databinding.FragmentDashboardBinding
 
 class DashboardFragment : Fragment() {
@@ -15,7 +23,7 @@ class DashboardFragment : Fragment() {
 
     // This property is only valid between onCreateView and
     // onDestroyView.
-    private val binding get() = _binding!!
+    private val binding:FragmentDashboardBinding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +40,22 @@ class DashboardFragment : Fragment() {
         //dashboardViewModel.text.observe(viewLifecycleOwner) {
         //    textView.text = it
         //}
+        binding.buyLegendaryButton.setOnClickListener {
+            val builder = AlertDialog.Builder(activity)
+            builder.setTitle("Confirmer l'achat")
+            builder.setMessage("Voulez-vous acheter cet oeuf ?")
+            builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
+                Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
+                binding.textViewMoney.text = (binding.textViewMoney.text.toString().toInt() - 1000).toString()
+
+            })
+            builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
+                Toast.makeText(activity, "Oeuf non ajouté !", Toast.LENGTH_SHORT).show()
+            })
+            builder.show()
+        }
+        val main = activity as MainActivity
+
         return root
     }
 
