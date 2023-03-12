@@ -4,17 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokeforge.MainActivity
 import com.example.pokeforge.Pokemon
 import com.example.pokeforge.PokemonAdapter
-import com.example.pokeforge.PokemonType
 import com.example.pokeforge.databinding.FragmentHomeBinding
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
+import java.lang.Integer.parseInt
+
 
 class HomeFragment : Fragment() {
 
@@ -34,8 +38,6 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -44,21 +46,16 @@ class HomeFragment : Fragment() {
 
         pokemons = ArrayList<Pokemon>()
 
-        val random1 = (0..250).random()
-        val random2 = (0..250).random()
-        pokemons.add(Pokemon("Bulbasaur", 1, listOf(PokemonType.BUG, PokemonType.DRAGON), 7, 69, 64, listOf(45, 49, 49, 65, 65, 45), 5, listOf(9, 26)))
-        pokemons.add(Pokemon("Ivysaur", 2, listOf(PokemonType.FLYING), 16, 130, 142, listOf(60, 62, 63, 80, 80, 60), 5, listOf(6, 9)))
-        pokemons.add(Pokemon("Charmeon", 5, listOf(PokemonType.WATER, PokemonType.FIRE), 16, 142, 142, listOf(58, 64, 58, 80, 65, 80), 5, listOf(9, 6)))
-        pokemons.add(Pokemon("Charizard", 6, listOf(PokemonType.BUG, PokemonType.DRAGON), 36, 240, 240, listOf(78, 84, 78, 109, 85, 100), 5, listOf(random1, random2)))
-        pokemons.add(Pokemon("Squirtle", 7, listOf(), 5, 88, 64, listOf(44, 48, 65, 50, 64, 43), 5, listOf(132, 133)))
-        pokemons.add(Pokemon("Wartortle", 8, listOf(), 16, 155, 142, listOf(59, 63, 80, 65, 80, 58), 5, listOf(133, 76)))
-        pokemons.add(Pokemon("Blastoise", 9, listOf(), 36, 239, 240, listOf(79, 83, 100, 85, 105, 78), 5, listOf(6, 13)))
-
-        pokemons.add(Pokemon("Squirtle", 7, listOf(), 5, 88, 64, listOf(44, 48, 65, 50, 64, 43), 5, listOf(132, 133)))
-        pokemons.add(Pokemon("Wartortle", 8, listOf(), 16, 155, 142, listOf(59, 63, 80, 65, 80, 58), 5, listOf(133, 76)))
-        pokemons.add(Pokemon("Blastoise", 9, listOf(), 36, 239, 240, listOf(79, 83, 100, 85, 105, 78), 5, listOf(6, 13)))
         recyclerView.adapter = PokemonAdapter(this.requireContext(), pokemons, this.activity as MainActivity)
         recyclerView.layoutManager = GridLayoutManager(this.requireContext(), 2)
+
+
+        // Run on background thread loadPokemonsFromFirebase()
+        loadPokemonsFromFirebase { pokemons ->
+            recyclerView.adapter = PokemonAdapter(this.requireContext(), pokemons, this.activity as MainActivity)
+            recyclerView.layoutManager = GridLayoutManager(this.requireContext(), 2)
+        }
+
 
 
         return root
@@ -67,5 +64,37 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun loadPokemonsFromFirebase(callback: (ArrayList<Pokemon>) -> Unit) {
+        val db = Firebase.firestore
+        val collectionRef = db.collection("pokemons")
+        val pokemons = ArrayList<Pokemon>()
+        val activity = requireActivity() as MainActivity
+        collectionRef.whereEqualTo("owner", activity.userUID)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    println("DocumentSnapshot data: ${document.data}")
+                    val dna = document.data["dna"] as List<*>
+                    pokemons.add(Pokemon(
+                        document.data.get("name") as String,
+                        1,
+                        mutableListOf(),
+                        0,
+                        0,
+                        0,
+                        listOf(),
+                        5,
+                        listOf(dna[0], dna[1]) as List<Int>
+                    ))
+                }
+                callback(pokemons)
+            }
+            .addOnFailureListener { exception ->
+                println("get failed $exception")
+                callback(pokemons)
+            }
+
     }
 }

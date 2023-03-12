@@ -5,22 +5,23 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.Manifest
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pokeforge.databinding.ActivityLocalFusionBinding
+//import com.example.pokeforge.databinding.ActivityLocalFusionBinding
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
+import com.google.android.gms.nearby.connection.ConnectionsClient
 
 
 class LocalFusionActivity : AppCompatActivity() {
 
 
-    private lateinit var binding: ActivityLocalFusionBinding
+   //private lateinit var binding: ActivityLocalFusionBinding
 
     private lateinit var playerRecyclerView: RecyclerView
     private lateinit var playerList: ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        /*
         val REQUIRED_PERMISSIONS =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 arrayOf(
@@ -150,7 +151,7 @@ class LocalFusionActivity : AppCompatActivity() {
                 System.out.println("We were unable to start discovering.")
             }
 
-
+*/
     }
 
 }

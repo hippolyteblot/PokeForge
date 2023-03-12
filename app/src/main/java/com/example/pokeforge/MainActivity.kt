@@ -9,22 +9,26 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.pokeforge.APIClient.client
 import com.example.pokeforge.databinding.ActivityMainBinding
-import com.example.pokeforge.pojo.MultipleResource
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.pokeforge.ui.login.LoginActivity
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    lateinit var userUID: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        userUID = intent.getStringExtra("userUID").toString()
+
+
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
 
         val navView: BottomNavigationView = binding.navView
 
@@ -46,6 +50,8 @@ class MainActivity : AppCompatActivity() {
     fun startPokemonViewerActivity(pokemon: Pokemon) {
         val intent = Intent(this, PokemonViewerActivity::class.java)
         intent.putExtra("pokemon", pokemon)
+        Log.d("poke", pokemon.toString())
         startActivity(intent)
     }
+
 }
