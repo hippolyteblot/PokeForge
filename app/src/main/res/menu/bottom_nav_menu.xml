@@ -17,7 +17,11 @@
         android:title="@string/title_fusion" />
     <item
         android:id="@+id/navigation_maps"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/baseline_map_24"
+        android:title="Maps" />
+    <item
+        android:id="@+id/navigation_profil"
+        android:icon="@drawable/baseline_face_24"
         android:title="Maps" />
 
 </menu>
