@@ -15,6 +15,7 @@ import com.example.pokeforge.ui.login.LoginActivity
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -22,12 +23,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        userUID = intent.getStringExtra("userUID").toString()
 
+        userUID = intent.getStringExtra("userUID").toString()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+
 
 
         val navView: BottomNavigationView = binding.navView
@@ -37,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_maps
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
             )
         )
 
@@ -58,6 +60,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("poke", pokemon.toString())
         startActivity(intent)
     }
+
     fun claimPokepiece() {
         // Connect to firebase
         val db = Firebase.firestore
@@ -69,47 +72,41 @@ class MainActivity : AppCompatActivity() {
                     val lastClaimed = document.data?.get("lastClaimed")
                     var balance = document.data?.get("balance").toString().toInt()
                     Log.d("poke", "lastClaimed: $lastClaimed")
-                    if (lastClaimed != null) {
-                        if (lastClaimed.toString().toLong() < System.currentTimeMillis() - 60000) {
-                            // Get all the pokemon from the pokemon collection pokemons where owner = userUID
-                            var total = 0
-                            val docRef = db.collection("pokemons").whereEqualTo("owner", userUID)
-                            docRef.get()
-                                .addOnSuccessListener { documents ->
-                                    for (document in documents) {
-                                        Log.d("poke", "${document.id} => ${document.data}")
-                                        total += document.data["income"].toString().toInt()
-                                        println("total: $total")
+
+                    if (lastClaimed.toString().toLong() < System.currentTimeMillis() - 60000) {
+                        // Get all the pokemon from the pokemon collection pokemons where owner = userUID
+                        var total = 0
+                        val docRef = db.collection("pokemons").whereEqualTo("owner", userUID)
+                        docRef.get()
+                            .addOnSuccessListener { documents ->
+                                for (document in documents) {
+                                    Log.d("poke", "${document.id} => ${document.data}")
+                                    total += document.data["income"].toString().toInt()
+                                    println("total: $total")
+                                }
+                                // Get the time spent from the last time the user claimed his pokepiece
+                                val timeSpent = System.currentTimeMillis() - lastClaimed.toString().toLong()
+                                val timeInHours = timeSpent / 60000
+                                val pokepieces = timeInHours * total
+                                balance += pokepieces.toInt()
+                                val userDocRef = db.collection("users").document(userUID)
+                                userDocRef.update("balance", balance)
+                                    .addOnSuccessListener { 
+                                        val toast = Toast.makeText(applicationContext, "$pokepieces pokepièces récupérées!", Toast.LENGTH_SHORT)
+                                        toast.show()
                                     }
-                                    // Get the time spent from the last time the user claimed his pokepiece
-                                    val timeSpent =
-                                        System.currentTimeMillis() - lastClaimed.toString().toLong()
-                                    val timeInHours = timeSpent / 60000
-                                    val pokepieces = timeInHours * total
-                                    balance += pokepieces.toInt()
-                                    val userDocRef = db.collection("users").document(userUID)
-                                    userDocRef.update("balance", balance)
-                                        .addOnSuccessListener {
-                                            val toast = Toast.makeText(
-                                                applicationContext,
-                                                "$pokepieces pokepièces récupérées!",
-                                                Toast.LENGTH_SHORT
-                                            )
-                                            toast.show()
-                                        }
-                                        .addOnFailureListener { e -> println("Error updating document $e") }
-                                    // Update the lastClaimed time
-                                    userDocRef.update("lastClaimed", System.currentTimeMillis())
-                                        .addOnSuccessListener { println("DocumentSnapshot successfully updated!") }
-                                        .addOnFailureListener { e -> println("Error updating document $e") }
+                                    .addOnFailureListener { e -> println("Error updating document $e") }
+                                // Update the lastClaimed time
+                                userDocRef.update("lastClaimed", System.currentTimeMillis())
+                                    .addOnSuccessListener { println("DocumentSnapshot successfully updated!") }
+                                    .addOnFailureListener { e -> println("Error updating document $e") }
 
-                                    binding.balance.text = balance.toString()
-                                }
-                                .addOnFailureListener { exception ->
-                                    Log.d("poke", "Error getting documents: ", exception)
-                                }
+                                binding.balance.text = balance.toString()
+                            }
+                            .addOnFailureListener { exception ->
+                                Log.d("poke", "Error getting documents: ", exception)
+                            }
 
-                        }
                     }
                 } else {
                     Log.d("poke", "No such document")
@@ -130,12 +127,7 @@ class MainActivity : AppCompatActivity() {
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    if (document.data?.get("balance") != null) {
-                        balance = document.data?.get("balance").toString().toInt()
-                    }else
-                    {
-                        balance = 0
-                    }
+                    balance = document.data?.get("balance").toString().toInt()
                 } else {
                     Log.d("poke", "No such document")
                 }
