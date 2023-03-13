@@ -127,7 +127,11 @@ class MainActivity : AppCompatActivity() {
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    balance = document.data?.get("balance").toString().toInt()
+                    if (document.data?.get("balance") != null) {
+                        balance = document.data?.get("balance").toString().toInt()
+                    } else{
+                        balance = 0
+                    }
                 } else {
                     Log.d("poke", "No such document")
                 }

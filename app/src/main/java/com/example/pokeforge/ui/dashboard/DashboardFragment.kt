@@ -53,9 +53,9 @@ class DashboardFragment : Fragment() {
             builder.setMessage("Voulez-vous acheter cet oeuf ?")
             builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
                 Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
-                binding.textViewMoney.text = (binding.textViewMoney.text.toString().toInt() - 1000).toString()
 
-                var poke = ""
+                var pokeName = ""
+                var pokeId = 0
                 val db = Firebase.firestore
                 val UID = (activity as MainActivity).userUID
                 val collectionRef = db.collection("pokemon_available")
@@ -73,8 +73,64 @@ class DashboardFragment : Fragment() {
                                 val random = (0 until taille).random()
                                 val pokemon = liste[random]
                                 println("DocumentSnapshot data: ${pokemon.data}")
-                                poke = pokemon.data?.get("name").toString()
+                                pokeName = pokemon.data?.get("name").toString()
+                                pokeId = pokemon.data?.get("id").toString().toInt()
+                                println(pokeName)
+
+                                val newPoke = hashMapOf(
+                                    "name" to pokeName,
+                                    "dna" to listOf(pokeId,0),
+                                    "egg" to true,
+                                    "income" to 0,
+                                    "owner" to (activity as MainActivity).userUID,
+                                )
+                                db.collection("pokemons").add(newPoke)
                             }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w("TAG", "Error getting documents: ", exception)
+                    }
+
+            })
+            builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
+                Toast.makeText(activity, "Oeuf non ajouté !", Toast.LENGTH_SHORT).show()
+            })
+            builder.show()
+        }
+
+        binding.buyAncientButton.setOnClickListener{
+            val builder = AlertDialog.Builder(activity)
+            builder.setTitle("Confirmer l'achat")
+            builder.setMessage("Voulez-vous acheter cet oeuf ?")
+            builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
+                Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
+
+                var pokeName = ""
+                var pokeId = 0
+                val db = Firebase.firestore
+                val UID = (activity as MainActivity).userUID
+                val collectionRef = db.collection("pokemon_available")
+
+                collectionRef.whereLessThanOrEqualTo("capture_rate", 45)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        val liste = documents.documents
+                        val taille = liste.size
+                        val random = (0 until taille).random()
+                        val pokemon = liste[random]
+                        println("DocumentSnapshot data: ${pokemon.data}")
+                        pokeName = pokemon.data?.get("name").toString()
+                        pokeId = pokemon.data?.get("id").toString().toInt()
+                        println(pokeName)
+
+                        val newPoke = hashMapOf(
+                            "name" to pokeName,
+                            "dna" to listOf(pokeId,0),
+                            "egg" to true,
+                            "income" to 0,
+                            "owner" to (activity as MainActivity).userUID,
+                        )
+                        db.collection("pokemons").add(newPoke)
                     }
                     .addOnFailureListener { exception ->
                         Log.w("TAG", "Error getting documents: ", exception)
