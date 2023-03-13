@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokeforge.com.example.pokeforge.LocalSelectionActivity
 import com.example.pokeforge.com.example.pokeforge.RemoteSelectionActivity
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -24,17 +25,19 @@ class PokemonAdapter (private val context: Context, private val contactList: Lis
         private val name = itemView.findViewById<TextView>(R.id.name)
         private val income = itemView.findViewById<TextView>(R.id.income)
 
+        @OptIn(DelicateCoroutinesApi::class)
         fun bind(pokemon: Pokemon) {
 
-            APISpritesClient.setSpriteImage(pokemon.dna, sprite, context)
-            GlobalScope.launch {
-                val pokemonName = pokemon.name
-                activity.runOnUiThread {
-                    name.text = pokemonName
-                }
+            if (!pokemon.isEgg) {
+                name.text = pokemon.name
+                income.text = pokemon.income.toString()
+                APISpritesClient.setSpriteImage(pokemon.dna, sprite, context)
+            } else {
+                name.text = "Œuf"
+                income.text = "?"
+                sprite.setImageResource(R.drawable.egg)
+
             }
-            val incomeText = pokemon.income.toString()
-            income.text = incomeText
 
             itemView.setOnClickListener {
                 // If activiy is of type MainActivity, we want to start PokemonViewerActivity
