@@ -17,6 +17,7 @@ import com.example.pokeforge.databinding.ActivityMainBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -24,12 +25,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        userUID = intent.getStringExtra("userUID").toString()
 
+        userUID = intent.getStringExtra("userUID").toString()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+
 
 
         val navView: BottomNavigationView = binding.navView
@@ -39,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_maps
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
             )
         )
 
@@ -60,6 +62,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("poke", pokemon.toString())
         startActivity(intent)
     }
+
     fun claimPokepiece() {
         // Connect to firebase
         val db = Firebase.firestore
@@ -97,25 +100,26 @@ class MainActivity : AppCompatActivity() {
                                             dialog.setContentView(R.layout.label_image_dialog)
                                             val label = "$pokepieces pokepièces récupérées!"
                                             dialog.findViewById<TextView>(R.id.label).text = label
-                                            dialog.findViewById<ImageView>(R.id.image).setImageResource(R.drawable.pokepiece)
-                                            dialog.findViewById<Button>(R.id.accept).setOnClickListener {
-                                                dialog.dismiss()
-                                            }
+                                            dialog.findViewById<ImageView>(R.id.image)
+                                                .setImageResource(R.drawable.pokepiece)
+                                            dialog.findViewById<Button>(R.id.accept)
+                                                .setOnClickListener {
+                                                    dialog.dismiss()
+                                                }
                                             dialog.show()
                                         }
                                         .addOnFailureListener { e -> println("Error updating document $e") }
                                     // Update the lastClaimed time
                                     userDocRef.update("lastClaimed", System.currentTimeMillis())
-                                        .addOnSuccessListener { println("DocumentSnapshot successfully updated!") }
+                                        .addOnSuccessListener {
+                                            println("DocumentSnapshot successfully updated!")
+                                        }
                                         .addOnFailureListener { e -> println("Error updating document $e") }
-
-                                    binding.balance.text = balance.toString()
-                                }
-                                .addOnFailureListener { exception ->
-                                    Log.d("poke", "Error getting documents: ", exception)
                                 }
 
-                        }
+                                binding.balance.text = balance.toString()
+                            }
+
                     }
                 } else {
                     Log.d("poke", "No such document")
@@ -136,12 +140,7 @@ class MainActivity : AppCompatActivity() {
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    if (document.data?.get("balance") != null) {
-                        balance = document.data?.get("balance").toString().toInt()
-                    }else
-                    {
-                        balance = 0
-                    }
+                    balance = document.data?.get("balance").toString().toInt()
                 } else {
                     Log.d("poke", "No such document")
                 }
