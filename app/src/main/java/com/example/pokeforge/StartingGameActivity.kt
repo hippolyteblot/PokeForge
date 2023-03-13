@@ -67,7 +67,7 @@ class StartingGameActivity : AppCompatActivity() {
         val user = hashMapOf(
             "name" to binding.playerName.text.toString(),
             "sprite" to sprite,
-            "pokepieces" to 0,
+            "balance" to 0,
         )
         if (userUID != null) {
             db.collection("users").document(userUID).set(user)
