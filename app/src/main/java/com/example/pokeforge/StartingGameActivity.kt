@@ -77,11 +77,11 @@ class StartingGameActivity : AppCompatActivity() {
         val starter = hashMapOf(
             "name" to "Bulbasaur",
             "dna" to adapter.selectedDna,
+            "income" to 100,
             "owner" to userUID,
-            "income" to 10,
+            "egg" to true,
         )
         db.collection("pokemons").add(starter)
-
     }
 
     private fun setupStartersSprites() {
