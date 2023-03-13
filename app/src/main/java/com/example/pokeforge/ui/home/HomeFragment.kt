@@ -7,10 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pokeforge.MainActivity
-import com.example.pokeforge.Pokemon
-import com.example.pokeforge.PokemonAdapter
-import com.example.pokeforge.PokemonTeam
+import com.example.pokeforge.*
 import com.example.pokeforge.databinding.FragmentHomeBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -47,9 +44,6 @@ class HomeFragment : Fragment() {
             recyclerView.adapter = PokemonAdapter(this.requireContext(), team.getTeam(), this.activity as MainActivity)
             recyclerView.layoutManager = GridLayoutManager(this.requireContext(), 2)
         }
-
-
-
         return root
     }
 
@@ -71,15 +65,20 @@ class HomeFragment : Fragment() {
                     val dna = document.data["dna"] as List<*>
                     pokemons.add(Pokemon(
                         document.data.get("name") as String,
-                        1,
+                        document.id,
                         mutableListOf(),
                         0,
                         0,
                         0,
                         listOf(),
-                        document.data.get("income").toString().toInt(),
+                        if ( document.data.get("income") != null){
+                            document.data.get("income").toString().toInt()
+                        } else {
+                            0
+                        },
                         listOf(dna[0].toString().toInt(),
-                            dna[1].toString().toInt())
+                            dna[1].toString().toInt()),
+                        document.data.get("egg") as Boolean,
                     ))
                 }
                 callback(pokemons)

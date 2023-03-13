@@ -1,15 +1,16 @@
 package com.example.pokeforge
 
-data class Pokemon (
+data class Pokemon(
     var name: String,
-    val id: Int,
+    val id: String,
     var types: MutableList<PokemonType>,
     var height: Int,
     var weight: Int,
     val exp: Int,
     var stats: List<Int>,
     val income: Int,
-    val dna: List<Int> = listOf(0, 0)
+    val dna: List<Int> = listOf(0, 0),
+    var isEgg: Boolean = false,
 ) : java.io.Serializable
 enum class PokemonType {
     NORMAL,

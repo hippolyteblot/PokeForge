@@ -7,6 +7,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pokeforge.databinding.ActivityPokemonViewerBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -23,6 +26,10 @@ class PokemonViewerActivity : AppCompatActivity() {
         binding = ActivityPokemonViewerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         pokemon = intent.getSerializableExtra("pokemon") as Pokemon
+
+        if(pokemon.isEgg) {
+            openEgg()
+        }
 
         binding.buttonBack.setOnClickListener {
             finish()
@@ -264,7 +271,7 @@ class PokemonViewerActivity : AppCompatActivity() {
         try {
             pokemonRes.doGetListInfos(pokemon.dna[0])
             height = if (pokemonRes.doGetListInfos(pokemon.dna[0]) != null) {
-                pokemonRes.doGetListInfos(pokemon.dna[1])?.height
+                pokemonRes.doGetListInfos(pokemon.dna[0])?.height
             } else {
                 pokemonRes.doGetListInfos(pokemon.dna[1])?.height
             }
@@ -298,5 +305,16 @@ class PokemonViewerActivity : AppCompatActivity() {
         return name ?: "Unknown"
     }
 
+    fun openEgg() {
+        val db = Firebase.firestore
+        // Update the pokemon with id to egg = false
+        db.collection("pokemons").document(pokemon.id).update("egg", false)
+            .addOnSuccessListener {
+                Log.d("TAG", "DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
+        pokemon.isEgg = false
+        PokemonTeam.openEgg(pokemon)
+    }
 
 }

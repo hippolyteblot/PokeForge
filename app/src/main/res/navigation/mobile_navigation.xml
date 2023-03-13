@@ -22,4 +22,9 @@
         android:name="com.example.pokeforge.ui.fusion.FusionFragment"
         android:label="@string/title_fusion"
         tools:layout="@layout/fragment_fusion" />
+    <fragment
+        android:id="@+id/navigation_maps"
+        android:name="com.example.pokeforge.ui.maps.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" />
 </navigation>

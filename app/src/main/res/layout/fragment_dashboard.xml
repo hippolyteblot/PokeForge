@@ -29,7 +29,7 @@
             android:id="@+id/imageView2"
             android:layout_width="35dp"
             android:layout_height="30dp"
-            app:layout_constraintVertical_bias="0.1505"
+            app:layout_constraintVertical_bias="0.1458"
             app:layout_constraintHorizontal_bias="0.538"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -41,7 +41,7 @@
             android:id="@+id/imageView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintVertical_bias="0.1548"
+            app:layout_constraintVertical_bias="0.1498"
             app:layout_constraintHorizontal_bias="0.974"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -52,10 +52,10 @@
         <Button
             android:id="@+id/buyLegendaryButton"
             android:layout_width="90dp"
-            android:layout_height="57dp"
+            android:layout_height="49dp"
             android:alpha="0.01"
             android:text="Button"
-            app:layout_constraintVertical_bias="0.1448"
+            app:layout_constraintVertical_bias="0.1408"
             app:layout_constraintHorizontal_bias="0.494"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -68,7 +68,7 @@
             android:id="@+id/piecesAncient"
             android:layout_width="35dp"
             android:layout_height="30dp"
-            app:layout_constraintVertical_bias="0.3350"
+            app:layout_constraintVertical_bias="0.3240"
             app:layout_constraintHorizontal_bias="0.538"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -80,7 +80,7 @@
             android:id="@+id/prixAncient"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintVertical_bias="0.3368"
+            app:layout_constraintVertical_bias="0.3268"
             app:layout_constraintHorizontal_bias="0.974"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -99,7 +99,7 @@
             app:layout_constraintHorizontal_bias="0.494"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.3298" />
+            app:layout_constraintVertical_bias="0.3198" />
 
 
 
@@ -107,7 +107,7 @@
             android:id="@+id/piecesOffre1"
             android:layout_width="35dp"
             android:layout_height="30dp"
-            app:layout_constraintVertical_bias="0.485"
+            app:layout_constraintVertical_bias="0.469"
             app:layout_constraintHorizontal_bias="0.198"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -119,7 +119,7 @@
             android:id="@+id/prixOffre1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintVertical_bias="0.4858"
+            app:layout_constraintVertical_bias="0.470"
             app:layout_constraintHorizontal_bias="0.240"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -129,16 +129,16 @@
 
         <Button
             android:id="@+id/buyOffre1Button"
-            android:layout_width="90dp"
-            android:layout_height="45dp"
+            android:layout_width="120dp"
+            android:layout_height="160dp"
             android:alpha="0.01"
             android:text="Button"
-            app:layout_constraintVertical_bias="0.485"
-            app:layout_constraintHorizontal_bias="0.094"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.064"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.43" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
