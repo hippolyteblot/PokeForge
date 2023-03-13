@@ -17,7 +17,6 @@ import com.example.pokeforge.databinding.ActivityMainBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -26,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userUID = intent.getStringExtra("userUID").toString()
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_maps
             )
         )
 
@@ -60,7 +60,6 @@ class MainActivity : AppCompatActivity() {
         Log.d("poke", pokemon.toString())
         startActivity(intent)
     }
-
     fun claimPokepiece() {
         // Connect to firebase
         val db = Firebase.firestore
@@ -73,47 +72,50 @@ class MainActivity : AppCompatActivity() {
                     var balance = document.data?.get("balance").toString().toInt()
                     Log.d("poke", "lastClaimed: $lastClaimed")
 
-                    if (lastClaimed.toString().toLong() < System.currentTimeMillis() - 60000) {
-                        // Get all the pokemon from the pokemon collection pokemons where owner = userUID
-                        var total = 0
-                        val docRef = db.collection("pokemons").whereEqualTo("owner", userUID)
-                        docRef.get()
-                            .addOnSuccessListener { documents ->
-                                for (document in documents) {
-                                    Log.d("poke", "${document.id} => ${document.data}")
-                                    total += document.data["income"].toString().toInt()
-                                    println("total: $total")
-                                }
-                                // Get the time spent from the last time the user claimed his pokepiece
-                                val timeSpent = System.currentTimeMillis() - lastClaimed.toString().toLong()
-                                val timeInHours = timeSpent / 60000
-                                val pokepieces = timeInHours * total
-                                balance += pokepieces.toInt()
-                                val userDocRef = db.collection("users").document(userUID)
-                                userDocRef.update("balance", balance)
-                                    .addOnSuccessListener { 
-                                        val dialog = Dialog(this)
-                                        dialog.setContentView(R.layout.label_image_dialog)
-                                        val label = "$pokepieces pokepièces récupérées!"
-                                        dialog.findViewById<TextView>(R.id.label).text = label
-                                        dialog.findViewById<ImageView>(R.id.image).setImageResource(R.drawable.pokepiece)
-                                        dialog.findViewById<Button>(R.id.accept).setOnClickListener {
-                                            dialog.dismiss()
-                                        }
-                                        dialog.show()
+                    if (lastClaimed != null) {
+                        if (lastClaimed.toString().toLong() < System.currentTimeMillis() - 60000) {
+                            // Get all the pokemon from the pokemon collection pokemons where owner = userUID
+                            var total = 0
+                            val docRef = db.collection("pokemons").whereEqualTo("owner", userUID)
+                            docRef.get()
+                                .addOnSuccessListener { documents ->
+                                    for (document in documents) {
+                                        Log.d("poke", "${document.id} => ${document.data}")
+                                        total += document.data["income"].toString().toInt()
+                                        println("total: $total")
                                     }
-                                    .addOnFailureListener { e -> println("Error updating document $e") }
-                                // Update the lastClaimed time
-                                userDocRef.update("lastClaimed", System.currentTimeMillis())
-                                    .addOnSuccessListener { println("DocumentSnapshot successfully updated!") }
-                                    .addOnFailureListener { e -> println("Error updating document $e") }
+                                    // Get the time spent from the last time the user claimed his pokepiece
+                                    val timeSpent =
+                                        System.currentTimeMillis() - lastClaimed.toString().toLong()
+                                    val timeInHours = timeSpent / 60000
+                                    val pokepieces = timeInHours * total
+                                    balance += pokepieces.toInt()
+                                    val userDocRef = db.collection("users").document(userUID)
+                                    userDocRef.update("balance", balance)
+                                        .addOnSuccessListener {
+                                            val dialog = Dialog(this)
+                                            dialog.setContentView(R.layout.label_image_dialog)
+                                            val label = "$pokepieces pokepièces récupérées!"
+                                            dialog.findViewById<TextView>(R.id.label).text = label
+                                            dialog.findViewById<ImageView>(R.id.image).setImageResource(R.drawable.pokepiece)
+                                            dialog.findViewById<Button>(R.id.accept).setOnClickListener {
+                                                dialog.dismiss()
+                                            }
+                                            dialog.show()
+                                        }
+                                        .addOnFailureListener { e -> println("Error updating document $e") }
+                                    // Update the lastClaimed time
+                                    userDocRef.update("lastClaimed", System.currentTimeMillis())
+                                        .addOnSuccessListener { println("DocumentSnapshot successfully updated!") }
+                                        .addOnFailureListener { e -> println("Error updating document $e") }
 
-                                binding.balance.text = balance.toString()
-                            }
-                            .addOnFailureListener { exception ->
-                                Log.d("poke", "Error getting documents: ", exception)
-                            }
+                                    binding.balance.text = balance.toString()
+                                }
+                                .addOnFailureListener { exception ->
+                                    Log.d("poke", "Error getting documents: ", exception)
+                                }
 
+                        }
                     }
                 } else {
                     Log.d("poke", "No such document")
@@ -134,7 +136,12 @@ class MainActivity : AppCompatActivity() {
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    balance = document.data?.get("balance").toString().toInt()
+                    if (document.data?.get("balance") != null) {
+                        balance = document.data?.get("balance").toString().toInt()
+                    }else
+                    {
+                        balance = 0
+                    }
                 } else {
                     Log.d("poke", "No such document")
                 }

@@ -71,7 +71,11 @@ class HomeFragment : Fragment() {
                         0,
                         0,
                         listOf(),
-                        document.data.get("income").toString().toInt(),
+                        if ( document.data.get("income") != null){
+                            document.data.get("income").toString().toInt()
+                        } else {
+                            0
+                        },
                         listOf(dna[0].toString().toInt(),
                             dna[1].toString().toInt()),
                         document.data.get("egg") as Boolean,
