@@ -5,19 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokeforge.MainActivity
 import com.example.pokeforge.Pokemon
 import com.example.pokeforge.PokemonAdapter
+import com.example.pokeforge.PokemonTeam
 import com.example.pokeforge.databinding.FragmentHomeBinding
-import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.tasks.await
-import java.lang.Integer.parseInt
 
 
 class HomeFragment : Fragment() {
@@ -31,7 +27,7 @@ class HomeFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
 
 
-    private lateinit var pokemons: ArrayList<Pokemon>
+    private val team = PokemonTeam
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,15 +40,11 @@ class HomeFragment : Fragment() {
 
         recyclerView = binding.recyclerView
 
-        pokemons = ArrayList<Pokemon>()
-
-        recyclerView.adapter = PokemonAdapter(this.requireContext(), pokemons, this.activity as MainActivity)
-        recyclerView.layoutManager = GridLayoutManager(this.requireContext(), 2)
-
 
         // Run on background thread loadPokemonsFromFirebase()
-        loadPokemonsFromFirebase { pokemons ->
-            recyclerView.adapter = PokemonAdapter(this.requireContext(), pokemons, this.activity as MainActivity)
+        loadPokemonsFromFirebase { list ->
+            team.setTeam(list)
+            recyclerView.adapter = PokemonAdapter(this.requireContext(), team.getTeam(), this.activity as MainActivity)
             recyclerView.layoutManager = GridLayoutManager(this.requireContext(), 2)
         }
 
@@ -85,8 +77,13 @@ class HomeFragment : Fragment() {
                         0,
                         0,
                         listOf(),
-                        5,
-                        listOf(dna[0], dna[1]) as List<Int>
+                        if ( document.data.get("income") != null){
+                            document.data.get("income").toString().toInt()
+                        } else {
+                            0
+                        },
+                        listOf(dna[0].toString().toInt(),
+                            dna[1].toString().toInt())
                     ))
                 }
                 callback(pokemons)

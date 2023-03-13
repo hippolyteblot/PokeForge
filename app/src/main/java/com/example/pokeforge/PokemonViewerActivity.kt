@@ -264,7 +264,7 @@ class PokemonViewerActivity : AppCompatActivity() {
         try {
             pokemonRes.doGetListInfos(pokemon.dna[0])
             height = if (pokemonRes.doGetListInfos(pokemon.dna[0]) != null) {
-                pokemonRes.doGetListInfos(pokemon.dna[1])?.height
+                pokemonRes.doGetListInfos(pokemon.dna[0])?.height
             } else {
                 pokemonRes.doGetListInfos(pokemon.dna[1])?.height
             }
