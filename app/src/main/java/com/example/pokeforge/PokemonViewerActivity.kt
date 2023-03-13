@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pokeforge.databinding.ActivityPokemonViewerBinding
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
@@ -314,7 +313,7 @@ class PokemonViewerActivity : AppCompatActivity() {
             }
             .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
         pokemon.isEgg = false
-        PokemonTeam.openEgg(pokemon)
+        PokemonTeam.updatePokemon(pokemon)
     }
 
 }

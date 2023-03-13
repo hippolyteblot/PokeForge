@@ -1,9 +1,12 @@
 package com.example.pokeforge
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -11,7 +14,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.pokeforge.databinding.ActivityMainBinding
-import com.example.pokeforge.ui.login.LoginActivity
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -90,8 +92,15 @@ class MainActivity : AppCompatActivity() {
                                 val userDocRef = db.collection("users").document(userUID)
                                 userDocRef.update("balance", balance)
                                     .addOnSuccessListener { 
-                                        val toast = Toast.makeText(applicationContext, "$pokepieces pokepièces récupérées!", Toast.LENGTH_SHORT)
-                                        toast.show()
+                                        val dialog = Dialog(this)
+                                        dialog.setContentView(R.layout.label_image_dialog)
+                                        val label = "$pokepieces pokepièces récupérées!"
+                                        dialog.findViewById<TextView>(R.id.label).text = label
+                                        dialog.findViewById<ImageView>(R.id.image).setImageResource(R.drawable.pokepiece)
+                                        dialog.findViewById<Button>(R.id.accept).setOnClickListener {
+                                            dialog.dismiss()
+                                        }
+                                        dialog.show()
                                     }
                                     .addOnFailureListener { e -> println("Error updating document $e") }
                                 // Update the lastClaimed time

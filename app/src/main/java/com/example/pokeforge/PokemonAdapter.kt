@@ -41,9 +41,9 @@ class PokemonAdapter (private val context: Context, private val contactList: Lis
 
             itemView.setOnClickListener {
                 // If activiy is of type MainActivity, we want to start PokemonViewerActivity
-                if (activity is MainActivity)
+                if (activity is MainActivity) {
                     activity.startPokemonViewerActivity(pokemon)
-                if (activity is RemoteSelectionActivity) {
+                } else if (activity is RemoteSelectionActivity) {
                     if (activity.getSelectedPokemon() == null) {
                         activity.setSelectedPokemon(pokemon)
                         activity.setLastItemView(itemView)

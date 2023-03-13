@@ -1,23 +1,17 @@
 package com.example.pokeforge.com.example.pokeforge
 
-import NearbyManager
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
-import com.bumptech.glide.Glide
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pokeforge.*
 import com.example.pokeforge.databinding.ActivityRemoteSelectionBinding
-import com.google.android.gms.nearby.Nearby
-import com.google.android.gms.nearby.connection.ConnectionsClient
-import com.google.android.gms.nearby.connection.Payload
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.nio.charset.Charset
 
 
 class LocalSelectionActivity : AppCompatActivity() {
@@ -83,8 +77,8 @@ class LocalSelectionActivity : AppCompatActivity() {
         binding!!.button.setOnClickListener() {
             if (selectedPokemon != null) {
                 val dialog = Dialog(this)
-                dialog.setContentView(R.layout.new_egg_dialog)
-                dialog.findViewById<Button>(R.id.add_egg).setOnClickListener {
+                dialog.setContentView(R.layout.label_image_dialog)
+                dialog.findViewById<Button>(R.id.accept).setOnClickListener {
                     val egg = hashMapOf(
                         "name" to "Bulbasaur",
                         "dna" to listOf(dna1, dna2).shuffled(),
