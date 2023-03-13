@@ -60,7 +60,7 @@
                     android:id="@+id/income"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="pièce/h"
+                    android:text="100"
                     android:textSize="18sp"
                     app:layout_constraintStart_toEndOf="@+id/sprite"
                     app:layout_constraintTop_toBottomOf="@+id/name" />
@@ -70,9 +70,18 @@
                     android:layout_width="30dp"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp"
+                    android:src="@drawable/pokepiece"
                     app:layout_constraintStart_toEndOf="@+id/sprite"
-                    app:layout_constraintTop_toBottomOf="@+id/name"
-                    android:src="@drawable/pokepiece" />
+                    app:layout_constraintTop_toBottomOf="@+id/name" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="/m"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toEndOf="@+id/sprite"
+                    app:layout_constraintTop_toBottomOf="@+id/name" />
 
             </LinearLayout>
 

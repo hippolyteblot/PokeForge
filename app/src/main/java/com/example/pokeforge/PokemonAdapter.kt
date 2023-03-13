@@ -24,17 +24,16 @@ class PokemonAdapter (private val context: Context, private val contactList: Lis
         private val name = itemView.findViewById<TextView>(R.id.name)
         private val income = itemView.findViewById<TextView>(R.id.income)
 
-        @RequiresApi(Build.VERSION_CODES.M)
         fun bind(pokemon: Pokemon) {
 
             APISpritesClient.setSpriteImage(pokemon.dna, sprite, context)
             GlobalScope.launch {
-                val pokemonName = getNameOf(pokemon)
+                val pokemonName = pokemon.name
                 activity.runOnUiThread {
                     name.text = pokemonName
                 }
             }
-            val incomeText = pokemon.income.toString() + " P/H"
+            val incomeText = pokemon.income.toString()
             income.text = incomeText
 
             itemView.setOnClickListener {
@@ -76,7 +75,7 @@ class PokemonAdapter (private val context: Context, private val contactList: Lis
         holder.bind(contactList[position])
     }
 
-    private suspend fun getNameOf(pokemon: Pokemon): String {
+    private suspend fun getNameByAPI(pokemon: Pokemon): String {
         val pokemonRes = APIClient.apiService
         var name : String? = null
         try {

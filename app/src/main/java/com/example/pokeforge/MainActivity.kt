@@ -3,6 +3,7 @@ package com.example.pokeforge
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -88,10 +89,12 @@ class MainActivity : AppCompatActivity() {
                                 val timeInHours = timeSpent / 60000
                                 val pokepieces = timeInHours * total
                                 balance += pokepieces.toInt()
-                                println("balance: $balance")
                                 val userDocRef = db.collection("users").document(userUID)
                                 userDocRef.update("balance", balance)
-                                    .addOnSuccessListener { println("DocumentSnapshot successfully updated!") }
+                                    .addOnSuccessListener { 
+                                        val toast = Toast.makeText(applicationContext, "$pokepieces pokepièces récupérées!", Toast.LENGTH_SHORT)
+                                        toast.show()
+                                    }
                                     .addOnFailureListener { e -> println("Error updating document $e") }
                                 // Update the lastClaimed time
                                 userDocRef.update("lastClaimed", System.currentTimeMillis())
