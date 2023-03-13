@@ -1,17 +1,22 @@
 package com.example.pokeforge
 
+import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.pokeforge.databinding.ActivityMainBinding
-import com.example.pokeforge.ui.login.LoginActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -57,6 +62,7 @@ class MainActivity : AppCompatActivity() {
     fun startPokemonViewerActivity(pokemon: Pokemon) {
         val intent = Intent(this, PokemonViewerActivity::class.java)
         intent.putExtra("pokemon", pokemon)
+        intent.putExtra("userUID", userUID)
         Log.d("poke", pokemon.toString())
         startActivity(intent)
     }

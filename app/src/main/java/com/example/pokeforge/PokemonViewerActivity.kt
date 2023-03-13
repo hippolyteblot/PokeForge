@@ -1,12 +1,27 @@
 package com.example.pokeforge
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Address
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.motion.widget.Debug.getLocation
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.pokeforge.databinding.ActivityPokemonViewerBinding
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -18,6 +33,9 @@ import kotlin.collections.ArrayList
 class PokemonViewerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPokemonViewerBinding
     private lateinit var pokemon: Pokemon
+    private lateinit var userId : String
+    private lateinit var mFusedLocationClient: FusedLocationProviderClient
+    private val permissionId = 2
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +43,11 @@ class PokemonViewerActivity : AppCompatActivity() {
 
         binding = ActivityPokemonViewerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+            getLocation()
         pokemon = intent.getSerializableExtra("pokemon") as Pokemon
+        userId = intent.getStringExtra("userUID").toString()
 
         if(pokemon.isEgg) {
             openEgg()
@@ -36,7 +58,7 @@ class PokemonViewerActivity : AppCompatActivity() {
         }
 
 
-        Log.d("poke", pokemon.toString())
+
         GlobalScope.launch {
             pokemon.stats = getStatsOf(pokemon.dna[0], pokemon.dna[1])
             pokemon.types = getTypeOf(pokemon)
@@ -58,7 +80,6 @@ class PokemonViewerActivity : AppCompatActivity() {
                     res = res.substring(0, res.length - 1) + "." + res.substring(res.length - 1)
                 }
                 binding.pokemonWeight.text = "$res kg"
-                Log.d("poke", pokemon.toString())
 
             }
 
@@ -124,7 +145,88 @@ class PokemonViewerActivity : AppCompatActivity() {
     }
 
 
+    @SuppressLint("MissingPermission", "SetTextI18n")
+    private fun getLocation() {
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+                mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
+                    val location: Location? = task.result
+                    if (location != null) {
+                        val geocoder = Geocoder(this, Locale.getDefault())
+                        val list: List<Address> =
+                            geocoder.getFromLocation(location.latitude, location.longitude, 1) as List<Address>
+                        binding.apply {
+                            Log.d("TAG", "getLocation: ${list[0].longitude}")
+                            Log.d("TAG", "getLocation: ${list[0].latitude}")
+                            val db = Firebase.firestore
+                            val geometry = hashMapOf(
+                                "longitude" to list[0].longitude,
+                                "latitude" to list[0].latitude
+                            )
+                            db.collection("users").document(userId).update("geometry", geometry)
+                                .addOnSuccessListener {
+                                    Log.d("TAG", "DocumentSnapshot successfully updated!")
+                                }
+                                .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e  )}
+                        }
+                    }
+                }
+            } else {
+                Toast.makeText(this, "Please turn on location", Toast.LENGTH_LONG).show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
+        } else {
+            requestPermissions()
+        }
+    }
 
+    private fun isLocationEnabled(): Boolean {
+        val locationManager: LocationManager =
+            getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
+    }
+
+    private fun checkPermissions(): Boolean {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            return true
+        }
+        return false
+    }
+
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
+            permissionId
+        )
+    }
+
+    @SuppressLint("MissingSuperCall")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == permissionId) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                getLocation()
+            }
+        }
+    }
     private suspend fun getStatById(id: Int): ArrayList<Int> {
         val list = ArrayList<Int>()
         val pokemonRes = APIClient.apiService
@@ -160,7 +262,6 @@ class PokemonViewerActivity : AppCompatActivity() {
         }
         for (i in intPokemonStat1.indices) {
             finalPokemonStat.add((intPokemonStat1[i] + intPokemonStat2[i]) / 2)
-            Log.d("TAG", "getStatsOf: ${finalPokemonStat[i]} ${intPokemonStat1[i]} ${intPokemonStat2[i]}")
         }
 
 
