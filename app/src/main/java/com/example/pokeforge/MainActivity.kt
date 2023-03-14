@@ -2,6 +2,7 @@ package com.example.pokeforge
 
 import android.Manifest
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
@@ -12,7 +13,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
     fun startPokemonViewerActivity(pokemon: Pokemon) {
         val intent = Intent(this, PokemonViewerActivity::class.java)
         intent.putExtra("pokemon", pokemon)
+        intent.putExtra("userUID", userUID)
         Log.d("poke", pokemon.toString())
         startActivity(intent)
     }

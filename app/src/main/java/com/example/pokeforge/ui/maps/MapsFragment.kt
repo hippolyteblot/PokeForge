@@ -24,7 +24,6 @@ import com.google.firebase.ktx.Firebase
 class MapsFragment : Fragment() {
 
     private val callback = OnMapReadyCallback { googleMap ->
-        var arrayPoint = ArrayList<LatLng>()
         val db = Firebase.firestore
         val collectionRef = db.collection("users")
         Log.d("A", "A")
@@ -32,13 +31,17 @@ class MapsFragment : Fragment() {
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
-                    Log.d("A", "${document.id} => ${document.data}")
-                    if (document.id == "TtZDNUvduLgIJR3C7igOXodhHJ02") {
-                        Log.d("A", "${document.id} => ${document.data}}")
-                        val geometry = document.data["geometry"] as GeoPoint
-                        googleMap.addMarker(MarkerOptions().position(LatLng(geometry.latitude, geometry.longitude)).title("Marker"))
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(geometry.latitude, geometry.longitude)))
-
+                    if (document.data["latitude"] != null && document.data["longitude"] != null) {
+                        Log.d("Arderdrdrxxdxdxdxdx", "${document.id} => ${document.data}")
+                        val geoPointLat = document.data["latitude"] as Double
+                        val geoPointLong = document.data["longitude"] as Double
+                        Log.d("A", geoPointLat.toString())
+                        val lat = geoPointLat
+                        val long = geoPointLong
+                        Log.d("A", lat.toString() + " " + long)
+                        val point = LatLng(lat, long)
+                        googleMap.addMarker(MarkerOptions().position(point).title(document.id))
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(point))
                     }
                 }
             }
@@ -61,4 +64,8 @@ class MapsFragment : Fragment() {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
     }
+}
+
+private operator fun Any.get(s: String): Any {
+    return s
 }
