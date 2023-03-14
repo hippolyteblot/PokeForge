@@ -1,7 +1,10 @@
 package com.example.pokeforge
 
+import android.Manifest
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -9,11 +12,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.pokeforge.databinding.ActivityMainBinding
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -83,9 +88,8 @@ class MainActivity : AppCompatActivity() {
                             docRef.get()
                                 .addOnSuccessListener { documents ->
                                     for (document in documents) {
-                                        Log.d("poke", "${document.id} => ${document.data}")
-                                        total += document.data["income"].toString().toInt()
-                                        println("total: $total")
+                                        if(!(document.data["egg"] as Boolean))
+                                            total += document.data["income"].toString().toInt()
                                     }
                                     // Get the time spent from the last time the user claimed his pokepiece
                                     val timeSpent =
@@ -139,7 +143,7 @@ class MainActivity : AppCompatActivity() {
         var balance = 0
         docRef.get()
             .addOnSuccessListener { document ->
-                if (document != null) {
+                if (document.data?.get("balance") != null) {
                     balance = document.data?.get("balance").toString().toInt()
                 } else {
                     Log.d("poke", "No such document")

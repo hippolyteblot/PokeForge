@@ -1,14 +1,17 @@
 package com.example.pokeforge
 
-import android.annotation.SuppressLint
+import android.Manifest
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokeforge.databinding.ActivityStartingGameBinding
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -64,16 +67,59 @@ class StartingGameActivity : AppCompatActivity() {
     private fun addUserToDatabase() {
         val db = Firebase.firestore
         val userUID = intent.getStringExtra("userUID")
+
+        // Get latitude of the user
+        val geometry = ArrayList<LatLng>()
+        val location = getSystemService(LOCATION_SERVICE) as LocationManager
+        val locationGPS = if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // Request permission
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                1
+            )
+            return
+        } else {
+            location.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+        }
+        location.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+        val latitude = locationGPS?.latitude
+        val longitude = locationGPS?.longitude
+        geometry.add(LatLng(latitude!!, longitude!!))
+
+        var spriteName = "character1"
+        when (sprite) {
+            R.drawable.character1 -> spriteName = "character1"
+            R.drawable.character2 -> spriteName = "character2"
+            R.drawable.character3 -> spriteName = "character3"
+            R.drawable.character4 -> spriteName = "character4"
+            R.drawable.character5 -> spriteName = "character5"
+            R.drawable.character6 -> spriteName = "character6"
+            R.drawable.character7 -> spriteName = "character7"
+            R.drawable.character8 -> spriteName = "character8"
+        }
+
         val user = hashMapOf(
             "name" to binding.playerName.text.toString(),
-            "sprite" to sprite,
+            "sprite" to spriteName,
             "balance" to 0,
+            "geometry" to geometry,
         )
         if (userUID != null) {
             db.collection("users").document(userUID).set(user)
         }
         // add starter pokemon to the database
         val adapter = binding.starterList.adapter as StarterSelectionAdapter
+
+
+
         val starter = hashMapOf(
             "name" to "Bulbasaur",
             "dna" to adapter.selectedDna,

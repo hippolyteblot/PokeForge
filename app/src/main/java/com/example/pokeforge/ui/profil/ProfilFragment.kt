@@ -49,7 +49,9 @@ class ProfilFragment : Fragment(){
                 //set the image
                 val image = document.data?.get("sprite").toString()
 
-                binding.imageViewProfilPic.setImageResource(image.toInt())
+                val spriteRsc = resources.getIdentifier(image, "drawable", activity.packageName)
+
+                binding.imageViewProfilPic.setImageResource(spriteRsc)
 
         } else {
             val i=1
