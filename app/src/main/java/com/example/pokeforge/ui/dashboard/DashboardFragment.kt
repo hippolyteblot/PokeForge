@@ -20,6 +20,7 @@ import com.example.pokeforge.MainActivity
 import com.example.pokeforge.R
 import com.example.pokeforge.SpriteSelectionAdapter
 import com.example.pokeforge.databinding.FragmentDashboardBinding
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
@@ -114,6 +115,7 @@ class DashboardFragment : Fragment() {
 
 
         binding.buyLegendaryButton.setOnClickListener {
+            removeMoney(10000)
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("Confirmer l'achat")
             builder.setMessage("Voulez-vous acheter cet oeuf ?")
@@ -164,6 +166,7 @@ class DashboardFragment : Fragment() {
         }
 
         binding.buyAncientButton.setOnClickListener{
+            removeMoney(5000)
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("Confirmer l'achat")
             builder.setMessage("Voulez-vous acheter cet oeuf ?")
@@ -208,6 +211,7 @@ class DashboardFragment : Fragment() {
         }
 
         binding.buyOffre1Button.setOnClickListener{
+            removeMoney(1500)
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("Confirmer l'achat")
             builder.setMessage("Voulez-vous acheter cet oeuf ?")
@@ -252,6 +256,7 @@ class DashboardFragment : Fragment() {
         }
 
         binding.buyOffre2Button.setOnClickListener{
+            removeMoney(1500)
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("Confirmer l'achat")
             builder.setMessage("Voulez-vous acheter cet oeuf ?")
@@ -296,6 +301,7 @@ class DashboardFragment : Fragment() {
         }
 
         binding.buyKantoButton.setOnClickListener{
+            removeMoney(1000)
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("Confirmer l'achat")
             builder.setMessage("Voulez-vous acheter cet oeuf ?")
@@ -340,6 +346,7 @@ class DashboardFragment : Fragment() {
         }
 
         binding.buyJohtoButton.setOnClickListener{
+            removeMoney(1000)
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("Confirmer l'achat")
             builder.setMessage("Voulez-vous acheter cet oeuf ?")
@@ -384,7 +391,8 @@ class DashboardFragment : Fragment() {
         }
 
         binding.buyMysteryButton.setOnClickListener{
-val builder = AlertDialog.Builder(activity)
+            removeMoney(1300)
+            val builder = AlertDialog.Builder(activity)
             builder.setTitle("Confirmer l'achat")
             builder.setMessage("Voulez-vous acheter cet oeuf ?")
             builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
@@ -429,6 +437,7 @@ val builder = AlertDialog.Builder(activity)
         }
 
         binding.buyFireButton.setOnClickListener{
+            removeMoney(1000)
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("Confirmer l'achat")
             builder.setMessage("Voulez-vous acheter cet oeuf ?")
@@ -473,6 +482,7 @@ val builder = AlertDialog.Builder(activity)
         }
 
         binding.buyWaterButton.setOnClickListener{
+            removeMoney(1000)
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("Confirmer l'achat")
             builder.setMessage("Voulez-vous acheter cet oeuf ?")
@@ -517,6 +527,7 @@ val builder = AlertDialog.Builder(activity)
         }
 
         binding.buyGrassButton.setOnClickListener{
+            removeMoney(1000)
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("Confirmer l'achat")
             builder.setMessage("Voulez-vous acheter cet oeuf ?")
@@ -570,5 +581,12 @@ val builder = AlertDialog.Builder(activity)
         _binding = null
     }
 
+    fun removeMoney(value: Long){
+        val db = Firebase.firestore
+        val collectionRef = db.collection("users").document((activity as MainActivity).userUID)
+        collectionRef.update("balance", FieldValue.increment(-value))
+            .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
+            .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
+    }
 
 }
