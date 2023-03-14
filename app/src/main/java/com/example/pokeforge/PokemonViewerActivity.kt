@@ -159,11 +159,12 @@ class PokemonViewerActivity : AppCompatActivity() {
                             Log.d("TAG", "getLocation: ${list[0].longitude}")
                             Log.d("TAG", "getLocation: ${list[0].latitude}")
                             val db = Firebase.firestore
-                            val geometry = hashMapOf(
-                                "longitude" to list[0].longitude,
-                                "latitude" to list[0].latitude
-                            )
-                            db.collection("users").document(userId).update("geometry", geometry)
+                            db.collection("users").document(userId).update("longitude", list[0].longitude)
+                                .addOnSuccessListener {
+                                    Log.d("TAG", "DocumentSnapshot successfully updated!")
+                                }
+                                .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e  )}
+                            db.collection("users").document(userId).update("latitude", list[0].latitude)
                                 .addOnSuccessListener {
                                     Log.d("TAG", "DocumentSnapshot successfully updated!")
                                 }
