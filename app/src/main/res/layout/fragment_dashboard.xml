@@ -21,33 +21,11 @@
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/background" />
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="35dp"
-            android:layout_height="30dp"
-            app:layout_constraintVertical_bias="0.1458"
-            app:layout_constraintHorizontal_bias="0.538"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/pokepiece" />
-
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintVertical_bias="0.1498"
-            app:layout_constraintHorizontal_bias="0.974"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageView2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/unk" />
 
         <Button
             android:id="@+id/buyLegendaryButton"
@@ -62,32 +40,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-
-
-        <ImageView
-            android:id="@+id/piecesAncient"
-            android:layout_width="35dp"
-            android:layout_height="30dp"
-            app:layout_constraintVertical_bias="0.3240"
-            app:layout_constraintHorizontal_bias="0.538"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/pokepiece" />
-
-        <ImageView
-            android:id="@+id/prixAncient"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintVertical_bias="0.3268"
-            app:layout_constraintHorizontal_bias="0.974"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/piecesAncient"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/unk" />
-
         <Button
             android:id="@+id/buyAncientButton"
             android:layout_width="90dp"
@@ -101,31 +53,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.3198" />
 
-
-
         <ImageView
-            android:id="@+id/piecesOffre1"
-            android:layout_width="35dp"
-            android:layout_height="30dp"
-            app:layout_constraintVertical_bias="0.469"
-            app:layout_constraintHorizontal_bias="0.198"
-            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/Offre1"
+            android:layout_width="155dp"
+            android:layout_height="232dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.00"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/pokepiece" />
-
-        <ImageView
-            android:id="@+id/prixOffre1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintVertical_bias="0.470"
-            app:layout_constraintHorizontal_bias="0.240"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/piecesAncient"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/unk" />
+            app:layout_constraintVertical_bias="0.428"
+            app:srcCompat="@drawable/egg_dark" />
 
         <Button
             android:id="@+id/buyOffre1Button"
@@ -139,6 +77,99 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.43" />
+
+
+        <Button
+            android:id="@+id/buyOffre2Button"
+            android:layout_width="120dp"
+            android:layout_height="160dp"
+            android:alpha="0.01"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.934"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.43" />
+
+        <Button
+            android:id="@+id/buyKantoButton"
+            android:layout_width="112dp"
+            android:layout_height="184dp"
+            android:alpha="0.01"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.214"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.657" />
+
+        <Button
+            android:id="@+id/buyJohtoButton"
+            android:layout_width="112dp"
+            android:layout_height="184dp"
+            android:alpha="0.01"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.794"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.657" />
+
+        <Button
+            android:id="@+id/buyMysteryButton"
+            android:layout_width="112dp"
+            android:layout_height="184dp"
+            android:alpha="0.01"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.214"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.804" />
+
+        <Button
+            android:id="@+id/buyFireButton"
+            android:layout_width="112dp"
+            android:layout_height="184dp"
+            android:alpha="0.01"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.794"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.804" />
+
+        <Button
+            android:id="@+id/buyWaterButton"
+            android:layout_width="112dp"
+            android:layout_height="184dp"
+            android:alpha="0.01"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.214"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.954" />
+
+        <Button
+            android:id="@+id/buyGrassButton"
+            android:layout_width="112dp"
+            android:layout_height="184dp"
+            android:alpha="0.01"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.794"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.954" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
