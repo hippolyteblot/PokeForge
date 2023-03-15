@@ -116,13 +116,13 @@ class DashboardFragment : Fragment() {
 
 
         binding.buyLegendaryButton.setOnClickListener {
-            removeMoney(10000)
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("Confirmer l'achat")
             builder.setMessage("Voulez-vous acheter cet oeuf ?")
             builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
                 Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
 
+                removeMoney(10000)
                 var pokeName = ""
                 var pokeId = 0
                 val db = Firebase.firestore
@@ -167,13 +167,14 @@ class DashboardFragment : Fragment() {
         }
 
         binding.buyAncientButton.setOnClickListener{
-            removeMoney(5000)
+
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("Confirmer l'achat")
             builder.setMessage("Voulez-vous acheter cet oeuf ?")
             builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
                 Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
 
+                removeMoney(5000)
                 var pokeName = ""
                 var pokeId = 0
                 val db = Firebase.firestore
@@ -212,193 +213,30 @@ class DashboardFragment : Fragment() {
         }
 
         binding.buyOffre1Button.setOnClickListener{
-            removeMoney(1500)
-            val builder = AlertDialog.Builder(activity)
-            builder.setTitle("Confirmer l'achat")
-            builder.setMessage("Voulez-vous acheter cet oeuf ?")
-            builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
-                Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
-
-                var pokeName = ""
-                var pokeId = 0
-                val db = Firebase.firestore
-                val collectionRef = db.collection("pokemon_available")
-
-                collectionRef.whereArrayContains("types", offer1)
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        val liste = documents.documents
-                        val taille = liste.size
-                        val random = (0 until taille).random()
-                        val pokemon = liste[random]
-                        println("DocumentSnapshot data: ${pokemon.data}")
-                        pokeName = pokemon.data?.get("name").toString()
-                        pokeId = pokemon.data?.get("id").toString().toInt()
-                        println(pokeName)
-
-                        val newPoke = hashMapOf(
-                            "name" to pokeName,
-                            "dna" to listOf(pokeId,0),
-                            "egg" to true,
-                            "income" to 0,
-                            "owner" to (activity as MainActivity).userUID,
-                        )
-                        db.collection("pokemons").add(newPoke)
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.w("TAG", "Error getting documents: ", exception)
-                    }
-
-            })
-            builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
-                Toast.makeText(activity, "Oeuf non ajouté !", Toast.LENGTH_SHORT).show()
-            })
-            builder.show()
+            buy(offer1, 1000)
         }
 
         binding.buyOffre2Button.setOnClickListener{
-            removeMoney(1500)
-            val builder = AlertDialog.Builder(activity)
-            builder.setTitle("Confirmer l'achat")
-            builder.setMessage("Voulez-vous acheter cet oeuf ?")
-            builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
-                Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
-
-                var pokeName = ""
-                var pokeId = 0
-                val db = Firebase.firestore
-                val collectionRef = db.collection("pokemon_available")
-
-                collectionRef.whereArrayContains("types", offer2)
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        val liste = documents.documents
-                        val taille = liste.size
-                        val random = (0 until taille).random()
-                        val pokemon = liste[random]
-                        println("DocumentSnapshot data: ${pokemon.data}")
-                        pokeName = pokemon.data?.get("name").toString()
-                        pokeId = pokemon.data?.get("id").toString().toInt()
-                        println(pokeName)
-
-                        val newPoke = hashMapOf(
-                            "name" to pokeName,
-                            "dna" to listOf(pokeId,0),
-                            "egg" to true,
-                            "income" to 0,
-                            "owner" to (activity as MainActivity).userUID,
-                        )
-                        db.collection("pokemons").add(newPoke)
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.w("TAG", "Error getting documents: ", exception)
-                    }
-
-            })
-            builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
-                Toast.makeText(activity, "Oeuf non ajouté !", Toast.LENGTH_SHORT).show()
-            })
-            builder.show()
+            buy(offer2, 2000)
         }
 
         binding.buyKantoButton.setOnClickListener{
-            removeMoney(1000)
-            val builder = AlertDialog.Builder(activity)
-            builder.setTitle("Confirmer l'achat")
-            builder.setMessage("Voulez-vous acheter cet oeuf ?")
-            builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
-                Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
-
-                var pokeName = ""
-                var pokeId = 0
-                val db = Firebase.firestore
-                val collectionRef = db.collection("pokemon_available")
-
-                collectionRef.whereEqualTo("generation", 1)
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        val liste = documents.documents
-                        val taille = liste.size
-                        val random = (0 until taille).random()
-                        val pokemon = liste[random]
-                        println("DocumentSnapshot data: ${pokemon.data}")
-                        pokeName = pokemon.data?.get("name").toString()
-                        pokeId = pokemon.data?.get("id").toString().toInt()
-                        println(pokeName)
-
-                        val newPoke = hashMapOf(
-                            "name" to pokeName,
-                            "dna" to listOf(pokeId,0),
-                            "egg" to true,
-                            "income" to 0,
-                            "owner" to (activity as MainActivity).userUID,
-                        )
-                        db.collection("pokemons").add(newPoke)
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.w("TAG", "Error getting documents: ", exception)
-                    }
-
-            })
-            builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
-                Toast.makeText(activity, "Oeuf non ajouté !", Toast.LENGTH_SHORT).show()
-            })
-            builder.show()
+            buyGene(1, 1000)
         }
 
         binding.buyJohtoButton.setOnClickListener{
-            removeMoney(1000)
-            val builder = AlertDialog.Builder(activity)
-            builder.setTitle("Confirmer l'achat")
-            builder.setMessage("Voulez-vous acheter cet oeuf ?")
-            builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
-                Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
-
-                var pokeName = ""
-                var pokeId = 0
-                val db = Firebase.firestore
-                val collectionRef = db.collection("pokemon_available")
-
-                collectionRef.whereEqualTo("generation", 2)
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        val liste = documents.documents
-                        val taille = liste.size
-                        val random = (0 until taille).random()
-                        val pokemon = liste[random]
-                        println("DocumentSnapshot data: ${pokemon.data}")
-                        pokeName = pokemon.data?.get("name").toString()
-                        pokeId = pokemon.data?.get("id").toString().toInt()
-                        println(pokeName)
-
-                        val newPoke = hashMapOf(
-                            "name" to pokeName,
-                            "dna" to listOf(pokeId,0),
-                            "egg" to true,
-                            "income" to 0,
-                            "owner" to (activity as MainActivity).userUID,
-                        )
-                        db.collection("pokemons").add(newPoke)
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.w("TAG", "Error getting documents: ", exception)
-                    }
-
-            })
-            builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
-                Toast.makeText(activity, "Oeuf non ajouté !", Toast.LENGTH_SHORT).show()
-            })
-            builder.show()
+            buyGene(2, 1000)
         }
 
         binding.buyMysteryButton.setOnClickListener{
-            removeMoney(1300)
+
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("Confirmer l'achat")
             builder.setMessage("Voulez-vous acheter cet oeuf ?")
             builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
                 Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
 
+                removeMoney(1300)
                 var pokeName = ""
                 var pokeId = 0
                 val db = Firebase.firestore
@@ -438,138 +276,15 @@ class DashboardFragment : Fragment() {
         }
 
         binding.buyFireButton.setOnClickListener{
-            removeMoney(1000)
-            val builder = AlertDialog.Builder(activity)
-            builder.setTitle("Confirmer l'achat")
-            builder.setMessage("Voulez-vous acheter cet oeuf ?")
-            builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
-                Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
-
-                var pokeName = ""
-                var pokeId = 0
-                val db = Firebase.firestore
-                val collectionRef = db.collection("pokemon_available")
-
-                collectionRef.whereArrayContains("types", "fire")
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        val liste = documents.documents
-                        val taille = liste.size
-                        val random = (0 until taille).random()
-                        val pokemon = liste[random]
-                        println("DocumentSnapshot data: ${pokemon.data}")
-                        pokeName = pokemon.data?.get("name").toString()
-                        pokeId = pokemon.data?.get("id").toString().toInt()
-                        println(pokeName)
-
-                        val newPoke = hashMapOf(
-                            "name" to pokeName,
-                            "dna" to listOf(pokeId,0),
-                            "egg" to true,
-                            "income" to 0,
-                            "owner" to (activity as MainActivity).userUID,
-                        )
-                        db.collection("pokemons").add(newPoke)
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.w("TAG", "Error getting documents: ", exception)
-                    }
-
-            })
-            builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
-                Toast.makeText(activity, "Oeuf non ajouté !", Toast.LENGTH_SHORT).show()
-            })
-            builder.show()
+            buy("fire", 1000)
         }
 
         binding.buyWaterButton.setOnClickListener{
-            removeMoney(1000)
-            val builder = AlertDialog.Builder(activity)
-            builder.setTitle("Confirmer l'achat")
-            builder.setMessage("Voulez-vous acheter cet oeuf ?")
-            builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
-                Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
-
-                var pokeName = ""
-                var pokeId = 0
-                val db = Firebase.firestore
-                val collectionRef = db.collection("pokemon_available")
-
-                collectionRef.whereArrayContains("types", "water")
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        val liste = documents.documents
-                        val taille = liste.size
-                        val random = (0 until taille).random()
-                        val pokemon = liste[random]
-                        println("DocumentSnapshot data: ${pokemon.data}")
-                        pokeName = pokemon.data?.get("name").toString()
-                        pokeId = pokemon.data?.get("id").toString().toInt()
-                        println(pokeName)
-
-                        val newPoke = hashMapOf(
-                            "name" to pokeName,
-                            "dna" to listOf(pokeId,0),
-                            "egg" to true,
-                            "income" to 0,
-                            "owner" to (activity as MainActivity).userUID,
-                        )
-                        db.collection("pokemons").add(newPoke)
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.w("TAG", "Error getting documents: ", exception)
-                    }
-
-            })
-            builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
-                Toast.makeText(activity, "Oeuf non ajouté !", Toast.LENGTH_SHORT).show()
-            })
-            builder.show()
+            buy("water", 1000)
         }
 
         binding.buyGrassButton.setOnClickListener{
-            removeMoney(1000)
-            val builder = AlertDialog.Builder(activity)
-            builder.setTitle("Confirmer l'achat")
-            builder.setMessage("Voulez-vous acheter cet oeuf ?")
-            builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
-                Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
-
-                var pokeName = ""
-                var pokeId = 0
-                val db = Firebase.firestore
-                val collectionRef = db.collection("pokemon_available")
-
-                collectionRef.whereArrayContains("types", "grass")
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        val liste = documents.documents
-                        val taille = liste.size
-                        val random = (0 until taille).random()
-                        val pokemon = liste[random]
-                        println("DocumentSnapshot data: ${pokemon.data}")
-                        pokeName = pokemon.data?.get("name").toString()
-                        pokeId = pokemon.data?.get("id").toString().toInt()
-                        println(pokeName)
-
-                        val newPoke = hashMapOf(
-                            "name" to pokeName,
-                            "dna" to listOf(pokeId,0),
-                            "egg" to true,
-                            "income" to 0,
-                            "owner" to (activity as MainActivity).userUID,
-                        )
-                        db.collection("pokemons").add(newPoke)
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.w("TAG", "Error getting documents: ", exception)
-                    }
-
-            })
-            builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
-                Toast.makeText(activity, "Oeuf non ajouté !", Toast.LENGTH_SHORT).show()
-            })
-            builder.show()
+            buy("grass", 1000)
         }
 
 
@@ -582,7 +297,99 @@ class DashboardFragment : Fragment() {
         _binding = null
     }
 
-    fun removeMoney(value: Long){
+    fun buy (offer: String, price: Long){
+        removeMoney(price)
+        val builder = AlertDialog.Builder(activity)
+        builder.setTitle("Confirmer l'achat")
+        builder.setMessage("Voulez-vous acheter cet oeuf ?")
+        builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
+            Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
+
+            var pokeName = ""
+            var pokeId = 0
+            val db = Firebase.firestore
+            val collectionRef = db.collection("pokemon_available")
+
+            collectionRef.whereArrayContains("types", offer)
+                .whereEqualTo("isLegendary", false)
+                .whereEqualTo("isMythical", false)
+                .get()
+                .addOnSuccessListener { documents ->
+                    val liste = documents.documents
+                    val taille = liste.size
+                    val random = (0 until taille).random()
+                    val pokemon = liste[random]
+                    println("DocumentSnapshot data: ${pokemon.data}")
+                    pokeName = pokemon.data?.get("name").toString()
+                    pokeId = pokemon.data?.get("id").toString().toInt()
+                    println(pokeName)
+
+                    val newPoke = hashMapOf(
+                        "name" to pokeName,
+                        "dna" to listOf(pokeId,0),
+                        "egg" to true,
+                        "income" to 0,
+                        "owner" to (activity as MainActivity).userUID,
+                    )
+                    db.collection("pokemons").add(newPoke)
+                }
+                .addOnFailureListener { exception ->
+                    Log.w("TAG", "Error getting documents: ", exception)
+                }
+
+        })
+        builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
+            Toast.makeText(activity, "Oeuf non ajouté !", Toast.LENGTH_SHORT).show()
+        })
+        builder.show()
+    }
+
+    fun buyGene (generation: Int, price: Long){
+        removeMoney(price)
+        val builder = AlertDialog.Builder(activity)
+        builder.setTitle("Confirmer l'achat")
+        builder.setMessage("Voulez-vous acheter cet oeuf ?")
+        builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
+            Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
+
+            var pokeName = ""
+            var pokeId = 0
+            val db = Firebase.firestore
+            val collectionRef = db.collection("pokemon_available")
+
+            collectionRef.whereEqualTo("generation", generation)
+                .get()
+                .addOnSuccessListener { documents ->
+                    val liste = documents.documents
+                    val taille = liste.size
+                    val random = (0 until taille).random()
+                    val pokemon = liste[random]
+                    println("DocumentSnapshot data: ${pokemon.data}")
+                    pokeName = pokemon.data?.get("name").toString()
+                    pokeId = pokemon.data?.get("id").toString().toInt()
+                    println(pokeName)
+
+                    val newPoke = hashMapOf(
+                        "name" to pokeName,
+                        "dna" to listOf(pokeId,0),
+                        "egg" to true,
+                        "income" to 0,
+                        "owner" to (activity as MainActivity).userUID,
+                    )
+                    db.collection("pokemons").add(newPoke)
+                }
+                .addOnFailureListener { exception ->
+                    Log.w("TAG", "Error getting documents: ", exception)
+                }
+
+        })
+        builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
+            Toast.makeText(activity, "Oeuf non ajouté !", Toast.LENGTH_SHORT).show()
+        })
+        builder.show()
+    }
+
+    fun removeMoney(value: Long) {
         val db = Firebase.firestore
         val collectionRef = db.collection("users").document((activity as MainActivity).userUID)
         collectionRef.update("balance", FieldValue.increment(-value))
@@ -603,6 +410,6 @@ class DashboardFragment : Fragment() {
             .addOnFailureListener { exception ->
                 Log.d("TAG", "get failed with ", exception)
 
+            }
     }
-
 }
