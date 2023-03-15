@@ -585,8 +585,24 @@ class DashboardFragment : Fragment() {
         val db = Firebase.firestore
         val collectionRef = db.collection("users").document((activity as MainActivity).userUID)
         collectionRef.update("balance", FieldValue.increment(-value))
-            .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
+            .addOnSuccessListener {
+                Log.d("TAG", "DocumentSnapshot successfully updated!")
+            }
             .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
+        collectionRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d("TAG", "DocumentSnapshot data: ${document.data}")
+                    val balance = document.data?.get("balance").toString().toLong()
+                    (activity as MainActivity).balance = balance
+                    (activity as MainActivity).binding.balance.text = balance.toString()
+                } else {
+                    Log.d("TAG", "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("TAG", "get failed with ", exception)
+
     }
 
 }
