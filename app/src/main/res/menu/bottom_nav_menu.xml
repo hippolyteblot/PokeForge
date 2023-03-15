@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_poke"
         android:title="@string/title_pokemons" />
 
     <item
@@ -13,7 +13,7 @@
 
     <item
         android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_fusion"
         android:title="@string/title_fusion" />
     <item
         android:id="@+id/navigation_maps"
@@ -22,6 +22,6 @@
     <item
         android:id="@+id/navigation_profil"
         android:icon="@drawable/baseline_face_24"
-        android:title="Maps" />
+        android:title="Profile" />
 
 </menu>

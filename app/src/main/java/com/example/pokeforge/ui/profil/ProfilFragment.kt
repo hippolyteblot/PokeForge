@@ -1,22 +1,23 @@
 package com.example.pokeforge.ui.profil
 
 import android.content.Intent
+import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.DrawableWrapper
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import com.example.pokeforge.MainActivity
-import com.example.pokeforge.PokemonTeam
-import com.example.pokeforge.R
 import com.example.pokeforge.databinding.FragmentProfilBinding
 import com.example.pokeforge.ui.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+
 
 class ProfilFragment : Fragment(){
     private var _binding: FragmentProfilBinding? = null
@@ -49,7 +50,9 @@ class ProfilFragment : Fragment(){
                 //set the image
                 val image = document.data?.get("sprite").toString()
 
-                binding.imageViewProfilPic.setImageResource(image.toInt())
+                val spriteRsc = resources.getIdentifier(image, "drawable", activity.packageName)
+
+                binding.imageViewProfilPic.setImageResource(spriteRsc)
 
         } else {
             val i=1
@@ -81,9 +84,6 @@ class ProfilFragment : Fragment(){
 
         }
 
-
-
-
         return root
     }
 
@@ -92,5 +92,19 @@ class ProfilFragment : Fragment(){
         _binding = null
     }
 
+}
 
+class AliasingDrawableWrapper(wrapped: Drawable?) :
+    DrawableWrapper(wrapped) {
+    override fun draw(canvas: Canvas) {
+        val oldDrawFilter: DrawFilter? = canvas.getDrawFilter()
+        canvas.setDrawFilter(Companion.DRAW_FILTER)
+        super.draw(canvas)
+        canvas.setDrawFilter(oldDrawFilter)
+    }
+
+    companion object {
+        private val DRAW_FILTER: DrawFilter =
+            PaintFlagsDrawFilter(Paint.FILTER_BITMAP_FLAG, 0)
+    }
 }

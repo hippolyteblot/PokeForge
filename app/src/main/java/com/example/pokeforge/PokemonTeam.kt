@@ -42,8 +42,12 @@ object PokemonTeam {
         this.team = team
     }
 
-    fun openEgg(pokemon: Pokemon) {
-        team.remove(pokemon)
-        team.add(pokemon)
+    fun updatePokemon(pokemon: Pokemon) {
+        val id = pokemon.id
+        for (i in 0 until team.size) {
+            if (team[i].id == id) {
+                team[i] = pokemon
+            }
+        }
     }
 }

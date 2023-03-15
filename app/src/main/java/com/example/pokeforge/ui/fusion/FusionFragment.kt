@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.pokeforge.MainActivity
 import com.example.pokeforge.RemoteFusionActivity
 import com.example.pokeforge.com.example.pokeforge.LocalSelectionActivity
 import com.example.pokeforge.com.example.pokeforge.RemoteSelectionActivity
@@ -35,13 +36,16 @@ class FusionFragment : Fragment() {
         val btnRemoteFusion = binding.btnFusionRemote
 
         btnRemoteFusion.setOnClickListener {
-            // Start the localFusionActivity from this fragment
+            // Start the remoteFusionActivity from this fragment
             val intent = Intent(activity, RemoteFusionActivity::class.java)
+            intent.putExtra("pokepieces", (activity as MainActivity).binding.balance.text.toString().toInt())
+            intent.putExtra("name", (activity as MainActivity).userName)
+            intent.putExtra("sprite", (activity as MainActivity).userSprite)
             startActivity(intent)
         }
 
         btnLocalFusion.setOnClickListener {
-            // Start the remoteFusionActivity from this fragment
+            // Start the localFusionActivity from this fragment
             val intent = Intent(activity, LocalSelectionActivity::class.java)
             startActivity(intent)
         }
