@@ -595,7 +595,6 @@ class DashboardFragment : Fragment() {
                 if (document != null) {
                     Log.d("TAG", "DocumentSnapshot data: ${document.data}")
                     val balance = document.data?.get("balance").toString().toLong()
-                    (activity as MainActivity).balance = balance
                     (activity as MainActivity).binding.balance.text = balance.toString()
                 } else {
                     Log.d("TAG", "No such document")
