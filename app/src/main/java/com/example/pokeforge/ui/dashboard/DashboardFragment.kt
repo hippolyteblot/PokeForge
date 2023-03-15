@@ -20,11 +20,8 @@ import com.example.pokeforge.MainActivity
 import com.example.pokeforge.R
 import com.example.pokeforge.SpriteSelectionAdapter
 import com.example.pokeforge.databinding.FragmentDashboardBinding
-<<<<<<< HEAD
 import com.google.firebase.auth.FirebaseAuth
-=======
 import com.google.firebase.firestore.FieldValue
->>>>>>> 171189b59d2b370e4d2ab05f367817f7afaf6608
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat

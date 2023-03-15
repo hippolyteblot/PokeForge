@@ -79,6 +79,7 @@ class PokemonViewerActivity : AppCompatActivity() {
                 binding.statPvSpeed.text = pokemon.stats[5].toString()
                 binding.pokemonName.text = pokemon.name
                 binding.pokemonHeight.text = pokemon.height.toString() + "0 cm"
+                binding.income.text = pokemon.income.toString()
                 var res = pokemon.weight.toString()
                 if (res.length > 1) {
                     res = res.substring(0, res.length - 1) + "." + res.substring(res.length - 1)
@@ -100,7 +101,8 @@ class PokemonViewerActivity : AppCompatActivity() {
         dialog.setView(dialogView)
         val input = dialogView.findViewById<EditText>(R.id.input)
         input.inputType = InputType.TYPE_CLASS_TEXT
-        input.hint = pokemon.name
+
+        input.setText(pokemon.name)
         val sprite = dialogView.findViewById<ImageView>(R.id.image)
         APISpritesClient.setSpriteImage(pokemon.dna, sprite, this)
         dialog.setPositiveButton("OK") { dialog, which ->

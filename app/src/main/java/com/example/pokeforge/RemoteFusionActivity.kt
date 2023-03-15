@@ -157,10 +157,11 @@ class RemoteFusionActivity : AppCompatActivity() {
             }
         }
 
-        val sprite = intent.getIntExtra("sprite", 0)
+        val sprite = intent.getStringExtra("sprite")
         val pokepieces = intent.getIntExtra("pokepieces", 0)
         val name = intent.getStringExtra("name")
         stringDescription = "$sprite;$pokepieces;$name"
+        println("stringDescription: $stringDescription")
 
         connectionsClient.startAdvertising(
             stringDescription,
