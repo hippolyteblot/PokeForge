@@ -89,4 +89,19 @@ class HomeFragment : Fragment() {
             }
 
     }
+
+    fun updateAdapter() {
+        loadPokemonsFromFirebase { list ->
+            team.setTeam(list)
+            recyclerView.adapter = PokemonAdapter(this.requireContext(), team.getTeam(), this.activity as MainActivity)
+            recyclerView.layoutManager = GridLayoutManager(this.requireContext(), 2)
+        }
+
+    }
+
+    // On resume, update the adapter
+    override fun onResume() {
+        super.onResume()
+        updateAdapter()
+    }
 }

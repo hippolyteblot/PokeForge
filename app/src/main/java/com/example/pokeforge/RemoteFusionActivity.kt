@@ -28,8 +28,8 @@ class RemoteFusionActivity : AppCompatActivity() {
 
     private lateinit var connectionLifecycleCallback: ConnectionLifecycleCallback
     private lateinit var payloadCallback: PayloadCallback
+    private lateinit var stringDescription: String
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -157,9 +157,13 @@ class RemoteFusionActivity : AppCompatActivity() {
             }
         }
 
+        val sprite = intent.getIntExtra("sprite", 0)
+        val pokepieces = intent.getIntExtra("pokepieces", 0)
+        val name = intent.getStringExtra("name")
+        stringDescription = "$sprite;$pokepieces;$name"
 
         connectionsClient.startAdvertising(
-            "PokeForge",
+            stringDescription,
             "com.example.pokeforge",
             connectionLifecycleCallback,
             advertisingOptions
@@ -250,7 +254,7 @@ class RemoteFusionActivity : AppCompatActivity() {
         }
 
         connectionsClient.requestConnection(
-            "PokeForge",
+            stringDescription,
             id,
             RequestConnectionLifecycleCallback
         )

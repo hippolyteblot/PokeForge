@@ -1,14 +1,17 @@
 package com.example.pokeforge
 
-import android.annotation.SuppressLint
+import android.Manifest
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokeforge.databinding.ActivityStartingGameBinding
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -64,16 +67,39 @@ class StartingGameActivity : AppCompatActivity() {
     private fun addUserToDatabase() {
         val db = Firebase.firestore
         val userUID = intent.getStringExtra("userUID")
+
+
+        var spriteName = "character1"
+        when (sprite) {
+            R.drawable.character1 -> spriteName = "character1"
+            R.drawable.character2 -> spriteName = "character2"
+            R.drawable.character3 -> spriteName = "character3"
+            R.drawable.character4 -> spriteName = "character4"
+            R.drawable.character5 -> spriteName = "character5"
+            R.drawable.character6 -> spriteName = "character6"
+            R.drawable.character7 -> spriteName = "character7"
+            R.drawable.character8 -> spriteName = "character8"
+        }
+
+        var name = binding.playerName.text.toString()
+        if (name == "") {
+            name = "Player"
+        }
+
         val user = hashMapOf(
-            "name" to binding.playerName.text.toString(),
-            "sprite" to sprite,
+            "name" to name,
+            "sprite" to spriteName,
             "balance" to 0,
+            "lastClaimed" to System.currentTimeMillis(),
         )
         if (userUID != null) {
             db.collection("users").document(userUID).set(user)
         }
         // add starter pokemon to the database
         val adapter = binding.starterList.adapter as StarterSelectionAdapter
+
+
+
         val starter = hashMapOf(
             "name" to "Bulbasaur",
             "dna" to adapter.selectedDna,

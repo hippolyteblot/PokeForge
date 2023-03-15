@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -14,10 +15,17 @@ class PlayerAdapter (private val context: Context, private val contactList: List
     inner class PlayerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val name = itemView.findViewById<TextView>(R.id.name)
         private val pokepieces = itemView.findViewById<TextView>(R.id.pokepieces)
+        private val sprite = itemView.findViewById<ImageView>(R.id.sprite)
 
-        fun bind(player: String) {
-            name.text = player
-            pokepieces.text = "0 P"
+        fun bind(playerInfo: String) {
+            val splited = playerInfo.split(";")
+            val playerSprite = splited[0]
+            val playerName = splited[1]
+            val playerPokepieces = splited[2]
+
+            sprite.setImageResource(context.resources.getIdentifier(playerSprite, "drawable", context.packageName))
+            name.text = playerName
+            pokepieces.text = "$playerPokepieces P"
         }
 
         init {
