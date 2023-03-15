@@ -115,6 +115,50 @@ class DashboardFragment : Fragment() {
             }
 
 
+        binding.buttonItems.setOnClickListener {
+            binding.bg.setImageResource(R.drawable.background_items)
+            binding.bg.layoutParams.height = 2200
+            binding.bg.requestLayout()
+            binding.Offre1.visibility = View.GONE
+            binding.Offre2.visibility = View.GONE
+            binding.textOffre1.visibility = View.GONE
+            binding.textOffre2.visibility = View.GONE
+            binding.buyLegendaryButton.visibility = View.GONE
+            binding.buyOffre1Button.visibility = View.GONE
+            binding.buyOffre2Button.visibility = View.GONE
+            binding.buyMysteryButton.visibility = View.GONE
+            binding.buyJohtoButton.visibility = View.GONE
+            binding.buyKantoButton.visibility = View.GONE
+            binding.buyFireButton.visibility = View.GONE
+            binding.buyWaterButton.visibility = View.GONE
+            binding.buyGrassButton.visibility = View.GONE
+            binding.buyAncientButton.visibility = View.GONE
+            binding.buttonEggs.visibility = View.VISIBLE
+            binding.buttonItems.visibility = View.GONE
+        }
+
+        binding.buttonEggs.setOnClickListener {
+            binding.bg.setImageResource(R.drawable.background)
+            binding.bg.layoutParams.height = 5000
+            binding.bg.requestLayout()
+            binding.Offre1.visibility = View.VISIBLE
+            binding.Offre2.visibility = View.VISIBLE
+            binding.textOffre1.visibility = View.VISIBLE
+            binding.textOffre2.visibility = View.VISIBLE
+            binding.buyLegendaryButton.visibility = View.VISIBLE
+            binding.buyOffre1Button.visibility = View.VISIBLE
+            binding.buyOffre2Button.visibility = View.VISIBLE
+            binding.buyMysteryButton.visibility = View.VISIBLE
+            binding.buyJohtoButton.visibility = View.VISIBLE
+            binding.buyKantoButton.visibility = View.VISIBLE
+            binding.buyFireButton.visibility = View.VISIBLE
+            binding.buyWaterButton.visibility = View.VISIBLE
+            binding.buyGrassButton.visibility = View.VISIBLE
+            binding.buyAncientButton.visibility = View.VISIBLE
+            binding.buttonEggs.visibility = View.GONE
+            binding.buttonItems.visibility = View.VISIBLE
+        }
+
         binding.buyLegendaryButton.setOnClickListener {
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("Confirmer l'achat")
@@ -397,23 +441,25 @@ class DashboardFragment : Fragment() {
         collectionRef.get()
             .addOnSuccessListener { document ->
                 balance = document.data?.get("balance").toString().toLong()
+                println(balance)
+
+                if(balance >= value) {
+                    sucess = true
+                    collectionRef.update("balance", FieldValue.increment(-value))
+                        .addOnSuccessListener {
+                            (activity as MainActivity).binding.balance.text = balance.toString()
+                            Log.d("TAG", "DocumentSnapshot successfully updated!")
+                        }
+                        .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
+                }
+                else{
+                    Toast.makeText(activity, "Vous n'avez pas assez d'argent !", Toast.LENGTH_SHORT).show()
+                }
             }
             .addOnFailureListener { exception ->
                 Log.d("TAG", "get failed with ", exception)
             }
 
-        if(balance >= value) {
-            sucess = true
-            collectionRef.update("balance", FieldValue.increment(-value))
-                .addOnSuccessListener {
-                    (activity as MainActivity).binding.balance.text = balance.toString()
-                    Log.d("TAG", "DocumentSnapshot successfully updated!")
-                }
-                .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
-        }
-        else{
-            Toast.makeText(activity, "Vous n'avez pas assez d'argent !", Toast.LENGTH_SHORT).show()
-        }
 
         return sucess
     }
