@@ -25,13 +25,16 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     lateinit var userUID: String
+    lateinit var userName: String
+    lateinit var userSprite: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         userUID = intent.getStringExtra("userUID").toString()
+        getUserInfo()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
@@ -112,6 +115,7 @@ class MainActivity : AppCompatActivity() {
                                                     dialog.dismiss()
                                                 }
                                             dialog.show()
+                                            binding.balance.text = balance.toString()
                                         }
                                         .addOnFailureListener { e -> println("Error updating document $e") }
                                     // Update the lastClaimed time
@@ -122,7 +126,6 @@ class MainActivity : AppCompatActivity() {
                                         .addOnFailureListener { e -> println("Error updating document $e") }
                                 }
 
-                                binding.balance.text = balance.toString()
                             }
 
                     }
@@ -150,6 +153,24 @@ class MainActivity : AppCompatActivity() {
                     Log.d("poke", "No such document")
                 }
                 binding.balance.text = balance.toString()
+            }
+            .addOnFailureListener { exception ->
+                Log.d("poke", "get failed with ", exception)
+            }
+    }
+
+    fun getUserInfo() {
+        // Get the user's name and sprite from firebase
+        val db = Firebase.firestore
+        val docRef = db.collection("users").document(userUID)
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    userName = document.data?.get("name").toString()
+                    userSprite = document.data?.get("sprite").toString()
+                } else {
+                    Log.d("poke", "No such document")
+                }
             }
             .addOnFailureListener { exception ->
                 Log.d("poke", "get failed with ", exception)

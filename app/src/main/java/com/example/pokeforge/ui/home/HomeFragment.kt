@@ -91,8 +91,11 @@ class HomeFragment : Fragment() {
     }
 
     fun updateAdapter() {
-        recyclerView.adapter = PokemonAdapter(this.requireContext(), team.getTeam(), this.activity as MainActivity)
-        recyclerView.layoutManager = GridLayoutManager(this.requireContext(), 2)
+        loadPokemonsFromFirebase { list ->
+            team.setTeam(list)
+            recyclerView.adapter = PokemonAdapter(this.requireContext(), team.getTeam(), this.activity as MainActivity)
+            recyclerView.layoutManager = GridLayoutManager(this.requireContext(), 2)
+        }
 
     }
 

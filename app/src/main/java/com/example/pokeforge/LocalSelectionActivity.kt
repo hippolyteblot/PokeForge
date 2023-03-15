@@ -80,7 +80,7 @@ class LocalSelectionActivity : AppCompatActivity() {
                 dialog.setContentView(R.layout.label_image_dialog)
                 dialog.findViewById<Button>(R.id.accept).setOnClickListener {
                     val egg = hashMapOf(
-                        "name" to "Bulbasaur",
+                        "name" to "",
                         "dna" to listOf(dna1, dna2).shuffled(),
                         "income" to 0,
                         "owner" to FirebaseAuth.getInstance().currentUser!!.uid,

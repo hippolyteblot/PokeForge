@@ -2,6 +2,7 @@ package com.example.pokeforge
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,7 +14,10 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
+import android.text.InputType
 import android.util.Log
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.Debug.getLocation
@@ -45,7 +49,7 @@ class PokemonViewerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-            getLocation()
+        getLocation()
         pokemon = intent.getSerializableExtra("pokemon") as Pokemon
         userId = intent.getStringExtra("userUID").toString()
 
@@ -83,14 +87,34 @@ class PokemonViewerActivity : AppCompatActivity() {
 
             }
 
-
-
-
-
-
         }
         //bind(pokemon)
 
+    }
+
+    @SuppressLint("MissingInflatedId")
+    private fun openEgg() {
+        val dialog = AlertDialog.Builder(this)
+        // use the layout label_image_input_dialog.xml
+        val dialogView = layoutInflater.inflate(R.layout.label_image_input_dialog, null)
+        dialog.setView(dialogView)
+        val input = dialogView.findViewById<EditText>(R.id.input)
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        input.hint = pokemon.name
+        val sprite = dialogView.findViewById<ImageView>(R.id.image)
+        APISpritesClient.setSpriteImage(pokemon.dna, sprite, this)
+        dialog.setPositiveButton("OK") { dialog, which ->
+            pokemon.name = input.text.toString()
+            binding.pokemonName.text = pokemon.name
+            val db = Firebase.firestore
+            val docRef = db.collection("pokemons").document(pokemon.id)
+            docRef.update("name", pokemon.name)
+            docRef.update("egg", false)
+        }
+        dialog.setNegativeButton("Cancel") { dialog, which ->
+            dialog.cancel()
+        }
+        dialog.show()
     }
 
     private fun bind(pokemon: Pokemon) {
@@ -407,16 +431,5 @@ class PokemonViewerActivity : AppCompatActivity() {
         return name ?: "Unknown"
     }
 
-    fun openEgg() {
-        val db = Firebase.firestore
-        // Update the pokemon with id to egg = false
-        db.collection("pokemons").document(pokemon.id).update("egg", false)
-            .addOnSuccessListener {
-                Log.d("TAG", "DocumentSnapshot successfully updated!")
-            }
-            .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
-        pokemon.isEgg = false
-        PokemonTeam.updatePokemon(pokemon)
-    }
 
 }

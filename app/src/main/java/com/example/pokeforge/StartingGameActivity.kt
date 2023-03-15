@@ -68,31 +68,6 @@ class StartingGameActivity : AppCompatActivity() {
         val db = Firebase.firestore
         val userUID = intent.getStringExtra("userUID")
 
-        // Get latitude of the user
-        val geometry = ArrayList<LatLng>()
-        val location = getSystemService(LOCATION_SERVICE) as LocationManager
-        val locationGPS = if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // Request permission
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                1
-            )
-            return
-        } else {
-            location.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-        }
-        location.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-        val latitude = locationGPS?.latitude
-        val longitude = locationGPS?.longitude
-        geometry.add(LatLng(latitude!!, longitude!!))
 
         var spriteName = "character1"
         when (sprite) {
@@ -106,11 +81,16 @@ class StartingGameActivity : AppCompatActivity() {
             R.drawable.character8 -> spriteName = "character8"
         }
 
+        var name = binding.playerName.text.toString()
+        if (name == "") {
+            name = "Player"
+        }
+
         val user = hashMapOf(
-            "name" to binding.playerName.text.toString(),
+            "name" to name,
             "sprite" to spriteName,
             "balance" to 0,
-            "geometry" to geometry,
+            "lastClaimed" to System.currentTimeMillis(),
         )
         if (userUID != null) {
             db.collection("users").document(userUID).set(user)

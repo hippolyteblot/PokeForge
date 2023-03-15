@@ -20,6 +20,7 @@ import com.example.pokeforge.MainActivity
 import com.example.pokeforge.R
 import com.example.pokeforge.SpriteSelectionAdapter
 import com.example.pokeforge.databinding.FragmentDashboardBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
@@ -109,7 +110,7 @@ class DashboardFragment : Fragment() {
                                     "dna" to listOf(pokeId,0),
                                     "egg" to true,
                                     "income" to 0,
-                                    "owner" to (activity as MainActivity).userUID,
+                                    "owner" to FirebaseAuth.getInstance().currentUser?.uid,
                                 )
                                 db.collection("pokemons").add(newPoke)
                             }
