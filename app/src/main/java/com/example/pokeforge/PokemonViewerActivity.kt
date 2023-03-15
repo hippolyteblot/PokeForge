@@ -41,7 +41,7 @@ class PokemonViewerActivity : AppCompatActivity() {
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private val permissionId = 2
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -300,16 +300,45 @@ class PokemonViewerActivity : AppCompatActivity() {
         val types : MutableList<PokemonType> = mutableListOf()
         val pokemonRes = APIClient.apiService
         try {
-
-            val res = pokemonRes.doGetListType(pokemon.dna[0])?.types
-            var id2 = pokemon.dna[1]
-            if(pokemon.dna[1] == 0) {
-                id2 = pokemon.dna[0]
-            }
-            val res2 = pokemonRes.doGetListType(id2)?.types
-            if (res2 != null) {
+            if (pokemon.dna[1] == 0){
+                val res = pokemonRes.doGetListType(pokemon.dna[0])?.types
+                if (res != null) {
+                    for (i in res.indices) {
+                        val resType = res[i].type
+                        when (resType?.name) {
+                            "normal" -> types.add(PokemonType.NORMAL)
+                            "fire" -> types.add(PokemonType.FIRE)
+                            "water" -> types.add(PokemonType.WATER)
+                            "electric" -> types.add(PokemonType.ELECTRIC)
+                            "grass" -> types.add(PokemonType.GRASS)
+                            "ice" -> types.add(PokemonType.ICE)
+                            "fighting" -> types.add(PokemonType.FIGHTING)
+                            "poison" -> types.add(PokemonType.POISON)
+                            "ground" -> types.add(PokemonType.GROUND)
+                            "flying" -> types.add(PokemonType.FLYING)
+                            "psychic" -> types.add(PokemonType.PSYCHIC)
+                            "bug" -> types.add(PokemonType.BUG)
+                            "rock" -> types.add(PokemonType.ROCK)
+                            "ghost" -> types.add(PokemonType.GHOST)
+                            "dragon" -> types.add(PokemonType.DRAGON)
+                            "dark" -> types.add(PokemonType.DARK)
+                            "steel" -> types.add(PokemonType.STEEL)
+                            "fairy" -> types.add(PokemonType.FAIRY)
+                            else -> {
+                                types.add(PokemonType.UNKNOWN)
+                            }
+                        }
+                    }
+                } else {
+                    types.add(PokemonType.UNKNOWN)
+                }
+                return types
+            } else {
+                val res = pokemonRes.doGetListType(pokemon.dna[0])?.types
+                val res2 = pokemonRes.doGetListType(pokemon.dna[1])?.types
+                if (res2 != null) {
                     val resType = res2[0].type
-                when(resType?.name){
+                    when (resType?.name) {
                         "normal" -> types.add(PokemonType.NORMAL)
                         "fire" -> types.add(PokemonType.FIRE)
                         "water" -> types.add(PokemonType.WATER)
@@ -332,13 +361,13 @@ class PokemonViewerActivity : AppCompatActivity() {
                             types.add(PokemonType.UNKNOWN)
                         }
 
+                    }
+                } else {
+                    types.add(PokemonType.UNKNOWN)
                 }
-            } else {
-                types.add(PokemonType.UNKNOWN)
-            }
-            if (res != null) {
+                if (res != null) {
                     val resType = res[0].type
-                when(resType?.name){
+                    when (resType?.name) {
                         "normal" -> types.add(PokemonType.NORMAL)
                         "fire" -> types.add(PokemonType.FIRE)
                         "water" -> types.add(PokemonType.WATER)
@@ -361,11 +390,15 @@ class PokemonViewerActivity : AppCompatActivity() {
                             types.add(PokemonType.UNKNOWN)
                         }
 
+                    }
+                } else {
+                    types.add(PokemonType.UNKNOWN)
                 }
-            } else {
-                types.add(PokemonType.UNKNOWN)
-            }
 
+                if (types[0] == types[1]) {
+                    types.removeAt(1)
+                }
+            }
         } catch (e: Exception) {
             Log.d("TAG", "getStatsOf: $e")
 

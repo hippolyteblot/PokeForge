@@ -96,7 +96,6 @@
             android:maxWidth="70dp"
             android:layout_weight="1"
             android:padding="5dp"
-            app:srcCompat="@drawable/ic_home_black_24dp"
             android:contentDescription="@string/second_type" />
 
 
