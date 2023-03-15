@@ -20,8 +20,8 @@ class PlayerAdapter (private val context: Context, private val contactList: List
         fun bind(playerInfo: String) {
             val splited = playerInfo.split(";")
             val playerSprite = splited[0]
-            val playerName = splited[1]
-            val playerPokepieces = splited[2]
+            val playerName = splited[2]
+            val playerPokepieces = splited[1]
 
             sprite.setImageResource(context.resources.getIdentifier(playerSprite, "drawable", context.packageName))
             name.text = playerName

@@ -45,13 +45,15 @@ class PokemonViewerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        pokemon = intent.getSerializableExtra("pokemon") as Pokemon
+
+        println(pokemon.dna)
+        userId = intent.getStringExtra("userUID").toString()
         binding = ActivityPokemonViewerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         getLocation()
-        pokemon = intent.getSerializableExtra("pokemon") as Pokemon
-        userId = intent.getStringExtra("userUID").toString()
 
         if(pokemon.isEgg) {
             openEgg()

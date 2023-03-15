@@ -16,6 +16,9 @@ import com.example.pokeforge.databinding.ActivityRemoteSelectionBinding
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.ConnectionsClient
 import com.google.android.gms.nearby.connection.Payload
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.nio.charset.Charset
 
 
@@ -84,7 +87,13 @@ class RemoteSelectionActivity : AppCompatActivity() {
 
             if (remoteValidation) {
                 dialog.dismiss()
-                print("Both players validated")
+                if (localValidation && remoteValidation) {
+                    val dna1 = selectedPokemon?.dna
+                    val dna2 = remoteDna
+                    if (dna1 != null) {
+                        fusion(dna1, dna2)
+                    }
+                }
             }
         }
     }
@@ -142,8 +151,6 @@ class RemoteSelectionActivity : AppCompatActivity() {
     fun setRemoteValidation(validate : Boolean) {
         remoteValidation = validate
         if (localValidation && remoteValidation) {
-            print("Both players validated")
-            val intent = Intent(this, MakeFusionActivity::class.java)
             val dna1a = selectedPokemon?.dna?.get(0) ?: -1
             val dna1b = selectedPokemon?.dna?.get(1) ?: -1
             val dna1 : String = if (dna1b == -1) {
@@ -158,9 +165,41 @@ class RemoteSelectionActivity : AppCompatActivity() {
             } else {
                 "$dna2a,$dna2b"
             }
-            intent.putExtra("dna1", dna1)
-            intent.putExtra("dna2", dna2)
-            startActivity(intent)
+
         }
+
+    }
+
+    fun fusion(dna1 : List<Int>, dna2 :List<Int> ) {
+
+        // if dna1[1] is 0 then dnaA = dna1[0], else random between 0 and 1
+        var dnaA = if (dna1[1] == 0) {
+            dna1[0]
+        } else {
+            listOf(0, 1).shuffled()[0]
+        }
+        var dnaB = if (dna2[1] == 0) {
+            dna2[0]
+        } else {
+            listOf(0, 1).shuffled()[0]
+        }
+
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.label_image_dialog)
+        dialog.findViewById<Button>(R.id.accept).setOnClickListener {
+            val egg = hashMapOf(
+                "name" to "",
+                "dna" to listOf(dnaA, dnaB).shuffled(),
+                "income" to 0,
+                "owner" to FirebaseAuth.getInstance().currentUser!!.uid,
+                "egg" to true,
+            )
+            val db = Firebase.firestore
+            db.collection("pokemons").add(egg)
+
+            dialog.dismiss()
+            finish()
+        }
+        dialog.show()
     }
 }
