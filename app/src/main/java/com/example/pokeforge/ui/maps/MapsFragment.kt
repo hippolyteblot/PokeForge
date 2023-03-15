@@ -1,23 +1,16 @@
 package com.example.pokeforge.ui.maps
 
-import android.content.ContentValues.TAG
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.pokeforge.MainActivity
-import com.example.pokeforge.Pokemon
+import androidx.fragment.app.Fragment
 import com.example.pokeforge.R
-
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -41,7 +34,6 @@ class MapsFragment : Fragment() {
                         Log.d("A", lat.toString() + " " + long)
                         val point = LatLng(lat, long)
                         googleMap.addMarker(MarkerOptions().position(point).title(document.id))
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(point))
                     }
                 }
             }
