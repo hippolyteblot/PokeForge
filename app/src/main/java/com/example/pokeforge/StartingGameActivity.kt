@@ -91,6 +91,8 @@ class StartingGameActivity : AppCompatActivity() {
             "sprite" to spriteName,
             "balance" to 0,
             "lastClaimed" to System.currentTimeMillis(),
+            "fusionItems" to 0,
+            "candyItems" to 0,
         )
         if (userUID != null) {
             db.collection("users").document(userUID).set(user)
