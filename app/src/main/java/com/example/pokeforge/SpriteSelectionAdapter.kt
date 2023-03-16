@@ -2,6 +2,7 @@ package com.example.pokeforge
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -27,7 +28,7 @@ class SpriteSelectionAdapter (private val context: Context, private val spriteLi
         init {
             itemView.setOnClickListener {
                 itemView.findViewById<ImageView>(R.id.sprite).setBackgroundColor(context.getColor(R.color.purple_200))
-                lastItem?.findViewById<ImageView>(R.id.sprite)?.setBackgroundColor(context.getColor(R.color.white))
+                lastItem?.findViewById<ImageView>(R.id.sprite)?.setBackgroundColor(Color.TRANSPARENT)
                 lastItem = itemView
                 rscId = id
             }

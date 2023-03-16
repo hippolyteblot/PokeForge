@@ -4,30 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="16dp"
     android:layout_width="match_parent"
+    android:background="@drawable/bg_poke"
     android:layout_height="match_parent">
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
         android:id="@+id/linearLayoutHeader"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="28dp"
+        android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:orientation="horizontal">
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <Button
+            android:id="@+id/buttonBack"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
             android:text="@string/retour"
             android:textColor="@color/appleBlue"
             android:textSize="17sp"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:id="@+id/buttonBack"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_margin="10dp"
 
             />
-        <View android:layout_width="0dp"
+
+        <View
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
@@ -47,9 +52,8 @@
 
     <ImageView
         android:id="@+id/pokemon_sprite"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="0dp"
+        android:layout_width="255dp"
+        android:layout_height="170dp"
         android:contentDescription="@string/pokemon_sprite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,8 +66,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/title_pokemons"
+        android:textColor="@color/black"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pokemon_sprite" />
 
@@ -81,12 +87,12 @@
             android:id="@+id/pokemon_type_sprite_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxHeight="70dp"
-            android:maxWidth="70dp"
             android:layout_weight="1"
+            android:contentDescription="@string/first_type"
+            android:maxWidth="70dp"
+            android:maxHeight="70dp"
             android:padding="5dp"
-            app:srcCompat="@drawable/ic_home_black_24dp"
-            android:contentDescription="@string/first_type" />
+            app:srcCompat="@drawable/ic_home_black_24dp" />
 
         <ImageView
             android:id="@+id/pokemon_type_sprite_2"
@@ -109,6 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
         android:layout_marginTop="44dp"
+        android:textColor="@color/black"
         android:text="@string/poids"
         android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -127,6 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Revenu"
+            android:textColor="@color/black"
             android:textSize="22sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
@@ -146,6 +154,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="/m"
+            android:textColor="@color/black"
             android:textSize="22sp"
             app:layout_constraintStart_toEndOf="@+id/pokemon_type_sprite_"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
@@ -157,6 +166,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/statistiques"
+        android:textColor="@color/black"
         android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pokemon_weight" />
@@ -168,6 +178,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/pv"
         android:textSize="18sp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
@@ -177,6 +188,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="@string/x"
+        android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toTopOf="@+id/textView6" />
@@ -188,6 +200,7 @@
         android:layout_marginStart="8dp"
         android:text="@string/x"
         android:textSize="18sp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/textView9"
         app:layout_constraintTop_toTopOf="@+id/textView9" />
 
@@ -198,6 +211,7 @@
         android:layout_marginStart="8dp"
         android:text="@string/x"
         android:textSize="18sp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/textView11"
         app:layout_constraintTop_toTopOf="@+id/textView11" />
 
@@ -208,6 +222,7 @@
         android:layout_marginStart="8dp"
         android:text="@string/x"
         android:textSize="18sp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/textView7"
         app:layout_constraintTop_toTopOf="@+id/textView7" />
 
@@ -216,6 +231,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:textColor="@color/black"
         android:text="@string/x"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView10"
@@ -229,6 +245,7 @@
         android:text="@string/x"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView12"
+        android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="@+id/textView12" />
 
     <TextView
@@ -238,6 +255,7 @@
         android:layout_marginStart="172dp"
         android:text="@string/attaque"
         android:textSize="18sp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toTopOf="@+id/textView6" />
 
@@ -248,6 +266,7 @@
         android:layout_marginStart="172dp"
         android:layout_marginTop="32dp"
         android:text="@string/attaque_sp"
+        android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toTopOf="@+id/textView6" />
@@ -259,6 +278,7 @@
         android:layout_marginStart="172dp"
         android:layout_marginTop="64dp"
         android:text="@string/vitesse"
+        android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toTopOf="@+id/textView6" />
@@ -269,6 +289,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/d_fense"
+        android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -277,6 +298,7 @@
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:layout_marginTop="40dp"
         android:text="@string/d_fense_sp"
         android:textSize="18sp"
@@ -289,19 +311,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
         android:layout_marginEnd="60dp"
+        android:textColor="@color/black"
         android:text="@string/taille"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
-    <Button
+    <ImageButton
         android:id="@+id/evolve_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
         android:layout_marginTop="16dp"
         android:text="Evoluer"
+        android:background="@drawable/btn_evo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
