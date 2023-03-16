@@ -13,6 +13,7 @@ object PokemonTeam {
     }
 
     fun getTeam(): ArrayList<Pokemon> {
+        val sortedTeam = team.sortBy { it.name }
         return team
     }
 

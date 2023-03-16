@@ -11,6 +11,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -127,6 +128,14 @@ class MainActivity : AppCompatActivity() {
                                 }
 
                             }
+                        else {
+                            val toast = Toast.makeText(
+                                applicationContext,
+                                "Vous devez attendre 1 minute avant de pouvoir réclamer à nouveau vos pokepièces",
+                                Toast.LENGTH_SHORT
+                            )
+                            toast.show()
+                        }
 
                     }
                 } else {

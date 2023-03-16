@@ -1,8 +1,6 @@
 package com.example.pokeforge
 
-import com.example.pokeforge.pojo.PokemonAPI
-import com.example.pokeforge.pojo.PokemonAPIType
-import com.example.pokeforge.pojo.PokemonAPIInfos
+import com.example.pokeforge.pojo.*
 import retrofit2.http.*
 import retrofit2.http.GET
 
@@ -16,5 +14,11 @@ interface APIInterface {
 
     @GET("/api/v2/pokemon/{id}")
     suspend fun doGetListInfos(@Path("id") int: Int): PokemonAPIInfos?
+
+    @GET("/api/v2/pokemon-species/{id}")
+    suspend fun doGetEvolutionLink(@Path("id") int: Int): PokemonAPIEvolutionId?
+
+    @GET("/api/v2/evolution-chain/{id}")
+    suspend fun doGetEvolutionChain(@Path("id") int: Int): PokemonAPIEvolutionChain?
 
 }

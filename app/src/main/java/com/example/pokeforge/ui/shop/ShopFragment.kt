@@ -465,6 +465,8 @@ class ShopFragment : Fragment() {
             Log.d("TAG", "get failed with ", exception)
         }
 
+        (activity as MainActivity).binding.balance.text = balance.toString()
+
         return success
     }
 

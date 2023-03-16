@@ -9,7 +9,7 @@ data class Pokemon(
     val exp: Int,
     var stats: List<Int>,
     val income: Int,
-    val dna: List<Int> = listOf(0, 0),
+    var dna: List<Int> = listOf(0, 0),
     var isEgg: Boolean = false,
 ) : java.io.Serializable
 enum class PokemonType {

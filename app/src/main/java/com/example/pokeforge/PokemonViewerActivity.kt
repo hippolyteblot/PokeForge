@@ -18,11 +18,13 @@ import android.text.InputType
 import android.util.Log
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.Debug.getLocation
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.pokeforge.databinding.ActivityPokemonViewerBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -30,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -41,6 +44,7 @@ class PokemonViewerActivity : AppCompatActivity() {
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private val permissionId = 2
 
+    @OptIn(DelicateCoroutinesApi::class)
     @SuppressLint("SetTextI18n", "SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +55,9 @@ class PokemonViewerActivity : AppCompatActivity() {
         userId = intent.getStringExtra("userUID").toString()
         binding = ActivityPokemonViewerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        APISpritesClient.setSpriteImage(pokemon.dna, binding.pokemonSprite, this)
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         getLocation()
@@ -92,8 +99,117 @@ class PokemonViewerActivity : AppCompatActivity() {
 
         }
 
+        // Check if the pokemon can evolve
+        lifecycleScope.launch {
+            val evolution = getEvolution()
+            if (evolution != null) {
+                binding.evolveButton.setOnClickListener {
+                    val dialog = AlertDialog.Builder(this@PokemonViewerActivity)
+                    dialog.setTitle("Evolution")
+                    dialog.setMessage("Voulez vous utiliser un super bonbon pour faire évoluer votre ${pokemon.name} ?")
+                    dialog.setPositiveButton("Oui") { _, _ ->
+                        lifecycleScope.launch {
+                            if(hasCandyItems()) {
+                                val db = Firebase.firestore
+                                val docRef = db.collection("users").document(userId)
+                                val candyItems = docRef.get().await().get("candyItems") as Long
+                                docRef.update("candyItems", candyItems - 1)
+                                pokemon.dna = listOf(evolution, 0)
+                                evolveInDb(evolution)
+                                val intent = Intent(this@PokemonViewerActivity, PokemonViewerActivity::class.java)
+                                intent.putExtra("pokemon", pokemon)
+                                intent.putExtra("userUID", userId)
+                                startActivity(intent)
+                                finish()
+                            }
+                            else {
+                                Toast.makeText(this@PokemonViewerActivity, "Vous n'avez pas de super bonbon", Toast.LENGTH_SHORT).show()
+                            }
+
+                        }
+                    }
+                    dialog.setNegativeButton("Non") { _, _ -> }
+                    dialog.show()
 
 
+                }
+
+                binding.evolveButton.visibility = ImageView.VISIBLE
+            }
+        }
+    }
+
+    private suspend fun hasCandyItems() : Boolean {
+        val db = Firebase.firestore
+        val docRef = db.collection("users").document(userId)
+        var hasAdnPoint = false
+        try {
+            val user = docRef.get().await()
+            val nbItems = user.get("candyItems") as Long
+            println("nbItems : $nbItems")
+            if(nbItems > 0) {
+                hasAdnPoint = true
+            }
+        } catch (e: Exception) {
+            Log.d("TAG", e.toString())
+        }
+
+        return hasAdnPoint
+    }
+
+    private fun evolveInDb(evolution: Int) {
+        val db = Firebase.firestore
+        val docRef = db.collection("pokemons").document(pokemon.id)
+        docRef.update("dna", listOf(evolution, 0))
+    }
+
+    private fun renameInDb(newName: String) {
+        val db = Firebase.firestore
+        val docRef = db.collection("pokemons").document(pokemon.id)
+        docRef.update("name", newName)
+    }
+
+    private suspend fun getEvolution() : Int? {
+        val pokemonRes = APIClient.apiService
+        val chainLink = pokemonRes.doGetEvolutionLink(pokemon.dna[0])?.evolutionChain
+        val evolutionChain = pokemonRes.doGetEvolutionChain(chainLink?.url.toString().split("/").get(6).toInt())
+
+        val id1 = evolutionChain?.chain?.species?.url?.split("/")?.get(6)?.toInt()
+        val id2 = ArrayList<Int>()
+        val id3 = ArrayList<Int>()
+        if (evolutionChain?.chain?.evolvesTo?.size!! > 0) {
+            for (i in 0 until evolutionChain.chain!!.evolvesTo.size) {
+                // If number less than 251
+                val id = evolutionChain.chain!!.evolvesTo.get(i).species?.url?.split("/")?.get(6)?.toInt()
+                if (id != null) {
+                    if (id < 251) {
+                        id2.add(id)
+                    }
+                }
+            }
+            if (evolutionChain?.chain?.evolvesTo?.get(0)?.evolvesTo?.size!! > 0) {
+                for (i in 0 until evolutionChain.chain!!.evolvesTo.get(0).evolvesTo.size) {
+                    val id = evolutionChain.chain!!.evolvesTo.get(0).evolvesTo.get(i).species?.url?.split("/")?.get(6)?.toInt()
+                    if (id != null) {
+                        if (id < 251) {
+                            id3.add(id)
+                        }
+                    }
+                }
+            }
+        }
+
+        println("id1 : $id1, id2 : $id2, id3 : $id3")
+        if (id1 == pokemon.dna[0] && id2.contains(pokemon.dna[0]+1)) {
+            val random = (0 until id2.size).random()
+            println("random : $random, id2 : ${id2.get(random)}")
+            return id2.get(random)
+        } else if (id2.contains(pokemon.dna[0]) && id3.contains(pokemon.dna[0]+1)) {
+            val random = (0 until id3.size).random()
+            return id3.get(random)
+        } else {
+            return null
+        }
     }
 
     @SuppressLint("MissingInflatedId")
@@ -140,11 +256,6 @@ class PokemonViewerActivity : AppCompatActivity() {
             // Delete the second type sprite
             binding.pokemonTypeSprite2.setImageResource(0)
         }
-
-        // Bind sprite
-        APISpritesClient.setSpriteImage(pokemon.dna, binding.pokemonSprite, this)
-
-
     }
 
     private fun getTypeSprite(type: PokemonType) : Int {
