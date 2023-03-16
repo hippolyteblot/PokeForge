@@ -121,14 +121,6 @@ class StartingGameActivity : AppCompatActivity() {
         starters.add(arrayListOf(155,0))
         starters.add(arrayListOf(158,0))
 
-        /*
-        APISpritesClient.setSpriteImage(starters[0], binding.pokemon1, this)
-        APISpritesClient.setSpriteImage(starters[1], binding.pokemon2, this)
-        APISpritesClient.setSpriteImage(starters[2], binding.pokemon3, this)
-        APISpritesClient.setSpriteImage(starters[3], binding.pokemon4, this)
-        APISpritesClient.setSpriteImage(starters[4], binding.pokemon5, this)
-        APISpritesClient.setSpriteImage(starters[5], binding.pokemon6, this)
-         */
         binding.starterList.adapter = StarterSelectionAdapter(this, starters)
         binding.starterList.layoutManager = androidx.recyclerview.widget.GridLayoutManager(this, 3)
     }

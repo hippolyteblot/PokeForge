@@ -326,6 +326,7 @@
         android:background="@drawable/btn_evo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
 
