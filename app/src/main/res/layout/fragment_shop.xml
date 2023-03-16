@@ -61,7 +61,7 @@
             android:layout_height="49dp"
             android:alpha="0.01"
             android:text="Button"
-            app:layout_constraintVertical_bias="0.1408"
+            app:layout_constraintVertical_bias="0.1758"
             app:layout_constraintHorizontal_bias="0.494"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -79,7 +79,7 @@
             app:layout_constraintHorizontal_bias="0.494"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.3198" />
+            app:layout_constraintVertical_bias="0.3518" />
 
         <ImageView
             android:id="@+id/textOffre1"
@@ -90,7 +90,7 @@
             app:layout_constraintHorizontal_bias="0.055"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.407"
+            app:layout_constraintVertical_bias="0.4317"
             app:srcCompat="@drawable/text_mystery" />
 
         <ImageView
@@ -102,7 +102,7 @@
             app:layout_constraintHorizontal_bias="0.055"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.440"
+            app:layout_constraintVertical_bias="0.467"
             app:srcCompat="@drawable/egg_mystery" />
 
         <ImageView
@@ -114,7 +114,7 @@
             app:layout_constraintHorizontal_bias="0.945"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.407"
+            app:layout_constraintVertical_bias="0.4317"
             app:srcCompat="@drawable/text_mystery" />
 
         <ImageView
@@ -126,7 +126,7 @@
             app:layout_constraintHorizontal_bias="0.945"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.440"
+            app:layout_constraintVertical_bias="0.467"
             app:srcCompat="@drawable/egg_mystery" />
 
         <Button
@@ -140,7 +140,7 @@
             app:layout_constraintHorizontal_bias="0.064"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.43" />
+            app:layout_constraintVertical_bias="0.462" />
 
 
         <Button
@@ -154,7 +154,7 @@
             app:layout_constraintHorizontal_bias="0.934"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.43" />
+            app:layout_constraintVertical_bias="0.462" />
 
         <Button
             android:id="@+id/buyKantoButton"
@@ -167,7 +167,7 @@
             app:layout_constraintHorizontal_bias="0.214"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.657" />
+            app:layout_constraintVertical_bias="0.682" />
 
         <Button
             android:id="@+id/buyJohtoButton"
@@ -180,7 +180,7 @@
             app:layout_constraintHorizontal_bias="0.794"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.657" />
+            app:layout_constraintVertical_bias="0.682" />
 
         <Button
             android:id="@+id/buyMysteryButton"
@@ -193,7 +193,7 @@
             app:layout_constraintHorizontal_bias="0.214"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.804" />
+            app:layout_constraintVertical_bias="0.830" />
 
         <Button
             android:id="@+id/buyFireButton"
@@ -206,7 +206,7 @@
             app:layout_constraintHorizontal_bias="0.794"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.804" />
+            app:layout_constraintVertical_bias="0.830" />
 
         <Button
             android:id="@+id/buyWaterButton"
@@ -219,7 +219,7 @@
             app:layout_constraintHorizontal_bias="0.214"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.954" />
+            app:layout_constraintVertical_bias="0.970" />
 
         <Button
             android:id="@+id/buyGrassButton"
@@ -232,7 +232,35 @@
             app:layout_constraintHorizontal_bias="0.794"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.954" />
+            app:layout_constraintVertical_bias="0.970" />
+
+        <Button
+            android:id="@+id/buyCandyButton"
+            android:layout_width="90dp"
+            android:layout_height="49dp"
+            android:text="Button"
+            android:alpha="0.01"
+            android:visibility="gone"
+            app:layout_constraintVertical_bias="0.3758"
+            app:layout_constraintHorizontal_bias="0.494"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/buyFusionButton"
+            android:layout_width="90dp"
+            android:layout_height="49dp"
+            android:text="Button"
+            android:alpha="0.01"
+            android:visibility="gone"
+            app:layout_constraintVertical_bias="0.793"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
