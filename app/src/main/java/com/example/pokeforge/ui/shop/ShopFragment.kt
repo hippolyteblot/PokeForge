@@ -1,6 +1,7 @@
 package com.example.pokeforge.ui.shop
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
@@ -113,7 +114,7 @@ class ShopFragment : Fragment() {
 
         binding.buttonItems.setOnClickListener {
             binding.bg.setImageResource(R.drawable.background_items)
-            binding.bg.layoutParams.height = 2200
+            binding.bg.layoutParams.height = 2350
             binding.bg.requestLayout()
             binding.Offre1.visibility = View.GONE
             binding.Offre2.visibility = View.GONE
@@ -129,13 +130,15 @@ class ShopFragment : Fragment() {
             binding.buyWaterButton.visibility = View.GONE
             binding.buyGrassButton.visibility = View.GONE
             binding.buyAncientButton.visibility = View.GONE
+            binding.buyCandyButton.visibility = View.VISIBLE
+            binding.buyFusionButton.visibility = View.VISIBLE
             binding.buttonEggs.visibility = View.VISIBLE
             binding.buttonItems.visibility = View.GONE
         }
 
         binding.buttonEggs.setOnClickListener {
             binding.bg.setImageResource(R.drawable.background)
-            binding.bg.layoutParams.height = 5000
+            binding.bg.layoutParams.height = 4900
             binding.bg.requestLayout()
             binding.Offre1.visibility = View.VISIBLE
             binding.Offre2.visibility = View.VISIBLE
@@ -151,8 +154,18 @@ class ShopFragment : Fragment() {
             binding.buyWaterButton.visibility = View.VISIBLE
             binding.buyGrassButton.visibility = View.VISIBLE
             binding.buyAncientButton.visibility = View.VISIBLE
+            binding.buyCandyButton.visibility = View.GONE
+            binding.buyFusionButton.visibility = View.GONE
             binding.buttonEggs.visibility = View.GONE
             binding.buttonItems.visibility = View.VISIBLE
+        }
+
+        binding.buyCandyButton.setOnClickListener{
+            buyItem(3000, "candyItems", "super bonbon")
+        }
+
+        binding.buyFusionButton.setOnClickListener{
+            buyItem(4000, "fusionItems", "pointeau ADN")
         }
 
         binding.buyLegendaryButton.setOnClickListener {
@@ -438,6 +451,26 @@ class ShopFragment : Fragment() {
         })
         builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
             Toast.makeText(activity, "Oeuf non ajouté !", Toast.LENGTH_SHORT).show()
+        })
+        builder.show()
+    }
+
+    fun buyItem(price: Long, field: String, item : String){
+        val builder = AlertDialog.Builder(activity)
+        builder.setTitle("Confirmer l'achat")
+        builder.setMessage("Voulez-vous acheter un $item ?")
+        builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
+            lifecycleScope.launch {
+                if(removeMoney(price) == true) {
+                    Toast.makeText(activity, "$item ajouté !", Toast.LENGTH_SHORT).show()
+                    val db = Firebase.firestore
+                    val collectionRef = db.collection("users").document((activity as MainActivity).userUID)
+                    collectionRef.update(field, FieldValue.increment(1))
+                }
+            }
+        })
+        builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
+            Toast.makeText(activity, "Achat annulé", Toast.LENGTH_SHORT).show()
         })
         builder.show()
     }
