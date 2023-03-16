@@ -91,7 +91,8 @@ class PokemonViewerActivity : AppCompatActivity() {
             }
 
         }
-        //bind(pokemon)
+
+
 
     }
 
