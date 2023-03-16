@@ -459,8 +459,6 @@ class DashboardFragment : Fragment() {
             .addOnFailureListener { exception ->
                 Log.d("TAG", "get failed with ", exception)
             }
-
-
         return sucess
     }
 }
