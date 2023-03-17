@@ -89,6 +89,8 @@ class LocalSelectionActivity : AppCompatActivity() {
                     val db = Firebase.firestore
                     db.collection("pokemons").add(egg)
 
+                    removeFusionItem()
+
                     dialog.dismiss()
                     finish()
                 }
@@ -96,8 +98,19 @@ class LocalSelectionActivity : AppCompatActivity() {
 
             }
         }
+    }
 
-
+    private fun removeFusionItem() {
+        val db = Firebase.firestore
+        // 1. Get the number of items in the collection
+        val uid = FirebaseAuth.getInstance().currentUser!!.uid
+        db.collection("users").document(uid).get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val number = document.data?.get("fusionItems") as Long
+                    db.collection("users").document(uid).update("fusionItems", number - 1)
+                }
+            }
     }
 
     fun setSelectedPokemon(pokemon: Pokemon) {

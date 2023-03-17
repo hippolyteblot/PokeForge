@@ -1,7 +1,6 @@
 package com.example.pokeforge
 
 import android.Manifest
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -53,19 +52,10 @@ class StartingGameActivity : AppCompatActivity() {
 
         binding.startGame.setOnClickListener {
             addUserToDatabase()
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Bienvenue dans PokeForge !")
-            builder.setMessage("Vous pouvez maintenant commencer à jouer !")
-            builder.setPositiveButton("OK") { dialog, which ->
-                val intent = Intent(this, MainActivity::class.java)
-                val adapter = binding.starterList.adapter as StarterSelectionAdapter
-                intent.putExtra("starter", adapter.selectedDna[0])
-                intent.putExtra("userUID", intent.getStringExtra("userUID"))
-                startActivity(intent)
-                finish()
-            }
-            builder.setNegativeButton("Annuler", null)
-            builder.show()
+            val intent = Intent(this, MainActivity::class.java)
+            val adapter = binding.starterList.adapter as StarterSelectionAdapter
+            intent.putExtra("starter", adapter.selectedDna[0])
+            startActivity(intent)
         }
 
     }
@@ -73,6 +63,17 @@ class StartingGameActivity : AppCompatActivity() {
     private fun addUserToDatabase() {
         val db = Firebase.firestore
         val userUID = intent.getStringExtra("userUID")
+
+        val adapter = binding.starterList.adapter as StarterSelectionAdapter
+
+        val starter = hashMapOf(
+            "name" to "Bulbasaur",
+            "dna" to adapter.selectedDna,
+            "income" to 100,
+            "owner" to userUID,
+            "egg" to true,
+        )
+        db.collection("pokemons").add(starter)
 
 
         var spriteName = "character1"
@@ -103,19 +104,7 @@ class StartingGameActivity : AppCompatActivity() {
         if (userUID != null) {
             db.collection("users").document(userUID).set(user)
         }
-        // add starter pokemon to the database
-        val adapter = binding.starterList.adapter as StarterSelectionAdapter
 
-
-
-        val starter = hashMapOf(
-            "name" to "Bulbasaur",
-            "dna" to adapter.selectedDna,
-            "income" to 100,
-            "owner" to userUID,
-            "egg" to true,
-        )
-        db.collection("pokemons").add(starter)
     }
 
     private fun setupStartersSprites() {

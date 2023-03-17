@@ -20,6 +20,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.pokeforge.databinding.ActivityMainBinding
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -34,7 +35,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        userUID = intent.getStringExtra("userUID").toString()
+        userUID = Firebase.auth.currentUser?.uid.toString()
+        println("userUID: $userUID")
         getUserInfo()
 
         binding = ActivityMainBinding.inflate(layoutInflater)

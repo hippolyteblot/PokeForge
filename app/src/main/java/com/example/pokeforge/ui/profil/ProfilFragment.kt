@@ -53,11 +53,8 @@ class ProfilFragment : Fragment(){
                 val spriteRsc = resources.getIdentifier(image, "drawable", activity.packageName)
 
                 binding.imageViewProfilPic.setImageResource(spriteRsc)
-
-        } else {
-            val i=1
             }
-            }
+        }
                 .addOnFailureListener { exception ->
                 Log.d("poke", "get failed with ", exception)
             }
@@ -66,9 +63,8 @@ class ProfilFragment : Fragment(){
             if (documents != null) {
                 //set the username
                 Log.d("poke", "DocumentSnapshot data: ${documents.size()})")
-                binding.textViewNiveau.text = documents.size().toString()
-            } else {
-                val i=1
+                val nbPokemons = documents.size().toString() + " pokemons"
+                binding.textViewNiveau.text = nbPokemons
             }
         }
             .addOnFailureListener { exception ->
@@ -92,19 +88,4 @@ class ProfilFragment : Fragment(){
         _binding = null
     }
 
-}
-
-class AliasingDrawableWrapper(wrapped: Drawable?) :
-    DrawableWrapper(wrapped) {
-    override fun draw(canvas: Canvas) {
-        val oldDrawFilter: DrawFilter? = canvas.getDrawFilter()
-        canvas.setDrawFilter(Companion.DRAW_FILTER)
-        super.draw(canvas)
-        canvas.setDrawFilter(oldDrawFilter)
-    }
-
-    companion object {
-        private val DRAW_FILTER: DrawFilter =
-            PaintFlagsDrawFilter(Paint.FILTER_BITMAP_FLAG, 0)
-    }
 }
