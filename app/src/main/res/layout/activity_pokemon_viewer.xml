@@ -69,7 +69,7 @@
         android:textColor="@color/black"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pokemon_sprite" />
 
@@ -77,9 +77,10 @@
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="40dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pokemon_name">
 
@@ -98,13 +99,11 @@
             android:id="@+id/pokemon_type_sprite_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxHeight="70dp"
-            android:maxWidth="70dp"
             android:layout_weight="1"
-            android:padding="5dp"
-            android:contentDescription="@string/second_type" />
-
-
+            android:contentDescription="@string/second_type"
+            android:maxWidth="70dp"
+            android:maxHeight="70dp"
+            android:padding="5dp" />
 
 
     </LinearLayout>
@@ -124,8 +123,10 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
@@ -160,6 +161,7 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
     </LinearLayout>
+
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
