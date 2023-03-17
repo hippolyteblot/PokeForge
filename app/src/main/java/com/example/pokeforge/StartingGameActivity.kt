@@ -1,6 +1,7 @@
 package com.example.pokeforge
 
 import android.Manifest
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -8,6 +9,7 @@ import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokeforge.databinding.ActivityStartingGameBinding
@@ -26,11 +28,9 @@ class StartingGameActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupStartersSprites()
-        println("Starting game")
         binding.changeSprite.setOnClickListener {
             val dialog = Dialog(this)
             // Use the layout "change_sprite_dialog" to create the dialog
-
             val dialogView = layoutInflater.inflate(R.layout.change_sprite_dialog, null)
             // Do the previous lines in one
 
@@ -39,11 +39,9 @@ class StartingGameActivity : AppCompatActivity() {
             val recyclerView = dialogView.findViewById<RecyclerView>(R.id.recyclerView)
             recyclerView.adapter = adapter
 
-            val button = dialogView.findViewById<Button>(R.id.validate_button)
+            val button = dialogView.findViewById<ImageButton>(R.id.validate_button)
             button.setOnClickListener {
                 sprite = adapter.getSelectedSprite()
-                println("Sprite selected: $sprite")
-                println("Id of the sprite: ${R.drawable.character1}")
                 binding.playerSprite.setImageResource(sprite)
                 // hide the dialog
                 dialog.dismiss()
@@ -55,11 +53,19 @@ class StartingGameActivity : AppCompatActivity() {
 
         binding.startGame.setOnClickListener {
             addUserToDatabase()
-            val intent = Intent(this, MainActivity::class.java)
-            val adapter = binding.starterList.adapter as StarterSelectionAdapter
-            intent.putExtra("starter", adapter.selectedDna.get(0))
-            intent.putExtra("userUID", intent.getStringExtra("userUID"))
-            startActivity(intent)
+            val builder = AlertDialog.Builder(activity)
+            builder.setTitle("Bienvenue dans PokeForge !")
+            builder.setMessage("Vous pouvez maintenant commencer à jouer !")
+            builder.setPositiveButton("OK") { dialog, which ->
+                val intent = Intent(this, MainActivity::class.java)
+                val adapter = binding.starterList.adapter as StarterSelectionAdapter
+                intent.putExtra("starter", adapter.selectedDna[0])
+                intent.putExtra("userUID", intent.getStringExtra("userUID"))
+                startActivity(intent)
+                finish()
+            }
+            builder.setNegativeButton("Annuler", null)
+            builder.show()
         }
 
     }
