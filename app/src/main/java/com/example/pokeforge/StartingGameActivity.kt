@@ -53,7 +53,7 @@ class StartingGameActivity : AppCompatActivity() {
 
         binding.startGame.setOnClickListener {
             addUserToDatabase()
-            val builder = AlertDialog.Builder(activity)
+            val builder = AlertDialog.Builder(this)
             builder.setTitle("Bienvenue dans PokeForge !")
             builder.setMessage("Vous pouvez maintenant commencer à jouer !")
             builder.setPositiveButton("OK") { dialog, which ->
