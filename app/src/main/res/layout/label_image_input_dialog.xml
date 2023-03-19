@@ -16,13 +16,14 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/egg" />
+        app:srcCompat="@drawable/egg"
+        android:contentDescription="@string/image_oeuf" />
 
     <TextView
         android:id="@+id/label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Voulez-vous renommer ce pokémon ?"
+        android:text="@string/voulez_vous_renommer_ce_pok_mon"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/image"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,11 +35,14 @@
     <EditText
         android:id="@+id/input"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
+        android:autofillHints="nom du pokemon"
         android:ems="10"
+        android:hint="@string/nom_du_pokemon"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image" />
+        app:layout_constraintTop_toBottomOf="@+id/image"
+        tools:ignore="LabelFor" />
 </androidx.constraintlayout.widget.ConstraintLayout>

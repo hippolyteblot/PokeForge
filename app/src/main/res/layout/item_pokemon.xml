@@ -26,7 +26,8 @@
             android:layout_margin="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_home_black_24dp" />
+            app:srcCompat="@drawable/ic_home_black_24dp"
+            android:contentDescription="@string/image_du_pokemon" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,7 +42,7 @@
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pokémon"
+                android:text="@string/pok_mon"
                 android:textSize="20sp"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/sprite"
@@ -61,7 +62,7 @@
                     android:id="@+id/income"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="100"
+                    android:text="@string/_100"
                     android:textSize="18sp"
                     app:layout_constraintStart_toEndOf="@+id/sprite"
                     app:layout_constraintTop_toBottomOf="@+id/name" />
@@ -71,15 +72,17 @@
                     android:layout_width="30dp"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp"
+
                     android:src="@drawable/pokepiece"
                     app:layout_constraintStart_toEndOf="@+id/sprite"
-                    app:layout_constraintTop_toBottomOf="@+id/name" />
+                    app:layout_constraintTop_toBottomOf="@+id/name"
+                    android:contentDescription="@string/image_de_pokepiece" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="/m"
+                    android:text="@string/per_m"
                     android:textSize="18sp"
                     app:layout_constraintStart_toEndOf="@+id/sprite"
                     app:layout_constraintTop_toBottomOf="@+id/name" />

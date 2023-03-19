@@ -15,14 +15,15 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_home_black_24dp" />
+        app:srcCompat="@drawable/ic_home_black_24dp"
+        android:contentDescription="@string/image_du_pokemon" />
 
     <TextView
         android:id="@+id/pokemon_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Vous avez un nouvel œuf !"
+        android:text="@string/vous_avez_un_nouvel_uf"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,10 +45,12 @@
         android:layout_height="60dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/btn_add"
-        android:text="Ajouter aux pokémons"
+        android:contentDescription="@string/button_ajouter"
+        android:text="@string/ajouter_aux_pok_mons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pokemon_name" />
+        app:layout_constraintTop_toBottomOf="@+id/pokemon_name"
+        tools:ignore="ImageContrastCheck,RedundantDescriptionCheck" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

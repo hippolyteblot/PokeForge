@@ -10,8 +10,9 @@
     <ImageButton
         android:id="@+id/btn_fusion_local"
         android:layout_width="220dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:background="@drawable/btn_fusion"
+        android:contentDescription="@string/fusion_locale"
         app:layout_constraintBottom_toTopOf="@+id/btn_fusion_remote"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="90dp"
@@ -21,8 +22,9 @@
     <ImageButton
         android:id="@+id/btn_fusion_remote"
         android:layout_width="220dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:background="@drawable/btn_fusionami"
+        android:contentDescription="@string/fusion_a_distance"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_fusion_local"
         app:layout_constraintEnd_toEndOf="parent"
