@@ -25,14 +25,9 @@ class MapsFragment : Fragment() {
             .addOnSuccessListener { result ->
                 for (document in result) {
                     if (document.data["latitude"] != null && document.data["longitude"] != null) {
-                        Log.d("Arderdrdrxxdxdxdxdx", "${document.id} => ${document.data}")
                         val geoPointLat = document.data["latitude"] as Double
                         val geoPointLong = document.data["longitude"] as Double
-                        Log.d("A", geoPointLat.toString())
-                        val lat = geoPointLat
-                        val long = geoPointLong
-                        Log.d("A", lat.toString() + " " + long)
-                        val point = LatLng(lat, long)
+                        val point = LatLng(geoPointLat, geoPointLong)
                         googleMap.addMarker(MarkerOptions().position(point).title(document.id))
                     }
                 }

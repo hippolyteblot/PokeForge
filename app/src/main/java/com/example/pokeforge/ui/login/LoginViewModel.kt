@@ -8,8 +8,9 @@ import com.example.pokeforge.data.LoginRepository
 import com.example.pokeforge.data.Result
 
 import com.example.pokeforge.R
-
+@Suppress("unused")
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm

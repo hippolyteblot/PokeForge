@@ -1,8 +1,6 @@
-package com.example.pokeforge.com.example.pokeforge
+package com.example.pokeforge
 
-import NearbyManager
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -11,7 +9,6 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.pokeforge.*
 import com.example.pokeforge.databinding.ActivityRemoteSelectionBinding
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.ConnectionsClient
@@ -170,15 +167,15 @@ class RemoteSelectionActivity : AppCompatActivity() {
 
     }
 
-    fun fusion(dna1 : List<Int>, dna2 :List<Int> ) {
+    private fun fusion(dna1 : List<Int>, dna2 :List<Int> ) {
 
         // if dna1[1] is 0 then dnaA = dna1[0], else random between 0 and 1
-        var dnaA = if (dna1[1] == 0) {
+        val dnaA = if (dna1[1] == 0) {
             dna1[0]
         } else {
             listOf(0, 1).shuffled()[0]
         }
-        var dnaB = if (dna2[1] == 0) {
+        val dnaB = if (dna2[1] == 0) {
             dna2[0]
         } else {
             listOf(0, 1).shuffled()[0]

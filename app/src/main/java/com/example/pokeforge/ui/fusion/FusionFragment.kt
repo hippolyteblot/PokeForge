@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import com.example.pokeforge.MainActivity
 import com.example.pokeforge.RemoteFusionActivity
 import com.example.pokeforge.com.example.pokeforge.LocalSelectionActivity
-import com.example.pokeforge.com.example.pokeforge.RemoteSelectionActivity
 import com.example.pokeforge.databinding.FragmentFusionBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -27,14 +26,14 @@ class FusionFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
+    @Suppress("unused_variable")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val notificationsViewModel =
-            ViewModelProvider(this).get(FusionViewModel::class.java)
+            ViewModelProvider(this)[FusionViewModel::class.java]
 
         _binding = FragmentFusionBinding.inflate(inflater, container, false)
         val root: View = binding.root

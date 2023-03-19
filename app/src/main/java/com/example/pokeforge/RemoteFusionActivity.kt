@@ -1,6 +1,5 @@
 package com.example.pokeforge
 
-import NearbyManager
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -8,16 +7,14 @@ import android.Manifest
 import android.content.Intent
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pokeforge.com.example.pokeforge.RemoteSelectionActivity
 import com.example.pokeforge.databinding.ActivityRemoteFusionBinding
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
 import java.nio.charset.Charset
 
-
+@Suppress("unused")
 class RemoteFusionActivity : AppCompatActivity() {
 
 
@@ -181,8 +178,8 @@ class RemoteFusionActivity : AppCompatActivity() {
         val endpointDiscoveryCallback = object : EndpointDiscoveryCallback() {
             override fun onEndpointFound(endpointId: String, info: DiscoveredEndpointInfo) {
                 // Add the discovered endpoint to the list
-                val name = info.endpointName
-                playerList.add(mapOf("name" to name, "id" to endpointId))
+                val nameEndPoint = info.endpointName
+                playerList.add(mapOf("name" to nameEndPoint, "id" to endpointId))
 
                 System.out.println("We found an endpoint!")
                 playerAdapter = PlayerAdapter(this@RemoteFusionActivity, playerList, this@RemoteFusionActivity)

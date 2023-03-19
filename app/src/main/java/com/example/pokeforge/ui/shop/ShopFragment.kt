@@ -1,8 +1,7 @@
 package com.example.pokeforge.ui.shop
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.pokeforge.MainActivity
 import com.example.pokeforge.R
@@ -34,13 +32,12 @@ class ShopFragment : Fragment() {
     // onDestroyView.
     private val binding:FragmentShopBinding get() = _binding!!
 
+    @SuppressLint("DiscouragedApi")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this).get(ShopViewModel::class.java)
 
         _binding = FragmentShopBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -52,19 +49,19 @@ class ShopFragment : Fragment() {
 
         var offer1 = ""
         var offer2 = ""
-        val types = arrayListOf<String>("normal", "fighting", "flying","fire","water","grass", "poison", "ground", "rock", "bug", "ghost", "steel", "electric", "psychic", "ice", "dragon", "dark")
+        val types = arrayListOf("normal", "fighting", "flying","fire","water","grass", "poison", "ground", "rock", "bug", "ghost", "steel", "electric", "psychic", "ice", "dragon", "dark")
         val date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
         val db = Firebase.firestore
         val collectionRef = db.collection("date")
         collectionRef.get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
-                    if (document.data.get("dateAc") != date) {
+                    if (document.data["dateAc"] != date) {
                         println(date)
-                        println(document.data.get("dateAc"))
+                        println(document.data["dateAc"])
 
-                        var egg1 = document.data.get("egg1")
-                        var egg2 = document.data.get("egg2")
+                        val egg1 = document.data["egg1"]
+                        val egg2 = document.data["egg2"]
                         var rand1 = (0 until types.size).random()
                         var rand2 = (0 until types.size).random()
                         while (types[rand1] == egg1 || types[rand1] == egg2 || rand1 == rand2) {
@@ -79,10 +76,10 @@ class ShopFragment : Fragment() {
                             "egg1" to types[rand1],
                             "egg2" to types[rand2]
                         )
-                        var image1 = "egg_" + types[rand1]
-                        var image2 = "egg_" + types[rand2]
-                        var text1 = "text_" + types[rand1]
-                        var text2 = "text_" + types[rand2]
+                        val image1 = "egg_" + types[rand1]
+                        val image2 = "egg_" + types[rand2]
+                        val text1 = "text_" + types[rand1]
+                        val text2 = "text_" + types[rand2]
                         offer1 = egg1.toString()
                         offer2 = egg2.toString()
                         binding.Offre1.setImageResource(resources.getIdentifier(image1, "drawable", activity?.packageName))
@@ -92,12 +89,12 @@ class ShopFragment : Fragment() {
 
                         collectionRef.document("dailyInfo").set(newDailyInfo)
                     } else {
-                        var image1 = "egg_" + document.data.get("egg1").toString()
-                        var image2 = "egg_" + document.data.get("egg2").toString()
-                        var text1 = "text_" + document.data.get("egg1").toString()
-                        var text2 = "text_" + document.data.get("egg2").toString()
-                        offer1 = document.data.get("egg1").toString()
-                        offer2 = document.data.get("egg2").toString()
+                        val image1 = "egg_" + document.data["egg1"].toString()
+                        val image2 = "egg_" + document.data["egg2"].toString()
+                        val text1 = "text_" + document.data["egg1"].toString()
+                        val text2 = "text_" + document.data["egg2"].toString()
+                        offer1 = document.data["egg1"].toString()
+                        offer2 = document.data["egg2"].toString()
                         binding.Offre1.setImageResource(resources.getIdentifier(image1, "drawable", activity?.packageName))
                         binding.Offre2.setImageResource(resources.getIdentifier(image2, "drawable", activity?.packageName))
                         binding.textOffre1.setImageResource(resources.getIdentifier(text1, "drawable", activity?.packageName))
@@ -171,19 +168,19 @@ class ShopFragment : Fragment() {
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("Confirmer l'achat")
             builder.setMessage("Voulez-vous acheter cet oeuf ?")
-            builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
+            builder.setPositiveButton("Oui") { _, _ ->
                 lifecycleScope.launch {
-                    if(removeMoney(10000) == true) {
+                    if (removeMoney(10000)) {
                         Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
-                        var pokeName = ""
-                        var pokeId = 0
-                        val db = Firebase.firestore
-                        val collectionRef = db.collection("pokemon_available")
+                        var pokeName: String
+                        var pokeId: Int
+                        val database = Firebase.firestore
+                        val collectionRefPokeAva = database.collection("pokemon_available")
 
-                        collectionRef.whereEqualTo("isMythical", true)
+                        collectionRefPokeAva.whereEqualTo("isMythical", true)
                             .get()
                             .addOnSuccessListener { documents ->
-                                collectionRef.whereEqualTo("isLegendary", true)
+                                collectionRefPokeAva.whereEqualTo("isLegendary", true)
                                     .get()
                                     .addOnSuccessListener { documents2 ->
                                         val listeLegend = documents.documents
@@ -207,7 +204,7 @@ class ShopFragment : Fragment() {
                                         val stat6 = pokemon.data?.get("stat6").toString().toInt()
                                         //total
                                         val sum = stat1 + stat2 + stat3 + stat4 + stat5 + stat6
-                                        val total = (sum.toFloat().pow(2)/300).toInt()
+                                        val total = (sum.toFloat().pow(2) / 300).toInt()
 
                                         println(total)
                                         val newPoke = hashMapOf(
@@ -228,10 +225,10 @@ class ShopFragment : Fragment() {
                 }
 
 
-                })
-            builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
+            }
+            builder.setNegativeButton("Non") { _, _ ->
                 Toast.makeText(activity, "Oeuf non ajouté !", Toast.LENGTH_SHORT).show()
-            })
+            }
             builder.show()
         }
 
@@ -240,16 +237,16 @@ class ShopFragment : Fragment() {
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("Confirmer l'achat")
             builder.setMessage("Voulez-vous acheter cet oeuf ?")
-            builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
+            builder.setPositiveButton("Oui") { _, _ ->
                 lifecycleScope.launch {
-                    if(removeMoney(5000)) {
+                    if (removeMoney(5000)) {
                         Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
-                        var pokeName = ""
-                        var pokeId = 0
-                        val db = Firebase.firestore
-                        val collectionRef = db.collection("pokemon_available")
+                        var pokeName: String
+                        var pokeId: Int
+                        val database = Firebase.firestore
+                        val collectionRefPokeAva = database.collection("pokemon_available")
 
-                        collectionRef.whereLessThanOrEqualTo("capture_rate", 45)
+                        collectionRefPokeAva.whereLessThanOrEqualTo("capture_rate", 45)
                             .get()
                             .addOnSuccessListener { documents ->
                                 val liste = documents.documents
@@ -268,7 +265,7 @@ class ShopFragment : Fragment() {
                                 val stat6 = pokemon.data?.get("stat6").toString().toInt()
                                 //total
                                 val sum = stat1 + stat2 + stat3 + stat4 + stat5 + stat6
-                                val total = (sum.toFloat().pow(2)/300).toInt()
+                                val total = (sum.toFloat().pow(2) / 300).toInt()
                                 println(total)
                                 val newPoke = hashMapOf(
                                     "name" to pokeName,
@@ -285,10 +282,10 @@ class ShopFragment : Fragment() {
                     }
 
                 }
-            })
-            builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
+            }
+            builder.setNegativeButton("Non") { _, _ ->
                 Toast.makeText(activity, "Oeuf non ajouté !", Toast.LENGTH_SHORT).show()
-            })
+            }
             builder.show()
         }
 
@@ -313,16 +310,16 @@ class ShopFragment : Fragment() {
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("Confirmer l'achat")
             builder.setMessage("Voulez-vous acheter cet oeuf ?")
-            builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
+            builder.setPositiveButton("Oui") { _, _ ->
                 lifecycleScope.launch {
-                    if(removeMoney(1300) == true) {
+                    if (removeMoney(1300)) {
                         Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
-                        var pokeName = ""
-                        var pokeId = 0
-                        val db = Firebase.firestore
-                        val collectionRef = db.collection("pokemon_available")
+                        var pokeName: String
+                        var pokeId: Int
+                        val database = Firebase.firestore
+                        val collectionRefPokeAva = database.collection("pokemon_available")
 
-                        collectionRef.whereEqualTo("isLegendary", false)
+                        collectionRefPokeAva.whereEqualTo("isLegendary", false)
                             .whereEqualTo("isMythical", false)
                             .get()
                             .addOnSuccessListener { documents ->
@@ -342,7 +339,7 @@ class ShopFragment : Fragment() {
                                 val stat6 = pokemon.data?.get("stat6").toString().toInt()
                                 //total
                                 val sum = stat1 + stat2 + stat3 + stat4 + stat5 + stat6
-                                val total = (sum.toFloat().pow(2)/300).toInt()
+                                val total = (sum.toFloat().pow(2) / 300).toInt()
 
                                 println(total)
                                 val newPoke = hashMapOf(
@@ -359,10 +356,10 @@ class ShopFragment : Fragment() {
                             }
                     }
                 }
-            })
-            builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
+            }
+            builder.setNegativeButton("Non") { _, _ ->
                 Toast.makeText(activity, "Oeuf non ajouté !", Toast.LENGTH_SHORT).show()
-            })
+            }
             builder.show()
         }
 
@@ -379,7 +376,7 @@ class ShopFragment : Fragment() {
         }
 
 
-        val main = activity as MainActivity
+        activity as MainActivity
         return root
     }
 
@@ -388,16 +385,16 @@ class ShopFragment : Fragment() {
         _binding = null
     }
 
-    fun buy (offer: String, price: Long){
+    private fun buy (offer: String, price: Long){
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("Confirmer l'achat")
             builder.setMessage("Voulez-vous acheter cet oeuf ?")
-            builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
+            builder.setPositiveButton("Oui") { _, _ ->
                 lifecycleScope.launch {
-                    if(removeMoney(price)) {
+                    if (removeMoney(price)) {
                         Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
-                        var pokeName = ""
-                        var pokeId = 0
+                        var pokeName: String
+                        var pokeId: Int
                         val db = Firebase.firestore
                         val collectionRef = db.collection("pokemon_available")
 
@@ -422,7 +419,7 @@ class ShopFragment : Fragment() {
                                 val stat6 = pokemon.data?.get("stat6").toString().toInt()
                                 //total
                                 val sum = stat1 + stat2 + stat3 + stat4 + stat5 + stat6
-                                val total = (sum.toFloat().pow(2)/300).toInt()
+                                val total = (sum.toFloat().pow(2) / 300).toInt()
                                 println(total)
 
                                 val newPoke = hashMapOf(
@@ -441,24 +438,24 @@ class ShopFragment : Fragment() {
                 }
 
 
-            })
-            builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
-                Toast.makeText(activity, "Oeuf non ajouté !", Toast.LENGTH_SHORT).show()
-            })
-            builder.show()
+            }
+        builder.setNegativeButton("Non") { _, _ ->
+            Toast.makeText(activity, "Oeuf non ajouté !", Toast.LENGTH_SHORT).show()
+        }
+        builder.show()
         }
 
 
-    fun buyGene (generation: Int, price: Long){
+    private fun buyGene (generation: Int, price: Long){
         val builder = AlertDialog.Builder(activity)
         builder.setTitle("Confirmer l'achat")
         builder.setMessage("Voulez-vous acheter cet oeuf ?")
-        builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
+        builder.setPositiveButton("Oui") { _, _ ->
             lifecycleScope.launch {
-                if(removeMoney(price)) {
+                if (removeMoney(price)) {
                     Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
-                    var pokeName = ""
-                    var pokeId = 0
+                    var pokeName: String
+                    var pokeId: Int
                     val db = Firebase.firestore
                     val collectionRef = db.collection("pokemon_available")
 
@@ -481,7 +478,7 @@ class ShopFragment : Fragment() {
                             val stat6 = pokemon.data?.get("stat6").toString().toInt()
                             //total
                             val sum = stat1 + stat2 + stat3 + stat4 + stat5 + stat6
-                            val total = (sum.toFloat().pow(2)/300).toInt()
+                            val total = (sum.toFloat().pow(2) / 300).toInt()
                             println(total)
                             val newPoke = hashMapOf(
                                 "name" to pokeName,
@@ -498,37 +495,38 @@ class ShopFragment : Fragment() {
                 }
             }
 
-        })
-        builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
+        }
+        builder.setNegativeButton("Non") { _, _ ->
             Toast.makeText(activity, "Oeuf non ajouté !", Toast.LENGTH_SHORT).show()
-        })
+        }
         builder.show()
     }
 
-    fun buyItem(price: Long, field: String, item : String){
+    private fun buyItem(price: Long, field: String, item : String){
         val builder = AlertDialog.Builder(activity)
         builder.setTitle("Confirmer l'achat")
         builder.setMessage("Voulez-vous acheter un $item ?")
-        builder.setPositiveButton("Oui", DialogInterface.OnClickListener { dialog, which ->
+        builder.setPositiveButton("Oui") { _, _ ->
             lifecycleScope.launch {
-                if(removeMoney(price) == true) {
+                if (removeMoney(price)) {
                     Toast.makeText(activity, "$item ajouté !", Toast.LENGTH_SHORT).show()
                     val db = Firebase.firestore
-                    val collectionRef = db.collection("users").document((activity as MainActivity).userUID)
+                    val collectionRef =
+                        db.collection("users").document((activity as MainActivity).userUID)
                     collectionRef.update(field, FieldValue.increment(1))
                 }
             }
-        })
-        builder.setNegativeButton("Non", DialogInterface.OnClickListener { dialog, which ->
+        }
+        builder.setNegativeButton("Non") { _, _ ->
             Toast.makeText(activity, "Achat annulé", Toast.LENGTH_SHORT).show()
-        })
+        }
         builder.show()
     }
 
-    suspend fun removeMoney(value: Long): Boolean {
+    private suspend fun removeMoney(value: Long): Boolean {
         val db = Firebase.firestore
         var success = false
-        var balance = 0L
+        var balance: Long
         val collectionRef = db.collection("users").document((activity as MainActivity).userUID)
 
         try {

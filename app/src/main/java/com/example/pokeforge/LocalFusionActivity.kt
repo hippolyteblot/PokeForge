@@ -1,16 +1,16 @@
 package com.example.pokeforge
 
-import android.os.Build
+//import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import android.Manifest
+//import android.Manifest
 import androidx.recyclerview.widget.RecyclerView
 //import com.example.pokeforge.databinding.ActivityLocalFusionBinding
-import com.google.android.gms.nearby.Nearby
+//import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
-import com.google.android.gms.nearby.connection.ConnectionsClient
+//import com.google.android.gms.nearby.connection.ConnectionsClient
 
-
+@Suppress("unused")
 class LocalFusionActivity : AppCompatActivity() {
 
 
@@ -18,7 +18,7 @@ class LocalFusionActivity : AppCompatActivity() {
 
     private lateinit var playerRecyclerView: RecyclerView
     private lateinit var playerList: ArrayList<String>
-
+    @Suppress("unused")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         /*

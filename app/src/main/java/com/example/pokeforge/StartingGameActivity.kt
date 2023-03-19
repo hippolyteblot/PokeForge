@@ -1,18 +1,13 @@
 package com.example.pokeforge
 
-import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageButton
-import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokeforge.databinding.ActivityStartingGameBinding
-import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -21,6 +16,7 @@ class StartingGameActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStartingGameBinding
     private var sprite: Int = R.drawable.character1
 
+    @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStartingGameBinding.inflate(layoutInflater)

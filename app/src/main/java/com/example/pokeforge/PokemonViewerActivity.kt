@@ -18,17 +18,13 @@ import android.text.InputType
 import android.util.Log
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.motion.widget.Debug.getLocation
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.pokeforge.databinding.ActivityPokemonViewerBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
@@ -36,16 +32,15 @@ import kotlinx.coroutines.tasks.await
 import java.util.*
 import kotlin.collections.ArrayList
 
-
+@Suppress("unused")
 class PokemonViewerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPokemonViewerBinding
     private lateinit var pokemon: Pokemon
     private lateinit var userId : String
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private val permissionId = 2
-
     @OptIn(DelicateCoroutinesApi::class)
-    @SuppressLint("SetTextI18n", "SuspiciousIndentation")
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -114,6 +109,10 @@ class PokemonViewerActivity : AppCompatActivity() {
                                 val docRef = db.collection("users").document(userId)
                                 val candyItems = docRef.get().await().get("candyItems") as Long
                                 docRef.update("candyItems", candyItems - 1)
+                                val pokemonById = db.collection("pokemons").document(pokemon.id)
+                                val baseIncome = pokemonById.get().await().get("income") as Long
+                                Log.d("TAG", "baseIncome : $baseIncome")
+                                pokemonById.update("income", baseIncome * 2)
                                 pokemon.dna = listOf(evolution, 0)
                                 evolveInDb(evolution)
                                 val intent = Intent(this@PokemonViewerActivity, PokemonViewerActivity::class.java)
@@ -172,7 +171,7 @@ class PokemonViewerActivity : AppCompatActivity() {
     private suspend fun getEvolution() : Int? {
         val pokemonRes = APIClient.apiService
         val chainLink = pokemonRes.doGetEvolutionLink(pokemon.dna[0])?.evolutionChain
-        val evolutionChain = pokemonRes.doGetEvolutionChain(chainLink?.url.toString().split("/").get(6).toInt())
+        val evolutionChain = pokemonRes.doGetEvolutionChain(chainLink?.url.toString().split("/")[6].toInt())
 
         val id1 = evolutionChain?.chain?.species?.url?.split("/")?.get(6)?.toInt()
         val id2 = ArrayList<Int>()
@@ -180,16 +179,16 @@ class PokemonViewerActivity : AppCompatActivity() {
         if (evolutionChain?.chain?.evolvesTo?.size!! > 0) {
             for (i in 0 until evolutionChain.chain!!.evolvesTo.size) {
                 // If number less than 251
-                val id = evolutionChain.chain!!.evolvesTo.get(i).species?.url?.split("/")?.get(6)?.toInt()
+                val id = evolutionChain.chain!!.evolvesTo[i].species?.url?.split("/")?.get(6)?.toInt()
                 if (id != null) {
                     if (id < 251) {
                         id2.add(id)
                     }
                 }
             }
-            if (evolutionChain?.chain?.evolvesTo?.get(0)?.evolvesTo?.size!! > 0) {
-                for (i in 0 until evolutionChain.chain!!.evolvesTo.get(0).evolvesTo.size) {
-                    val id = evolutionChain.chain!!.evolvesTo.get(0).evolvesTo.get(i).species?.url?.split("/")?.get(6)?.toInt()
+            if (evolutionChain.chain?.evolvesTo?.get(0)?.evolvesTo?.size!! > 0) {
+                for (i in 0 until evolutionChain.chain!!.evolvesTo[0].evolvesTo.size) {
+                    val id = evolutionChain.chain!!.evolvesTo[0].evolvesTo[i].species?.url?.split("/")?.get(6)?.toInt()
                     if (id != null) {
                         if (id < 251) {
                             id3.add(id)
@@ -200,15 +199,15 @@ class PokemonViewerActivity : AppCompatActivity() {
         }
 
         println("id1 : $id1, id2 : $id2, id3 : $id3")
-        if (id1 == pokemon.dna[0] && id2.contains(pokemon.dna[0]+1)) {
+        return if (id1 == pokemon.dna[0] && id2.contains(pokemon.dna[0]+1)) {
             val random = (0 until id2.size).random()
-            println("random : $random, id2 : ${id2.get(random)}")
-            return id2.get(random)
+            println("random : $random, id2 : ${id2[random]}")
+            id2[random]
         } else if (id2.contains(pokemon.dna[0]) && id3.contains(pokemon.dna[0]+1)) {
             val random = (0 until id3.size).random()
-            return id3.get(random)
+            id3[random]
         } else {
-            return null
+            null
         }
     }
 
@@ -224,7 +223,7 @@ class PokemonViewerActivity : AppCompatActivity() {
         input.setText(pokemon.name)
         val sprite = dialogView.findViewById<ImageView>(R.id.image)
         APISpritesClient.setSpriteImage(pokemon.dna, sprite, this)
-        dialog.setPositiveButton("OK") { dialog, which ->
+        dialog.setPositiveButton("OK") { _, _ ->
             pokemon.name = input.text.toString()
             binding.pokemonName.text = pokemon.name
             val db = Firebase.firestore
@@ -232,8 +231,8 @@ class PokemonViewerActivity : AppCompatActivity() {
             docRef.update("name", pokemon.name)
             docRef.update("egg", false)
         }
-        dialog.setNegativeButton("Cancel") { dialog, which ->
-            dialog.cancel()
+        dialog.setNegativeButton("Cancel") { dialogue, _ ->
+            dialogue.cancel()
         }
         dialog.show()
     }
@@ -385,12 +384,11 @@ class PokemonViewerActivity : AppCompatActivity() {
     }
 
     private suspend fun getStatsOf(dna1:Int, dna2:Int) : ArrayList<Int> {
-        val id1 = dna1
         var id2 = dna2
         if (dna2 == 0) {
-            id2 = id1
+            id2 = dna1
         }
-        val pokemonStat1 = getStatById(id1)
+        val pokemonStat1 = getStatById(dna1)
         val pokemonStat2 = getStatById(id2)
         val intPokemonStat1 = ArrayList<Int>()
         val intPokemonStat2 = ArrayList<Int>()
@@ -523,6 +521,7 @@ class PokemonViewerActivity : AppCompatActivity() {
 
 
     }
+
     private suspend fun getWeightOf(pokemon: Pokemon): Int {
         var weight : String? = null
         val pokemonRes = APIClient.apiService
@@ -562,14 +561,13 @@ class PokemonViewerActivity : AppCompatActivity() {
         var name : String? = null
         try {
             pokemonRes.doGetListInfos(pokemon.dna[0])
-            val name0 = pokemonRes.doGetListInfos(pokemon.dna[0])?.name
             //name0 first char to upper case and the rest to lower case
             val name0UpperCase = pokemonRes.doGetListInfos(pokemon.dna[0])?.name?.substring(0,1)
                 ?.uppercase(
                     Locale.ROOT
                 ) + pokemonRes.doGetListInfos(pokemon.dna[0])?.name?.substring(1)
                 ?.lowercase(Locale.ROOT)
-            name = name0UpperCase + "/" + pokemonRes.doGetListInfos(pokemon.dna[1])?.name?.substring(0,1)
+            name = "$name0UpperCase/" + pokemonRes.doGetListInfos(pokemon.dna[1])?.name?.substring(0,1)
                 ?.uppercase(Locale.ROOT) + pokemonRes.doGetListInfos(pokemon.dna[1])?.name?.substring(1)
                 ?.lowercase(Locale.ROOT)
             //

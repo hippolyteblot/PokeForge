@@ -7,7 +7,6 @@ import com.example.pokeforge.databinding.ActivityMakeFusionBinding
 class MakeFusionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMakeFusionBinding
-    private lateinit var pokemon: Pokemon
     private lateinit var dna1: ArrayList<Int>
     private lateinit var dna2: ArrayList<Int>
 
