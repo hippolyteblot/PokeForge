@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-        //100ieme commit, jvous aime la team, le 20 ou rien <3
 
 
         val navView: BottomNavigationView = binding.navView
