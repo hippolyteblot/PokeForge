@@ -1,5 +1,5 @@
 package com.example.pokeforge
-
+@Suppress("unused")
 object PokemonTeam {
 
     private var team = ArrayList<Pokemon>()

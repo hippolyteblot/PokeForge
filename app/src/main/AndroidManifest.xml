@@ -82,7 +82,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".com.example.pokeforge.RemoteSelectionActivity"
+            android:name=".RemoteSelectionActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
