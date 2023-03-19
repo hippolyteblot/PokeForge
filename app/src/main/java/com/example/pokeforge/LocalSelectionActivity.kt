@@ -2,6 +2,7 @@ package com.example.pokeforge.com.example.pokeforge
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -78,17 +79,47 @@ class LocalSelectionActivity : AppCompatActivity() {
         binding!!.button.setOnClickListener() {
             if (selectedPokemon != null) {
                 val dialog = Dialog(this)
+                val db = Firebase.firestore
+                var totalincome : Long = 0
+                var dnaBool = false
+                var dna2Bool = false
+                db.collection("pokemons").get().addOnSuccessListener() { result ->
+                    result.forEach() { document ->
+                        for (i in document.data["dna"] as List<Int>) {
+                            if (document.data["owner"] == FirebaseAuth.getInstance().currentUser!!.uid) {
+                                Log.d("TAG", "$i => ${document.data["dna"]} => $dna1 aaaaaaand ${document.data["dna"].toString() == dna1.toString()}")
+                                if (i.toString() == dna1.toString() && !dnaBool) {
+                                    dnaBool = true
+                                    totalincome += document.data["income"] as Long
+                                }
+                                if (i.toString() == dna2.toString() && !dna2Bool) {
+                                    dna2Bool = true
+                                    totalincome += document.data["income"] as Long
+
+                                }
+                            }
+
+
+                        }
+
+                    }
+                }
+                Log.d("TAG", "Total income: $totalincome")
+                val total = totalincome*1.2
+
                 dialog.setContentView(R.layout.label_image_dialog)
                 dialog.findViewById<ImageButton>(R.id.accept).setOnClickListener {
                     val egg = hashMapOf(
                         "name" to "",
                         "dna" to listOf(dna1, dna2).shuffled(),
-                        "income" to 0,
+                        "income" to totalincome,
                         "owner" to FirebaseAuth.getInstance().currentUser!!.uid,
                         "egg" to true,
                     )
                     val db = Firebase.firestore
                     db.collection("pokemons").add(egg)
+
+                    removeFusionItem()
 
                     dialog.dismiss()
                     finish()
@@ -97,8 +128,19 @@ class LocalSelectionActivity : AppCompatActivity() {
 
             }
         }
+    }
 
-
+    private fun removeFusionItem() {
+        val db = Firebase.firestore
+        // 1. Get the number of items in the collection
+        val uid = FirebaseAuth.getInstance().currentUser!!.uid
+        db.collection("users").document(uid).get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val number = document.data?.get("fusionItems") as Long
+                    db.collection("users").document(uid).update("fusionItems", number - 1)
+                }
+            }
     }
 
     fun setSelectedPokemon(pokemon: Pokemon) {

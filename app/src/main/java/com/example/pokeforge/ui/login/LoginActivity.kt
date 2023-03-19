@@ -42,7 +42,6 @@ class LoginActivity : AppCompatActivity() {
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
             val intent = Intent(this@LoginActivity, MainActivity::class.java)
-            intent.putExtra("userUID", currentUser.uid)
             startActivity(intent)
         }
 

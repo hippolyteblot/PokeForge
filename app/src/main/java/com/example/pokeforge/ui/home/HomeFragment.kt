@@ -44,6 +44,7 @@ class HomeFragment : Fragment() {
             recyclerView.adapter = PokemonAdapter(this.requireContext(), team.getTeam(), this.activity as MainActivity)
             recyclerView.layoutManager = GridLayoutManager(this.requireContext(), 2)
         }
+
         return root
     }
 

@@ -8,6 +8,7 @@ import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokeforge.databinding.ActivityStartingGameBinding
@@ -26,11 +27,9 @@ class StartingGameActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupStartersSprites()
-        println("Starting game")
         binding.changeSprite.setOnClickListener {
             val dialog = Dialog(this)
             // Use the layout "change_sprite_dialog" to create the dialog
-
             val dialogView = layoutInflater.inflate(R.layout.change_sprite_dialog, null)
             // Do the previous lines in one
 
@@ -39,11 +38,9 @@ class StartingGameActivity : AppCompatActivity() {
             val recyclerView = dialogView.findViewById<RecyclerView>(R.id.recyclerView)
             recyclerView.adapter = adapter
 
-            val button = dialogView.findViewById<Button>(R.id.validate_button)
+            val button = dialogView.findViewById<ImageButton>(R.id.validate_button)
             button.setOnClickListener {
                 sprite = adapter.getSelectedSprite()
-                println("Sprite selected: $sprite")
-                println("Id of the sprite: ${R.drawable.character1}")
                 binding.playerSprite.setImageResource(sprite)
                 // hide the dialog
                 dialog.dismiss()
@@ -57,8 +54,7 @@ class StartingGameActivity : AppCompatActivity() {
             addUserToDatabase()
             val intent = Intent(this, MainActivity::class.java)
             val adapter = binding.starterList.adapter as StarterSelectionAdapter
-            intent.putExtra("starter", adapter.selectedDna.get(0))
-            intent.putExtra("userUID", intent.getStringExtra("userUID"))
+            intent.putExtra("starter", adapter.selectedDna[0])
             startActivity(intent)
         }
 
@@ -67,6 +63,17 @@ class StartingGameActivity : AppCompatActivity() {
     private fun addUserToDatabase() {
         val db = Firebase.firestore
         val userUID = intent.getStringExtra("userUID")
+
+        val adapter = binding.starterList.adapter as StarterSelectionAdapter
+
+        val starter = hashMapOf(
+            "name" to "Bulbasaur",
+            "dna" to adapter.selectedDna,
+            "income" to 100,
+            "owner" to userUID,
+            "egg" to true,
+        )
+        db.collection("pokemons").add(starter)
 
 
         var spriteName = "character1"
@@ -97,19 +104,7 @@ class StartingGameActivity : AppCompatActivity() {
         if (userUID != null) {
             db.collection("users").document(userUID).set(user)
         }
-        // add starter pokemon to the database
-        val adapter = binding.starterList.adapter as StarterSelectionAdapter
 
-
-
-        val starter = hashMapOf(
-            "name" to "Bulbasaur",
-            "dna" to adapter.selectedDna,
-            "income" to 100,
-            "owner" to userUID,
-            "egg" to true,
-        )
-        db.collection("pokemons").add(starter)
     }
 
     private fun setupStartersSprites() {
