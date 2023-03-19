@@ -88,4 +88,6 @@
     <string name="nom_du_pokemon">nom du pokemon</string>
     <string name="profile">Profile</string>
     <string name="maps">Maps</string>
+    <string name="button_register">button register</string>
+    <string name="button_connecter">button connecter</string>
 </resources>
