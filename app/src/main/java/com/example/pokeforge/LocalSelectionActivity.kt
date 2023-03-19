@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -107,7 +108,7 @@ class LocalSelectionActivity : AppCompatActivity() {
                 val total = totalincome*1.2
 
                 dialog.setContentView(R.layout.label_image_dialog)
-                dialog.findViewById<Button>(R.id.accept).setOnClickListener {
+                dialog.findViewById<ImageButton>(R.id.accept).setOnClickListener {
                     val egg = hashMapOf(
                         "name" to "",
                         "dna" to listOf(dna1, dna2).shuffled(),
