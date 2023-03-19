@@ -13,5 +13,6 @@
         android:layout_height="110dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/character1" />
+        app:srcCompat="@drawable/character1"
+        android:contentDescription="@string/image_du_personnage" />
 </androidx.constraintlayout.widget.ConstraintLayout>
