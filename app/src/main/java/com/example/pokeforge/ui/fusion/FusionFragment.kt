@@ -53,7 +53,7 @@ class FusionFragment : Fragment() {
                     intent.putExtra("sprite", (activity as MainActivity).userSprite)
                     startActivity(intent)
                 } else {
-                    val toast = Toast.makeText(activity, "Vous n'avais pas de pointeau ADN !", Toast.LENGTH_SHORT)
+                    val toast = Toast.makeText(activity, "Vous n'avez pas de pointeau ADN !", Toast.LENGTH_SHORT)
                     toast.show()
                 }
             }
@@ -66,7 +66,7 @@ class FusionFragment : Fragment() {
                     val intent = Intent(activity, LocalSelectionActivity::class.java)
                     startActivity(intent)
                 } else {
-                    val toast = Toast.makeText(activity, "Vous n'avais pas de pointeau ADN !", Toast.LENGTH_SHORT)
+                    val toast = Toast.makeText(activity, "Vous n'avez pas de pointeau ADN !", Toast.LENGTH_SHORT)
                     toast.show()
                 }
             }

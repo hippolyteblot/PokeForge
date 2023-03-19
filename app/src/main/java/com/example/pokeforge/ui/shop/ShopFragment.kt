@@ -23,8 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.*
-
-
+import kotlin.math.pow
 
 
 class ShopFragment : Fragment() {
@@ -191,18 +190,31 @@ class ShopFragment : Fragment() {
                                         val listeMyth = documents2.documents
                                         val liste = listeLegend + listeMyth
                                         val taille = liste.size
+
                                         val random = (0 until taille).random()
                                         val pokemon = liste[random]
                                         println("DocumentSnapshot data: ${pokemon.data}")
                                         pokeName = pokemon.data?.get("name").toString()
                                         pokeId = pokemon.data?.get("id").toString().toInt()
+
                                         println(pokeName)
 
+                                        val stat1 = pokemon.data?.get("stat1").toString().toInt()
+                                        val stat2 = pokemon.data?.get("stat2").toString().toInt()
+                                        val stat3 = pokemon.data?.get("stat3").toString().toInt()
+                                        val stat4 = pokemon.data?.get("stat4").toString().toInt()
+                                        val stat5 = pokemon.data?.get("stat5").toString().toInt()
+                                        val stat6 = pokemon.data?.get("stat6").toString().toInt()
+                                        //total
+                                        val sum = stat1 + stat2 + stat3 + stat4 + stat5 + stat6
+                                        val total = (sum.toFloat().pow(2)/300).toInt()
+
+                                        println(total)
                                         val newPoke = hashMapOf(
                                             "name" to pokeName,
                                             "dna" to listOf(pokeId, 0),
                                             "egg" to true,
-                                            "income" to 0,
+                                            "income" to total,
                                             "owner" to FirebaseAuth.getInstance().currentUser?.uid,
                                         )
                                         db.collection("pokemons").add(newPoke)
@@ -248,12 +260,21 @@ class ShopFragment : Fragment() {
                                 pokeName = pokemon.data?.get("name").toString()
                                 pokeId = pokemon.data?.get("id").toString().toInt()
                                 println(pokeName)
-
+                                val stat1 = pokemon.data?.get("stat1").toString().toInt()
+                                val stat2 = pokemon.data?.get("stat2").toString().toInt()
+                                val stat3 = pokemon.data?.get("stat3").toString().toInt()
+                                val stat4 = pokemon.data?.get("stat4").toString().toInt()
+                                val stat5 = pokemon.data?.get("stat5").toString().toInt()
+                                val stat6 = pokemon.data?.get("stat6").toString().toInt()
+                                //total
+                                val sum = stat1 + stat2 + stat3 + stat4 + stat5 + stat6
+                                val total = (sum.toFloat().pow(2)/300).toInt()
+                                println(total)
                                 val newPoke = hashMapOf(
                                     "name" to pokeName,
                                     "dna" to listOf(pokeId, 0),
                                     "egg" to true,
-                                    "income" to 0,
+                                    "income" to total,
                                     "owner" to FirebaseAuth.getInstance().currentUser?.uid,
                                 )
                                 db.collection("pokemons").add(newPoke)
@@ -313,12 +334,22 @@ class ShopFragment : Fragment() {
                                 pokeName = pokemon.data?.get("name").toString()
                                 pokeId = pokemon.data?.get("id").toString().toInt()
                                 println(pokeName)
+                                val stat1 = pokemon.data?.get("stat1").toString().toInt()
+                                val stat2 = pokemon.data?.get("stat2").toString().toInt()
+                                val stat3 = pokemon.data?.get("stat3").toString().toInt()
+                                val stat4 = pokemon.data?.get("stat4").toString().toInt()
+                                val stat5 = pokemon.data?.get("stat5").toString().toInt()
+                                val stat6 = pokemon.data?.get("stat6").toString().toInt()
+                                //total
+                                val sum = stat1 + stat2 + stat3 + stat4 + stat5 + stat6
+                                val total = (sum.toFloat().pow(2)/300).toInt()
 
+                                println(total)
                                 val newPoke = hashMapOf(
                                     "name" to pokeName,
                                     "dna" to listOf(pokeId, 0),
                                     "egg" to true,
-                                    "income" to 0,
+                                    "income" to total,
                                     "owner" to (activity as MainActivity).userUID,
                                 )
                                 db.collection("pokemons").add(newPoke)
@@ -383,12 +414,22 @@ class ShopFragment : Fragment() {
                                 pokeName = pokemon.data?.get("name").toString()
                                 pokeId = pokemon.data?.get("id").toString().toInt()
                                 println(pokeName)
+                                val stat1 = pokemon.data?.get("stat1").toString().toInt()
+                                val stat2 = pokemon.data?.get("stat2").toString().toInt()
+                                val stat3 = pokemon.data?.get("stat3").toString().toInt()
+                                val stat4 = pokemon.data?.get("stat4").toString().toInt()
+                                val stat5 = pokemon.data?.get("stat5").toString().toInt()
+                                val stat6 = pokemon.data?.get("stat6").toString().toInt()
+                                //total
+                                val sum = stat1 + stat2 + stat3 + stat4 + stat5 + stat6
+                                val total = (sum.toFloat().pow(2)/300).toInt()
+                                println(total)
 
                                 val newPoke = hashMapOf(
                                     "name" to pokeName,
                                     "dna" to listOf(pokeId, 0),
                                     "egg" to true,
-                                    "income" to 0,
+                                    "income" to total,
                                     "owner" to (activity as MainActivity).userUID,
                                 )
                                 db.collection("pokemons").add(newPoke)
@@ -432,12 +473,21 @@ class ShopFragment : Fragment() {
                             pokeName = pokemon.data?.get("name").toString()
                             pokeId = pokemon.data?.get("id").toString().toInt()
                             println(pokeName)
-
+                            val stat1 = pokemon.data?.get("stat1").toString().toInt()
+                            val stat2 = pokemon.data?.get("stat2").toString().toInt()
+                            val stat3 = pokemon.data?.get("stat3").toString().toInt()
+                            val stat4 = pokemon.data?.get("stat4").toString().toInt()
+                            val stat5 = pokemon.data?.get("stat5").toString().toInt()
+                            val stat6 = pokemon.data?.get("stat6").toString().toInt()
+                            //total
+                            val sum = stat1 + stat2 + stat3 + stat4 + stat5 + stat6
+                            val total = (sum.toFloat().pow(2)/300).toInt()
+                            println(total)
                             val newPoke = hashMapOf(
                                 "name" to pokeName,
                                 "dna" to listOf(pokeId, 0),
                                 "egg" to true,
-                                "income" to 0,
+                                "income" to total,
                                 "owner" to (activity as MainActivity).userUID,
                             )
                             db.collection("pokemons").add(newPoke)
