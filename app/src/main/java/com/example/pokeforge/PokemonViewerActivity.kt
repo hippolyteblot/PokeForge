@@ -114,6 +114,10 @@ class PokemonViewerActivity : AppCompatActivity() {
                                 val docRef = db.collection("users").document(userId)
                                 val candyItems = docRef.get().await().get("candyItems") as Long
                                 docRef.update("candyItems", candyItems - 1)
+                                val PokemonById = db.collection("pokemons").document(pokemon.id)
+                                val baseIncome = PokemonById.get().await().get("income") as Long
+                                Log.d("TAG", "baseIncome : $baseIncome")
+                                PokemonById.update("income", baseIncome * 2)
                                 pokemon.dna = listOf(evolution, 0)
                                 evolveInDb(evolution)
                                 val intent = Intent(this@PokemonViewerActivity, PokemonViewerActivity::class.java)
