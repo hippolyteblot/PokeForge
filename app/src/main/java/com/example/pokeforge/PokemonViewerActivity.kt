@@ -30,6 +30,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
+import org.checkerframework.checker.index.qual.LengthOf
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -38,6 +40,7 @@ class PokemonViewerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPokemonViewerBinding
     private lateinit var pokemon: Pokemon
     private lateinit var userId : String
+    private lateinit var list: ArrayList<Int>
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private val permissionId = 2
 
@@ -68,8 +71,10 @@ class PokemonViewerActivity : AppCompatActivity() {
             pokemon.types = getTypeOf(pokemon)
             pokemon.weight = getWeightOf(pokemon)
             pokemon.height = getHeightOf(pokemon)
+            list = setstats()
             //pokemon.name = getNameOf(pokemon)
             runOnUiThread {
+                Log.d("list", list.toString())
                 bind(pokemon)
                 binding.statPvNb.text = pokemon.stats[0].toString()
                 binding.statPvDef.text = pokemon.stats[1].toString()
@@ -107,7 +112,7 @@ class PokemonViewerActivity : AppCompatActivity() {
             pokemon.name = input.text.toString()
             binding.pokemonName.text = pokemon.name
             val db = Firebase.firestore
-            val docRef = db.collection("pokemons").document(pokemon.id)
+            val docRef = db.collection("pokemon_available").document(pokemon.id)
             docRef.update("name", pokemon.name)
             docRef.update("egg", false)
         }
@@ -116,6 +121,87 @@ class PokemonViewerActivity : AppCompatActivity() {
         }
         dialog.show()
     }
+
+
+    private suspend fun setstats() : ArrayList<Int> {
+        val db = Firebase.firestore
+        var apicall : kotlin.collections.ArrayList<Int> = ArrayList()
+
+        val docRef = db.collection("pokemon_available")
+        //list all id
+        val list = ArrayList<String>()
+        docRef.get().addOnSuccessListener { documents ->
+            for (document in documents) {
+
+                list.add(document.id)
+
+            }
+            GlobalScope.launch {
+                apicall = apiCall(list)
+
+
+                runOnUiThread {
+                    Log.d("apicall", apicall.toString())
+                    var newList = kotlin.collections.ArrayList<Int>()
+                    var resultat = 0
+                    var j=0
+                    Log.d("list", list.size.toString())
+                    Log.d("apicall", apicall.size.toString())
+                        for (i in list){
+
+                            val docRef2 = db.collection("pokemon_available").document(i)
+                            if (j > 250){
+                                Log.d("continue", j.toString() + " " + i)
+                                continue
+                            }
+                            Log.d("j", j.toString() + " " + i + " " + apicall[j*6].toString() + " " + apicall[(j*6)+1].toString() + " " + apicall[(j*6)+2].toString() + " " + apicall[(j*6)+3].toString() + " " + apicall[(j*6)+4].toString() + " " + apicall[(j*6)+5].toString())
+                            docRef2.update("stat1", apicall[j*6])
+                            docRef2.update("stat2", apicall[(j*6)+1])
+                            docRef2.update("stat3", apicall[(j*6)+2])
+                            docRef2.update("stat4", apicall[(j*6)+3])
+                            docRef2.update("stat5", apicall[(j*6)+4])
+                            docRef2.update("stat6", apicall[(j*6)+5])
+
+
+                            j++
+                        }
+                    Log.d("newList", newList.toString())
+                }
+            }
+        }.await()
+
+        return apicall
+
+
+    }
+    private suspend fun apiCall(list : ArrayList<String>) : ArrayList<Int> {
+        var res : ArrayList<Int> = ArrayList()
+        val api = APIClient.apiService
+        for (id in list) {
+            try {
+                val stat = api.doGetListInfosStr(id)?.stats
+                for (s in stat!!) {
+                    var i = 0
+                    var result = 0
+                    s.baseStat?.let {
+                        //ajouter les 6 premiers it
+
+                        res.add(it)
+
+
+                    }
+                }
+
+
+
+            } catch (e: Exception) {
+                Log.d("TAG", "gdsdsdsdsdsetStatsOf: $e")
+            }
+        }
+        return res
+
+    }
+
 
     private fun bind(pokemon: Pokemon) {
         // Bind info

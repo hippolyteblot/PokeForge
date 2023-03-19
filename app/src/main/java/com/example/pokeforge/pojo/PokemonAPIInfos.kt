@@ -12,4 +12,5 @@ class PokemonAPIInfos {
 
     @SerializedName("name")
     val name: String? = null
+
 }

@@ -15,15 +15,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pokeforge.APISpritesClient
-import com.example.pokeforge.MainActivity
-import com.example.pokeforge.R
-import com.example.pokeforge.SpriteSelectionAdapter
+import com.example.pokeforge.*
 import com.example.pokeforge.databinding.FragmentDashboardBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -53,6 +52,7 @@ class DashboardFragment : Fragment() {
         //dashboardViewModel.text.observe(viewLifecycleOwner) {
         //    textView.text = it
         //}
+
 
         var offer1 = ""
         var offer2 = ""
@@ -144,7 +144,7 @@ class DashboardFragment : Fragment() {
                                 pokeName = pokemon.data?.get("name").toString()
                                 pokeId = pokemon.data?.get("id").toString().toInt()
                                 println(pokeName)
-
+                                //TODO : on sucess
                                 val newPoke = hashMapOf(
                                     "name" to pokeName,
                                     "dna" to listOf(pokeId,0),
