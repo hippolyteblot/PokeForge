@@ -37,16 +37,18 @@
             android:layout_weight="1" />
 
 
-        <!--<Button
+        <Button
             android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="@string/suivant"
+            android:layout_height="match_parent"
+            android:text="@string/supprimer"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:textColor="@color/appleBlue"
             android:textSize="17sp"
-            android:id="@+id/buttonNext"
+            android:layout_marginTop="10dp"
+            android:id="@+id/buttonSupprimer"
             android:layout_weight="1"
-            android:layout_margin="8dp"/>-->
+            android:layout_marginStart="30dp"
+            />
 
     </LinearLayout>
 

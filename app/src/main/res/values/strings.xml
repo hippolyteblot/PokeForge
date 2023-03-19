@@ -43,4 +43,6 @@
     <string name="prompt_password_confirm">Confirm password</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="suprimmer">Suprimmer</string>
+    <string name="supprimer">Supprimer</string>
 </resources>

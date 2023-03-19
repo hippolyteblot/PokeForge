@@ -32,7 +32,7 @@ import kotlinx.coroutines.tasks.await
 import java.util.*
 import kotlin.collections.ArrayList
 
-@Suppress("unused")
+@Suppress("unused", "DEPRECATION")
 class PokemonViewerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPokemonViewerBinding
     private lateinit var pokemon: Pokemon
@@ -47,10 +47,66 @@ class PokemonViewerActivity : AppCompatActivity() {
         pokemon = intent.getSerializableExtra("pokemon") as Pokemon
 
         println(pokemon.dna)
+
         userId = intent.getStringExtra("userUID").toString()
         binding = ActivityPokemonViewerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.buttonSupprimer.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Supprimer le pokemon")
+            builder.setMessage("Voulez-vous vraiment supprimer ce pokemon : ${pokemon.name} ? Vous allez gagnez ${pokemon.income*5} $")
+            Log.d("TAGGGGG", "pokemon ${pokemon.id} de l'utilisateur $userId")
+            val db = Firebase.firestore
+            var reward: Long
+
+            builder.setPositiveButton("Oui") { _, _ ->
+                db.collection("pokemons").get().addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        Log.d("TAGGGGG", "${document.id} => ${document.data}")
+                        if (document.id == pokemon.id) {
+
+                            reward = document.data["income"] as Long
+                            reward *= 5
+                            Log.d("TAGGGGG", "pokemon ${pokemon.id} de l'utilisateur $userId a gagné $reward")
+                            db.collection("users").document(userId).get().addOnSuccessListener { userDoc ->
+                                if (userDoc != null) {
+                                    Log.d("TAGGGGG", "DocumentSnapshot data: ${userDoc.data}")
+                                    var money = userDoc.data?.get("balance") as Long
+                                    money += reward
+                                    Log.d("TAGGGGG", "money : $money")
+                                    db.collection("users").document(userId).update("balance", money)
+                                    Log.d("suppression", "suppression du pokemon ${pokemon.id} de l'utilisateur $userId")
+                                    db.collection("pokemons").document(pokemon.id).delete().addOnSuccessListener {
+                                        Log.d("suppression", "pokemon supprimé")
+                                        Toast.makeText(this, "Pokemon supprimé", Toast.LENGTH_SHORT).show()
+                                        val intent = Intent(this@PokemonViewerActivity, MainActivity::class.java)
+                                        startActivity(intent)
+                                        finish()
+                                    }.addOnFailureListener {
+                                        Log.d("suppression", "pokemon non supprimé")
+                                        Toast.makeText(this, "Pokemon non supprimé", Toast.LENGTH_SHORT).show()
+                                    }
+                                } else {
+                                    Log.d("TAGGGGG", "No such document")
+                                }
+                            }.addOnFailureListener { exception ->
+                                Log.d("TAGGGGG", "get failed with ", exception)
+                            }
+                        }
+                    }
+                }.addOnFailureListener { exception ->
+                    Log.d("TAGGGGG", "Error getting documents: ", exception)
+                }
+
+
+
+            }
+            builder.setNegativeButton("Non") { dialog, _ ->
+                dialog.dismiss()
+            }
+            builder.show()
+        }
 
         APISpritesClient.setSpriteImage(pokemon.dna, binding.pokemonSprite, this)
 
