@@ -73,6 +73,7 @@ class StartingGameActivity : AppCompatActivity() {
         val adapter = binding.starterList.adapter as StarterSelectionAdapter
 
         val pokeRes = APIClient.apiService
+        adapter.selectedDna.let { listOf(1,1) }
         val pokemonName = pokeRes.doGetListInfos(adapter.selectedDna[0])?.name
         val starter = hashMapOf(
             "name" to pokemonName,
