@@ -6,10 +6,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokeforge.databinding.ActivityStartingGameBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 
 class StartingGameActivity : AppCompatActivity() {
 
@@ -23,6 +25,13 @@ class StartingGameActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupStartersSprites()
+
+        binding.starterList.setOnClickListener(
+            {
+            println("Click on the list")
+            }
+        )
+
         binding.changeSprite.setOnClickListener {
             val dialog = Dialog(this)
             // Use the layout "change_sprite_dialog" to create the dialog
@@ -47,23 +56,26 @@ class StartingGameActivity : AppCompatActivity() {
         }
 
         binding.startGame.setOnClickListener {
-            addUserToDatabase()
-            val intent = Intent(this, MainActivity::class.java)
-            val adapter = binding.starterList.adapter as StarterSelectionAdapter
-            intent.putExtra("starter", adapter.selectedDna[0])
-            startActivity(intent)
+            lifecycleScope.launch {
+                addUserToDatabase()
+                val intent = Intent(this@StartingGameActivity, MainActivity::class.java)
+                val adapter = binding.starterList.adapter as StarterSelectionAdapter
+                startActivity(intent)
+            }
         }
 
     }
 
-    private fun addUserToDatabase() {
+    suspend private fun addUserToDatabase() {
         val db = Firebase.firestore
         val userUID = intent.getStringExtra("userUID")
 
         val adapter = binding.starterList.adapter as StarterSelectionAdapter
 
+        val pokeRes = APIClient.apiService
+        val pokemonName = pokeRes.doGetListInfos(adapter.selectedDna[0])?.name
         val starter = hashMapOf(
-            "name" to "Bulbasaur",
+            "name" to pokemonName,
             "dna" to adapter.selectedDna,
             "income" to 100,
             "owner" to userUID,
@@ -111,6 +123,7 @@ class StartingGameActivity : AppCompatActivity() {
         starters.add(arrayListOf(152,0))
         starters.add(arrayListOf(155,0))
         starters.add(arrayListOf(158,0))
+        println("Starters: $starters")
 
         binding.starterList.adapter = StarterSelectionAdapter(this, starters)
         binding.starterList.layoutManager = androidx.recyclerview.widget.GridLayoutManager(this, 3)

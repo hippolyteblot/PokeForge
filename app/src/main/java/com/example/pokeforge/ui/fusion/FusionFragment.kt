@@ -47,7 +47,7 @@ class FusionFragment : Fragment() {
                 if(hasFusionItems()) {
                     // Start the remoteFusionActivity from this fragment
                     val intent = Intent(activity, RemoteFusionActivity::class.java)
-                    intent.putExtra("pokepieces", (activity as MainActivity).binding.balance.text.toString().toInt())
+                    intent.putExtra("pokepieces", (activity as MainActivity).binding.balance.text.toString())
                     intent.putExtra("name", (activity as MainActivity).userName)
                     intent.putExtra("sprite", (activity as MainActivity).userSprite)
                     startActivity(intent)

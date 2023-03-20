@@ -26,6 +26,8 @@ class LocalSelectionActivity : AppCompatActivity() {
 
     private var dna1 = 0
     private var dna2 = 0
+    private var pokemon1 : Pokemon? = null
+    private var pokemon2 : Pokemon? = null
 
     private lateinit var remoteSprite : ImageView
 
@@ -72,7 +74,6 @@ class LocalSelectionActivity : AppCompatActivity() {
                     val random = (0..1).random()
                     dna2 = selectedPokemon!!.dna[random]
                 }
-                println("DNA2: $dna2")
             }
         }
 
@@ -99,14 +100,10 @@ class LocalSelectionActivity : AppCompatActivity() {
 
                                 }
                             }
-
-
                         }
-
                     }
                 }
                 Log.d("TAG", "Total income: $totalincome")
-                val total = totalincome*1.2
 
                 dialog.setContentView(R.layout.label_image_dialog)
                 dialog.findViewById<ImageButton>(R.id.accept).setOnClickListener {
@@ -145,6 +142,11 @@ class LocalSelectionActivity : AppCompatActivity() {
     }
 
     fun setSelectedPokemon(pokemon: Pokemon) {
+        if (firstSlot && pokemon2 == pokemon) {
+            return
+        } else if (!firstSlot && pokemon1 == pokemon) {
+            return
+        }
         selectedPokemon = pokemon
         val dna1a = selectedPokemon!!.dna[0]
         val dna1b = selectedPokemon!!.dna[1]
@@ -158,9 +160,11 @@ class LocalSelectionActivity : AppCompatActivity() {
         if (firstSlot) {
             APISpritesClient.setSpriteImage(pokemon.dna, binding!!.yourPokemon, this)
             dna1 = dna
+            pokemon1 = pokemon
         } else {
             APISpritesClient.setSpriteImage(pokemon.dna, binding!!.remotePokemon, this)
             dna2 = dna
+            pokemon2 = pokemon
         }
     }
 

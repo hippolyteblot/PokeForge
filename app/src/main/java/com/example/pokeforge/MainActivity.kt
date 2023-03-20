@@ -7,7 +7,6 @@ import android.util.Log
 import android.widget.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -16,7 +15,6 @@ import com.example.pokeforge.databinding.ActivityMainBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -38,12 +36,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-
-
-
-
-
         val navView: BottomNavigationView = binding.navView
+
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
@@ -119,18 +113,7 @@ class MainActivity : AppCompatActivity() {
                                                     dialog.dismiss()
                                                 }
                                             dialog.show()
-                                            if(balance/1000000000 > 0) {
-                                                val newBalance = "${balance/1000000000}B"
-                                                binding.balance.text = newBalance
-                                            } else if (balance/1000000 > 0) {
-                                                val newBalance = "${balance/1000000}M"
-                                                binding.balance.text = newBalance
-                                            } else if (balance/1000 > 0) {
-                                                val newBalance = "${balance/1000}K"
-                                                binding.balance.text = newBalance
-                                            } else if (balance < 1000) {
-                                                binding.balance.text = balance.toString()
-                                            }
+                                            setBalanceLabel(balance)
                                         }
                                         .addOnFailureListener { e -> println("Error updating document $e") }
                                     // Update the lastClaimed time
@@ -173,22 +156,10 @@ class MainActivity : AppCompatActivity() {
                 if (document.data?.get("balance") != null) {
                     balance = document.data?.get("balance").toString().toInt()
 
-                    if(balance/1000000000 > 0) {
-                        val newBalance = "${balance/1000000000}B"
-                        binding.balance.text = newBalance
-                    } else if (balance/1000000 > 0) {
-                        val newBalance = "${balance/1000000}M"
-                        binding.balance.text = newBalance
-                    } else if (balance/1000 > 0) {
-                        val newBalance = "${balance/1000}K"
-                        binding.balance.text = newBalance
-                    } else if (balance < 1000) {
-                        binding.balance.text = balance.toString()
-                    }
+                    setBalanceLabel(balance)
                 } else {
                     Log.d("poke", "No such document")
                 }
-                binding.balance.text = balance.toString()
             }
             .addOnFailureListener { exception ->
                 Log.d("poke", "get failed with ", exception)
@@ -251,6 +222,21 @@ class MainActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.d("poke", "get failed with ", exception)
             }
+    }
+
+    private fun setBalanceLabel(balance : Int) {
+        if(balance/1000000000 > 0) {
+            val newBalance = "${balance/1000000000}B"
+            binding.balance.text = newBalance
+        } else if (balance/1000000 > 0) {
+            val newBalance = "${balance/1000000}M"
+            binding.balance.text = newBalance
+        } else if (balance/1000 > 0) {
+            val newBalance = "${balance/1000}K"
+            binding.balance.text = newBalance
+        } else if (balance < 1000) {
+            binding.balance.text = balance.toString()
+        }
     }
 
 }

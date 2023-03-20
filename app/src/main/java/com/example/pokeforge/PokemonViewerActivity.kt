@@ -279,7 +279,7 @@ class PokemonViewerActivity : AppCompatActivity() {
         val input = dialogView.findViewById<EditText>(R.id.input)
         input.inputType = InputType.TYPE_CLASS_TEXT
 
-        if(!pokemon.name.isNullOrEmpty()) {
+        if(!pokemon.name.isEmpty()) {
             input.setText(pokemon.name)
         }
         else {

@@ -18,16 +18,7 @@ import com.example.pokeforge.*
 import com.example.pokeforge.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.gson.annotations.SerializedName
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Path
-
 
 
 class LoginActivity : AppCompatActivity() {
@@ -110,9 +101,9 @@ class LoginActivity : AppCompatActivity() {
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
                 val email = username.text.toString()
-                val password = password.text.toString()
+                val pswd = password.text.toString()
 
-                Firebase.auth.signInWithEmailAndPassword(email, password)
+                Firebase.auth.signInWithEmailAndPassword(email, pswd)
                     .addOnCompleteListener(this@LoginActivity) { task ->
                         if (task.isSuccessful) {
                             // La connexion avec email/mot de passe est réussie
@@ -143,11 +134,11 @@ class LoginActivity : AppCompatActivity() {
             binding.register?.setOnClickListener {
                 loading.visibility = View.VISIBLE
                 val email = usernameRegister?.text.toString()
-                val password = passwordRegister?.text.toString()
-                val passwordConfirm = passwordConfirm?.text.toString()
+                val pswd = passwordRegister?.text.toString()
+                val pswdConfirm = passwordConfirm?.text.toString()
 
-                if (password == passwordConfirm) {
-                    Firebase.auth.createUserWithEmailAndPassword(email, password)
+                if (pswd == pswdConfirm) {
+                    Firebase.auth.createUserWithEmailAndPassword(email, pswd)
                         .addOnCompleteListener(this@LoginActivity) { task ->
                             if (task.isSuccessful) {
                                 // La connexion avec email/mot de passe est réussie

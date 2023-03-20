@@ -111,14 +111,14 @@
         <ImageView
             android:id="@+id/textOffre2"
             android:layout_width="100dp"
-            android:contentDescription="@string/button_pour_acheter"
             android:layout_height="match_parent"
+            android:contentDescription="@string/button_pour_acheter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.945"
+            app:layout_constraintHorizontal_bias="0.916"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.4317"
+            app:layout_constraintVertical_bias="0.431"
             app:srcCompat="@drawable/text_mystery" />
 
         <ImageView
@@ -128,7 +128,7 @@
             android:contentDescription="@string/button_pour_acheter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.945"
+            app:layout_constraintHorizontal_bias="0.916"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.467"

@@ -34,7 +34,4 @@ object APINamesClient {
             .build()
     }
 
-    val apiService: APIInterface = getInstance().create(APIInterface::class.java)
-
-
 }

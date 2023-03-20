@@ -141,30 +141,9 @@ class RemoteSelectionActivity : AppCompatActivity() {
         lastItemView = view
     }
 
-    fun getLastItemView(): View? {
-        return lastItemView
-    }
 
     fun setRemoteValidation(validate : Boolean) {
         remoteValidation = validate
-        if (localValidation && remoteValidation) {
-            val dna1a = selectedPokemon?.dna?.get(0) ?: -1
-            val dna1b = selectedPokemon?.dna?.get(1) ?: -1
-            val dna1 : String = if (dna1b == -1) {
-                dna1a.toString()
-            } else {
-                "$dna1a,$dna1b"
-            }
-            val dna2a = remoteDna[0]
-            val dna2b = remoteDna[1]
-            val dna2 : String = if (dna2b == -1) {
-                dna2a.toString()
-            } else {
-                "$dna2a,$dna2b"
-            }
-
-        }
-
     }
 
     private fun fusion(dna1 : List<Int>, dna2 :List<Int> ) {

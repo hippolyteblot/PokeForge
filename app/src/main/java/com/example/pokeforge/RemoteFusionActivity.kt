@@ -119,14 +119,14 @@ class RemoteFusionActivity : AppCompatActivity() {
                 AlertDialog.Builder(this@RemoteFusionActivity)
                     .setTitle("Accept connection")
                     .setMessage("Do you want to accept the connection from ${connectionInfo.endpointName}?")
-                    .setPositiveButton("Yes") { dialog, which ->
+                    .setPositiveButton("Yes") { _, _ ->
                         // Accept the connection
                         connectionsClient.acceptConnection(endpointId, payloadCallback)
                         println("Accepted connection")
                         //Intent(this@LocalFusionActivity, RemoteSelectionActivity::class.java)
                         // Put the conn
                     }
-                    .setNegativeButton("No") { dialog, which ->
+                    .setNegativeButton("No") { _, _ ->
                         // Reject the connection
                         connectionsClient.rejectConnection(endpointId)
                     }
@@ -155,7 +155,7 @@ class RemoteFusionActivity : AppCompatActivity() {
         }
 
         val sprite = intent.getStringExtra("sprite")
-        val pokepieces = intent.getIntExtra("pokepieces", 0)
+        val pokepieces = intent.getStringExtra("pokepieces")
         val name = intent.getStringExtra("name")
         stringDescription = "$sprite;$pokepieces;$name"
         println("stringDescription: $stringDescription")
@@ -181,7 +181,6 @@ class RemoteFusionActivity : AppCompatActivity() {
                 val nameEndPoint = info.endpointName
                 playerList.add(mapOf("name" to nameEndPoint, "id" to endpointId))
 
-                System.out.println("We found an endpoint!")
                 playerAdapter = PlayerAdapter(this@RemoteFusionActivity, playerList, this@RemoteFusionActivity)
                 playerRecyclerView.adapter = playerAdapter
 
@@ -191,8 +190,8 @@ class RemoteFusionActivity : AppCompatActivity() {
 
             override fun onEndpointLost(endpointId: String) {
                 // Remove the lost endpoint from the list
-                val name = playerList.find { it["id"] == endpointId }?.get("name")
-                playerList.remove(mapOf("name" to name, "id" to endpointId))
+                val playerName = playerList.find { it["id"] == endpointId }?.get("name")
+                playerList.remove(mapOf("name" to playerName, "id" to endpointId))
                 playerAdapter = PlayerAdapter(this@RemoteFusionActivity, playerList, this@RemoteFusionActivity)
                 playerRecyclerView.adapter = playerAdapter
             }
