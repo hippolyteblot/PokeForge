@@ -40,11 +40,6 @@ object APISpritesClient {
 
         val imageUrl = "http://ec2-35-181-154-238.eu-west-3.compute.amazonaws.com/spriteGetter/?id1=$dna1&id2=$dna2"
 
-        //val image = URL(imageUrl).openStream().use { BitmapFactory.decodeStream(it) }
-        //val filename = "$dna1.$dna2.png"
-        //val file = File(context.filesDir, filename)
-        //file.outputStream().use { image.compress(Bitmap.CompressFormat.PNG, 100, it) }
-
         imageView.let {
             Glide.with(it.context)
                 .load(imageUrl)
