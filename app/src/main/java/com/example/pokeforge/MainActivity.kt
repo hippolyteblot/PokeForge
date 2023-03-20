@@ -188,7 +188,6 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     Log.d("poke", "No such document")
                 }
-                binding.balance.text = balance.toString()
             }
             .addOnFailureListener { exception ->
                 Log.d("poke", "get failed with ", exception)
