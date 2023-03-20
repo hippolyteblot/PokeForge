@@ -515,6 +515,8 @@ class ShopFragment : Fragment() {
                         db.collection("users").document((activity as MainActivity).userUID)
                     collectionRef.update(field, FieldValue.increment(1))
                 }
+                (activity as MainActivity).setCandies()
+                (activity as MainActivity).setFusion()
             }
         }
         builder.setNegativeButton("Non") { _, _ ->

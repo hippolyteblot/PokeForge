@@ -54,6 +54,9 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         setBalance()
+        setCandies()
+        setFusion()
+
 
         binding.claimPokepiece.setOnClickListener {
             claimPokepiece()
@@ -158,6 +161,46 @@ class MainActivity : AppCompatActivity() {
                     Log.d("poke", "No such document")
                 }
                 binding.balance.text = balance.toString()
+            }
+            .addOnFailureListener { exception ->
+                Log.d("poke", "get failed with ", exception)
+            }
+    }
+
+    fun setCandies() {
+        // Connect to firebase
+        val db = Firebase.firestore
+        // Get the last time the user claimed his pokepiece in the users collection where uuid = userUID
+        val docRef = db.collection("users").document(userUID)
+        var candies = 0
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.data?.get("candyItems") != null) {
+                    candies = document.data?.get("candyItems").toString().toInt()
+                } else {
+                    Log.d("poke", "No such document")
+                }
+                binding.candyNumb.text = candies.toString()
+            }
+            .addOnFailureListener { exception ->
+                Log.d("poke", "get failed with ", exception)
+            }
+    }
+
+    fun setFusion() {
+        // Connect to firebase
+        val db = Firebase.firestore
+        // Get the last time the user claimed his pokepiece in the users collection where uuid = userUID
+        val docRef = db.collection("users").document(userUID)
+        var fusion = 0
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.data?.get("fusionItems") != null) {
+                    fusion = document.data?.get("fusionItems").toString().toInt()
+                } else {
+                    Log.d("poke", "No such document")
+                }
+                binding.fusionNumb.text = fusion.toString()
             }
             .addOnFailureListener { exception ->
                 Log.d("poke", "get failed with ", exception)
