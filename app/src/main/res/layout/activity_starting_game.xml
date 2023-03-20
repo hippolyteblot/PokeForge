@@ -78,21 +78,35 @@
         android:id="@+id/start_game"
         android:layout_width="310dp"
         android:layout_height="60dp"
+<<<<<<< HEAD
         android:layout_marginBottom="40dp"
+=======
+        android:layout_marginTop="96dp"
+>>>>>>> 95de7d174e7a2bad471a5249af65f812bc986533
         android:background="@drawable/btn_startadv"
         android:text="@string/commencer_l_aventure"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+<<<<<<< HEAD
         app:layout_constraintHorizontal_bias="0.534"
         app:layout_constraintStart_toStartOf="parent" />
+=======
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/starter_list" />
+>>>>>>> 95de7d174e7a2bad471a5249af65f812bc986533
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/starter_list"
         android:layout_width="350dp"
         android:layout_height="230dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="16dp"
+<<<<<<< HEAD
         app:layout_constraintBottom_toTopOf="@+id/start_game"
+=======
+>>>>>>> 95de7d174e7a2bad471a5249af65f812bc986533
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.904"
         app:layout_constraintStart_toStartOf="parent"
