@@ -165,6 +165,7 @@ class PokemonViewerActivity : AppCompatActivity() {
                                 val docRef = db.collection("users").document(userId)
                                 val candyItems = docRef.get().await().get("candyItems") as Long
                                 docRef.update("candyItems", candyItems - 1)
+
                                 val pokemonById = db.collection("pokemons").document(pokemon.id)
                                 val baseIncome = pokemonById.get().await().get("income") as Long
                                 Log.d("TAG", "baseIncome : $baseIncome")

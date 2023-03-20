@@ -8,12 +8,14 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pokeforge.*
 import com.example.pokeforge.databinding.ActivityRemoteSelectionBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
 
 @Suppress("unused")
 class LocalSelectionActivity : AppCompatActivity() {
@@ -115,12 +117,18 @@ class LocalSelectionActivity : AppCompatActivity() {
                         "egg" to true,
                     )
                     val database = Firebase.firestore
-                    database.collection("pokemons").add(egg)
+                    database.collection("pokemons").add(egg).addOnSuccessListener {
+                        Log.d("TAG", "DocumentSnapshot added with ID: ${it.id}")
+                    }.addOnFailureListener { e ->
+                        Log.w("TAG", "Error adding document", e)
+                    }
 
-                    removeFusionItem()
+                    lifecycleScope.launchWhenStarted {
+                        removeFusionItem()
+                        dialog.dismiss()
+                        finish()
+                    }
 
-                    dialog.dismiss()
-                    finish()
                 }
                 dialog.show()
 
@@ -128,17 +136,16 @@ class LocalSelectionActivity : AppCompatActivity() {
         }
     }
 
-    private fun removeFusionItem() {
+    suspend private fun removeFusionItem() {
         val db = Firebase.firestore
         // 1. Get the number of items in the collection
         val uid = FirebaseAuth.getInstance().currentUser!!.uid
-        db.collection("users").document(uid).get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    val number = document.data?.get("fusionItems") as Long
-                    db.collection("users").document(uid).update("fusionItems", number - 1)
-                }
-            }
+        try {
+            val number = db.collection("users").document(uid).get().await().data?.get("fusionItems") as Long
+            db.collection("users").document(uid).update("fusionItems", number - 1)
+        } catch (e: Exception) {
+            Log.d("TAG", "Error getting documents: ", e)
+        }
     }
 
     fun setSelectedPokemon(pokemon: Pokemon) {
