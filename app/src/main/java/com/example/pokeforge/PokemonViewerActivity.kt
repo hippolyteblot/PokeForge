@@ -225,6 +225,9 @@ class PokemonViewerActivity : AppCompatActivity() {
     }
 
     private suspend fun getEvolution() : Int? {
+        if (pokemon.dna[1] != 0) {
+            return null
+        }
         val pokemonRes = APIClient.apiService
         val chainLink = pokemonRes.doGetEvolutionLink(pokemon.dna[0])?.evolutionChain
         val evolutionChain = pokemonRes.doGetEvolutionChain(chainLink?.url.toString().split("/")[6].toInt())
