@@ -14,7 +14,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
-import com.example.pokeforge.com.example.pokeforge.RemoteSelectionActivity
+import com.example.pokeforge.com.example.pokeforge.LocalSelectionActivity
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
@@ -23,8 +23,8 @@ import java.net.URL
 
 
 object APINamesClient {
-/*
-    const val baseUrl = "http://10.0.2.2:3000"
+
+    const val baseUrl = "http://35.180.43.233/"
 
     fun getInstance(): Retrofit {
         return Retrofit.Builder().baseUrl(baseUrl)
@@ -36,5 +36,5 @@ object APINamesClient {
 
     val apiService: APIInterface = getInstance().create(APIInterface::class.java)
 
- */
+
 }

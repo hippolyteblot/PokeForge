@@ -276,6 +276,12 @@ class PokemonViewerActivity : AppCompatActivity() {
         val input = dialogView.findViewById<EditText>(R.id.input)
         input.inputType = InputType.TYPE_CLASS_TEXT
 
+        if(!pokemon.name.isNullOrEmpty()) {
+            input.setText(pokemon.name)
+        }
+        else {
+            getNameOfFusion(pokemon.dna, input)
+        }
         input.setText(pokemon.name)
         val sprite = dialogView.findViewById<ImageView>(R.id.image)
         APISpritesClient.setSpriteImage(pokemon.dna, sprite, this)
@@ -291,6 +297,18 @@ class PokemonViewerActivity : AppCompatActivity() {
             dialogue.cancel()
         }
         dialog.show()
+    }
+
+    private fun getNameOfFusion(dna: List<Int>, input: EditText) {
+        val ids = dna.joinToString(",")
+        val apiName = APINamesClient.getInstance()
+        val apiService = apiName.create(APINameInterface::class.java)
+        lifecycleScope.launch {
+            val response = apiService.doGetFusionName(ids)
+            val name = response?.name as String
+            input.setText(name)
+        }
+
     }
 
     private fun bind(pokemon: Pokemon) {

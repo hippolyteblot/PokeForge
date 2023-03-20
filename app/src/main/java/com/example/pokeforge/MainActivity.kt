@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -40,16 +41,10 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        /*
-        val apiName = APINamesClient.getInstance()
-        val apiService = apiName.create(APINameInterface::class.java)
-        lifecycleScope.launch {
-            val ids = "3,6"
-            val response = apiService.doGetFusionName(ids)
-            println("response: ${response?.name}")
-        }
 
-         */
+
+
+
 
 
         val navView: BottomNavigationView = binding.navView
@@ -120,7 +115,7 @@ class MainActivity : AppCompatActivity() {
                                             dialog.findViewById<TextView>(R.id.label).text = label
                                             dialog.findViewById<ImageView>(R.id.image)
                                                 .setImageResource(R.drawable.pokepiece)
-                                            dialog.findViewById<Button>(R.id.accept)
+                                            dialog.findViewById<ImageButton>(R.id.accept)
                                                 .setOnClickListener {
                                                     dialog.dismiss()
                                                 }
