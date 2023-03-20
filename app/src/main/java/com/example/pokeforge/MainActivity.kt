@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -42,6 +44,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+
+        /*
+        val apiName = APINamesClient.getInstance()
+        val apiService = apiName.create(APINameInterface::class.java)
+        lifecycleScope.launch {
+            val ids = "3,6"
+            val response = apiService.doGetFusionName(ids)
+            println("response: ${response?.name}")
+        }
+
+         */
 
 
 

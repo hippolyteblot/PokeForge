@@ -16,8 +16,6 @@ object APIClient {
     }
 
     val apiService: APIInterface = getInstance().create(APIInterface::class.java)
-
-
 }
 /*internal object APIClient {
     private var retrofit: Retrofit? = null
