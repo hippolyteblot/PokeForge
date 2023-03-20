@@ -8,7 +8,7 @@ data class Pokemon(
     var weight: Int,
     val exp: Int,
     var stats: List<Int>,
-    val income: Int,
+    var income: Int,
     var dna: List<Int> = listOf(0, 0),
     var isEgg: Boolean = false,
 ) : java.io.Serializable

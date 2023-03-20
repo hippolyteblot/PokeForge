@@ -170,6 +170,7 @@ class PokemonViewerActivity : AppCompatActivity() {
                                 val baseIncome = pokemonById.get().await().get("income") as Long
                                 Log.d("TAG", "baseIncome : $baseIncome")
                                 pokemonById.update("income", baseIncome * 2)
+                                pokemon.income = (baseIncome * 2).toInt()
                                 pokemon.dna = listOf(evolution, 0)
                                 evolveInDb(evolution)
                                 val intent = Intent(this@PokemonViewerActivity, PokemonViewerActivity::class.java)
