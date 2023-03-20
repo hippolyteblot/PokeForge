@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -15,6 +16,7 @@ import com.example.pokeforge.databinding.ActivityMainBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +25,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var userUID: String
     lateinit var userName: String
     lateinit var userSprite: String
-    var userBalance: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+
+
+
+
+
 
 
         val navView: BottomNavigationView = binding.navView
@@ -114,11 +120,14 @@ class MainActivity : AppCompatActivity() {
                                                 }
                                             dialog.show()
                                             if(balance/1000000000 > 0) {
-                                                binding.balance.text = "${balance/1000000000}B"
+                                                val newBalance = "${balance/1000000000}B"
+                                                binding.balance.text = newBalance
                                             } else if (balance/1000000 > 0) {
-                                                binding.balance.text = "${balance/1000000}M"
+                                                val newBalance = "${balance/1000000}M"
+                                                binding.balance.text = newBalance
                                             } else if (balance/1000 > 0) {
-                                                binding.balance.text = "${balance/1000}K"
+                                                val newBalance = "${balance/1000}K"
+                                                binding.balance.text = newBalance
                                             } else if (balance < 1000) {
                                                 binding.balance.text = balance.toString()
                                             }
@@ -163,20 +172,23 @@ class MainActivity : AppCompatActivity() {
             .addOnSuccessListener { document ->
                 if (document.data?.get("balance") != null) {
                     balance = document.data?.get("balance").toString().toInt()
-                    userBalance = balance
 
                     if(balance/1000000000 > 0) {
-                        binding.balance.text = "${balance/1000000000}B"
+                        val newBalance = "${balance/1000000000}B"
+                        binding.balance.text = newBalance
                     } else if (balance/1000000 > 0) {
-                        binding.balance.text = "${balance/1000000}M"
+                        val newBalance = "${balance/1000000}M"
+                        binding.balance.text = newBalance
                     } else if (balance/1000 > 0) {
-                        binding.balance.text = "${balance/1000}K"
+                        val newBalance = "${balance/1000}K"
+                        binding.balance.text = newBalance
                     } else if (balance < 1000) {
                         binding.balance.text = balance.toString()
                     }
                 } else {
                     Log.d("poke", "No such document")
                 }
+                binding.balance.text = balance.toString()
             }
             .addOnFailureListener { exception ->
                 Log.d("poke", "get failed with ", exception)

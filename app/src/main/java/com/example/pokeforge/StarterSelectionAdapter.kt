@@ -24,7 +24,7 @@ class StarterSelectionAdapter (private val context: Context, private val spriteL
         init {
             itemView.setOnClickListener {
                 itemView.findViewById<ImageView>(R.id.sprite).setBackgroundColor(context.getColor(R.color.purple_200))
-                lastItem?.findViewById<ImageView>(R.id.sprite)?.setBackgroundColor(context.getColor(R.color.white))
+                lastItem?.findViewById<ImageView>(R.id.sprite)?.setBackgroundColor(context.getColor(R.color.transparent))
                 lastItem = itemView
                 selectedDna = dna
             }

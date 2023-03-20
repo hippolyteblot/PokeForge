@@ -51,7 +51,7 @@ class LocalSelectionActivity : AppCompatActivity() {
             if (selectedPokemon != null) {
                 // Purple200
                 it.setBackgroundColor(ContextCompat.getColor(this,R.color.purple_200))
-                binding!!.remotePokemon.setBackgroundColor(ContextCompat.getColor(this,R.color.white))
+                binding!!.remotePokemon.setBackgroundColor(ContextCompat.getColor(this,R.color.transparent))
                 firstSlot = true
 
             }
@@ -61,7 +61,7 @@ class LocalSelectionActivity : AppCompatActivity() {
         binding!!.remotePokemon.setOnClickListener {
             if (selectedPokemon != null) {
                 it.setBackgroundColor(ContextCompat.getColor(this,R.color.purple_200))
-                binding!!.yourPokemon.setBackgroundColor(ContextCompat.getColor(this,R.color.white))
+                binding!!.yourPokemon.setBackgroundColor(ContextCompat.getColor(this,R.color.transparent))
                 firstSlot = false
                 val dna2a = selectedPokemon!!.dna[0]
                 val dna2b = selectedPokemon!!.dna[1]

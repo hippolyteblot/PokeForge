@@ -298,11 +298,11 @@ class ShopFragment : Fragment() {
         }
 
         binding.buyKantoButton.setOnClickListener{
-            buyGene(1, 1000)
+            buyGene(1)
         }
 
         binding.buyJohtoButton.setOnClickListener{
-            buyGene(2, 1000)
+            buyGene(2)
         }
 
         binding.buyMysteryButton.setOnClickListener{
@@ -446,13 +446,13 @@ class ShopFragment : Fragment() {
         }
 
 
-    private fun buyGene (generation: Int, price: Long){
+    private fun buyGene (generation: Int){
         val builder = AlertDialog.Builder(activity)
         builder.setTitle("Confirmer l'achat")
         builder.setMessage("Voulez-vous acheter cet oeuf ?")
         builder.setPositiveButton("Oui") { _, _ ->
             lifecycleScope.launch {
-                if (removeMoney(price)) {
+                if (removeMoney(1000)) {
                     Toast.makeText(activity, "Oeuf ajouté !", Toast.LENGTH_SHORT).show()
                     var pokeName: String
                     var pokeId: Int
@@ -541,11 +541,14 @@ class ShopFragment : Fragment() {
                 collectionRef.update("balance", FieldValue.increment(-value)).await()
                 balance -= value
                 if(balance/1000000000 > 0) {
-                    (activity as MainActivity).binding.balance.text = "${balance/1000000000}B"
+                    val newBalance = "${balance/1000000000}B"
+                    (activity as MainActivity).binding.balance.text = newBalance
                 } else if (balance/1000000 > 0) {
-                    (activity as MainActivity).binding.balance.text = "${balance/1000000}M"
+                    val newBalance = "${balance/1000000}M"
+                    (activity as MainActivity).binding.balance.text = newBalance
                 } else if (balance/1000 > 0) {
-                    (activity as MainActivity).binding.balance.text = "${balance/1000}K"
+                    val newBalance = "${balance/1000}K"
+                    (activity as MainActivity).binding.balance.text = newBalance
                 } else if (balance < 1000) {
                     (activity as MainActivity).binding.balance.text = balance.toString()
                 }
