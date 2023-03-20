@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_profcrea"
     tools:context=".StartingGameActivity">
 
     <TextView
@@ -11,7 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
-        android:text="Bienvenue sur PokeForge"
+        android:text="@string/bienvenue_sur_pokeforge"
+        android:textColor="@color/black"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
@@ -20,10 +22,11 @@
 
     <TextView
         android:id="@+id/textView13"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="Choisissez votre starter"
+        android:text="@string/choisissez_votre_starter"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.516"
@@ -44,7 +47,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Nom du joueur"
+        android:text="@string/nom_du_joueur"
+        android:textColor="@color/black"
         android:textSize="22sp"
         app:layout_constraintStart_toEndOf="@+id/player_sprite"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -52,35 +56,39 @@
     <EditText
         android:id="@+id/player_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="Red"
+        android:hint="@string/red"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        android:autofillHints="@string/red" />
 
     <Button
         android:id="@+id/change_sprite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Changer d'avatar"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:text="@string/changer_d_avatar"
+        android:background="@drawable/btn_changeava"
         app:layout_constraintStart_toStartOf="@+id/player_name"
         app:layout_constraintTop_toBottomOf="@+id/player_name" />
 
     <Button
         android:id="@+id/start_game"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Commencer l'aventure"
+        android:layout_width="310dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="76dp"
+        android:background="@drawable/btn_startadv"
+        android:text="@string/commencer_l_aventure"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/starter_list" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/starter_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="337dp"
+        android:layout_height="194dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="24dp"

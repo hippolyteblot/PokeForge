@@ -1,12 +1,9 @@
 package com.example.pokeforge
 
-import android.app.Dialog
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class StarterSelectionAdapter (private val context: Context, private val spriteList: List<List<Int>>):

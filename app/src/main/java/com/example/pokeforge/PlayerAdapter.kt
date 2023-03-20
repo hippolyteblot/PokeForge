@@ -1,5 +1,6 @@
 package com.example.pokeforge
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.view.View
@@ -17,6 +18,7 @@ class PlayerAdapter (private val context: Context, private val contactList: List
         private val pokepieces = itemView.findViewById<TextView>(R.id.pokepieces)
         private val sprite = itemView.findViewById<ImageView>(R.id.sprite)
 
+        @SuppressLint("DiscouragedApi", "SetTextI18n")
         fun bind(playerInfo: String) {
             val splited = playerInfo.split(";")
             val playerSprite = splited[0]
@@ -30,8 +32,8 @@ class PlayerAdapter (private val context: Context, private val contactList: List
 
         init {
             itemView.setOnClickListener {
-                contactList[adapterPosition].get("id")?.let { it1 -> activity.connectToPlayer(it1) }
-                println("Requesting connection to player ${contactList[adapterPosition].get("id")}")
+                contactList[adapterPosition]["id"]?.let { it1 -> activity.connectToPlayer(it1) }
+                println("Requesting connection to player ${contactList[adapterPosition]["id"]}")
                 // Display a loading screen
                 val dialog = Dialog(context)
                 dialog.setContentView(R.layout.loading_screen)
@@ -54,7 +56,7 @@ class PlayerAdapter (private val context: Context, private val contactList: List
     }
 
     override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
-        holder.bind(contactList[position].get("name")!!)
+        holder.bind(contactList[position]["name"]!!)
 
     }
 

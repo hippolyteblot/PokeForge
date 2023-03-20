@@ -1,11 +1,7 @@
 package com.example.pokeforge
 
-import android.Manifest
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -20,7 +16,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.pokeforge.databinding.ActivityMainBinding
-import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -57,7 +52,6 @@ class MainActivity : AppCompatActivity() {
          */
 
 
-
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -88,7 +82,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun claimPokepiece() {
+    private fun claimPokepiece() {
         // Connect to firebase
         val db = Firebase.firestore
         // Get the last time the user claimed his pokepiece in the users collection where uuid = userUID
@@ -104,12 +98,12 @@ class MainActivity : AppCompatActivity() {
                         if (lastClaimed.toString().toLong() < System.currentTimeMillis() - 60000) {
                             // Get all the pokemon from the pokemon collection pokemons where owner = userUID
                             var total = 0
-                            val docRef = db.collection("pokemons").whereEqualTo("owner", userUID)
-                            docRef.get()
+                            val pokemonsByOwner = db.collection("pokemons").whereEqualTo("owner", userUID)
+                            pokemonsByOwner.get()
                                 .addOnSuccessListener { documents ->
-                                    for (document in documents) {
-                                        if(!(document.data["egg"] as Boolean))
-                                            total += document.data["income"].toString().toInt()
+                                    for (doc in documents) {
+                                        if(!(doc.data["egg"] as Boolean))
+                                            total += doc.data["income"].toString().toInt()
                                     }
                                     // Get the time spent from the last time the user claimed his pokepiece
                                     val timeSpent =
@@ -163,7 +157,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun setBalance() {
+    private fun setBalance() {
         // Connect to firebase
         val db = Firebase.firestore
         // Get the last time the user claimed his pokepiece in the users collection where uuid = userUID
@@ -183,7 +177,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    fun getUserInfo() {
+    private fun getUserInfo() {
         // Get the user's name and sprite from firebase
         val db = Firebase.firestore
         val docRef = db.collection("users").document(userUID)

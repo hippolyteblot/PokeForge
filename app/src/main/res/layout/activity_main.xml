@@ -14,7 +14,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
+        app:menu="@menu/bottom_nav_menu"
+        tools:ignore="VisualLintBottomNav" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -45,7 +46,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintEnd_toStartOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="@+id/imageView"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="TextSizeCheck" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -59,16 +61,18 @@
             app:layout_constraintBottom_toBottomOf="@+id/claim_pokepiece"
             app:layout_constraintEnd_toStartOf="@+id/claim_pokepiece"
             app:layout_constraintTop_toTopOf="@+id/claim_pokepiece"
-            app:layout_constraintVertical_bias="0.461" />
+            app:layout_constraintVertical_bias="0.461"
+            tools:ignore="ImageContrastCheck" />
 
         <ImageButton
             android:id="@+id/claim_pokepiece"
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/btn_recup"
             android:layout_weight="1"
-            android:text="Récupérer"
+            android:background="@drawable/btn_recup"
+            android:contentDescription="@string/recuperer_les_pokepeces"
+            android:text="@string/r_cup_rer"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -85,7 +89,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/mobile_navigation" />
+        app:navGraph="@navigation/mobile_navigation"
+        tools:ignore="FragmentTagUsage" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

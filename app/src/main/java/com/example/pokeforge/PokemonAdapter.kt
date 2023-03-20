@@ -1,22 +1,17 @@
 package com.example.pokeforge
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.os.Build
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokeforge.com.example.pokeforge.LocalSelectionActivity
-import com.example.pokeforge.com.example.pokeforge.RemoteSelectionActivity
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.util.*
-
+@Suppress("unused")
 class PokemonAdapter (private val context: Context, private val contactList: List<Pokemon>, private val activity: Activity) :
     RecyclerView.Adapter<PokemonAdapter.PokemonViewHolder>() {
 
@@ -25,7 +20,8 @@ class PokemonAdapter (private val context: Context, private val contactList: Lis
         private val name = itemView.findViewById<TextView>(R.id.name)
         private val income = itemView.findViewById<TextView>(R.id.income)
 
-        @OptIn(DelicateCoroutinesApi::class)
+
+        @SuppressLint("SetTextI18n")
         fun bind(pokemon: Pokemon) {
 
             if (!pokemon.isEgg) {
@@ -83,14 +79,13 @@ class PokemonAdapter (private val context: Context, private val contactList: Lis
         var name : String? = null
         try {
             pokemonRes.doGetListInfos(pokemon.dna[0])
-            val name0 = pokemonRes.doGetListInfos(pokemon.dna[0])?.name
             //name0 first char to upper case and the rest to lower case
             val name0UpperCase = pokemonRes.doGetListInfos(pokemon.dna[0])?.name?.substring(0,1)
                 ?.uppercase(
                     Locale.ROOT
                 ) + pokemonRes.doGetListInfos(pokemon.dna[0])?.name?.substring(1)
                 ?.lowercase(Locale.ROOT)
-            name = name0UpperCase + "/" + pokemonRes.doGetListInfos(pokemon.dna[1])?.name?.substring(0,1)
+            name = "$name0UpperCase/" + pokemonRes.doGetListInfos(pokemon.dna[1])?.name?.substring(0,1)
                 ?.uppercase(Locale.ROOT) + pokemonRes.doGetListInfos(pokemon.dna[1])?.name?.substring(1)
                 ?.lowercase(Locale.ROOT)
             //

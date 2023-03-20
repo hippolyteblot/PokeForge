@@ -1,7 +1,10 @@
-import com.example.pokeforge.com.example.pokeforge.RemoteSelectionActivity
+package com.example.pokeforge
+
+import android.annotation.SuppressLint
 
 object NearbyManager {
     private var instance: NearbyManager? = null
+    @SuppressLint("StaticFieldLeak")
     private var activity: RemoteSelectionActivity? = null
 
     fun getInstance(): NearbyManager {
@@ -12,7 +15,7 @@ object NearbyManager {
     }
 
     fun setActivity(activity: RemoteSelectionActivity) {
-        this.activity = activity
+        NearbyManager.activity = activity
     }
 
     fun advertiseNewSelection(dna: List<Int>) {

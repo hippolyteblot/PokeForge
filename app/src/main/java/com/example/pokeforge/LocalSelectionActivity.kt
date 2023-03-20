@@ -2,10 +2,12 @@ package com.example.pokeforge.com.example.pokeforge
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pokeforge.*
 import com.example.pokeforge.databinding.ActivityRemoteSelectionBinding
@@ -13,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-
+@Suppress("unused")
 class LocalSelectionActivity : AppCompatActivity() {
 
     private var binding: ActivityRemoteSelectionBinding? = null
@@ -48,18 +50,18 @@ class LocalSelectionActivity : AppCompatActivity() {
         binding!!.yourPokemon.setOnClickListener {
             if (selectedPokemon != null) {
                 // Purple200
-                it.setBackgroundColor(resources.getColor(R.color.purple_200))
-                binding!!.remotePokemon.setBackgroundColor(resources.getColor(R.color.white))
+                it.setBackgroundColor(ContextCompat.getColor(this,R.color.purple_200))
+                binding!!.remotePokemon.setBackgroundColor(ContextCompat.getColor(this,R.color.white))
                 firstSlot = true
 
             }
         }
-        binding!!.yourPokemon.setBackgroundColor(resources.getColor(R.color.purple_200))
+        binding!!.yourPokemon.setBackgroundColor(ContextCompat.getColor(this,R.color.purple_200))
 
         binding!!.remotePokemon.setOnClickListener {
             if (selectedPokemon != null) {
-                it.setBackgroundColor(resources.getColor(R.color.purple_200))
-                binding!!.yourPokemon.setBackgroundColor(resources.getColor(R.color.white))
+                it.setBackgroundColor(ContextCompat.getColor(this,R.color.purple_200))
+                binding!!.yourPokemon.setBackgroundColor(ContextCompat.getColor(this,R.color.white))
                 firstSlot = false
                 val dna2a = selectedPokemon!!.dna[0]
                 val dna2b = selectedPokemon!!.dna[1]
@@ -77,17 +79,46 @@ class LocalSelectionActivity : AppCompatActivity() {
         binding!!.button.setOnClickListener() {
             if (selectedPokemon != null) {
                 val dialog = Dialog(this)
+                val db = Firebase.firestore
+                var totalincome : Long = 0
+                var dnaBool = false
+                var dna2Bool = false
+                @Suppress("UNCHECKED_CAST")
+                db.collection("pokemons").get().addOnSuccessListener() { result ->
+                    result.forEach() { document ->
+                        for (i in document.data["dna"] as List<Int>) {
+                            if (document.data["owner"] == FirebaseAuth.getInstance().currentUser!!.uid) {
+                                Log.d("TAG", "$i => ${document.data["dna"]} => $dna1 aaaaaaand ${document.data["dna"].toString() == dna1.toString()}")
+                                if (i.toString() == dna1.toString() && !dnaBool) {
+                                    dnaBool = true
+                                    totalincome += document.data["income"] as Long
+                                }
+                                if (i.toString() == dna2.toString() && !dna2Bool) {
+                                    dna2Bool = true
+                                    totalincome += document.data["income"] as Long
+
+                                }
+                            }
+
+
+                        }
+
+                    }
+                }
+                Log.d("TAG", "Total income: $totalincome")
+                val total = totalincome*1.2
+
                 dialog.setContentView(R.layout.label_image_dialog)
-                dialog.findViewById<Button>(R.id.accept).setOnClickListener {
+                dialog.findViewById<ImageButton>(R.id.accept).setOnClickListener {
                     val egg = hashMapOf(
                         "name" to "",
                         "dna" to listOf(dna1, dna2).shuffled(),
-                        "income" to 0,
+                        "income" to totalincome,
                         "owner" to FirebaseAuth.getInstance().currentUser!!.uid,
                         "egg" to true,
                     )
-                    val db = Firebase.firestore
-                    db.collection("pokemons").add(egg)
+                    val database = Firebase.firestore
+                    database.collection("pokemons").add(egg)
 
                     removeFusionItem()
 

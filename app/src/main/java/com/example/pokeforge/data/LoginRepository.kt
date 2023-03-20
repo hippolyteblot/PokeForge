@@ -6,7 +6,7 @@ import com.example.pokeforge.data.model.LoggedInUser
  * Class that requests authentication and user information from the remote data source and
  * maintains an in-memory cache of login status and user credentials information.
  */
-
+@Suppress("unused")
 class LoginRepository(val dataSource: LoginDataSource) {
 
     // in-memory cache of the loggedInUser object

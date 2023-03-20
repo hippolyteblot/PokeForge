@@ -1,10 +1,7 @@
 package com.example.pokeforge.ui.profil
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.*
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.DrawableWrapper
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,6 +24,7 @@ class ProfilFragment : Fragment(){
     private val binding get() = _binding!!
 
 
+    @SuppressLint("DiscouragedApi")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
