@@ -540,7 +540,15 @@ class ShopFragment : Fragment() {
                 success = true
                 collectionRef.update("balance", FieldValue.increment(-value)).await()
                 balance -= value
-                (activity as MainActivity).binding.balance.text = balance.toString()
+                if(balance/1000000000 > 0) {
+                    (activity as MainActivity).binding.balance.text = "${balance/1000000000}B"
+                } else if (balance/1000000 > 0) {
+                    (activity as MainActivity).binding.balance.text = "${balance/1000000}M"
+                } else if (balance/1000 > 0) {
+                    (activity as MainActivity).binding.balance.text = "${balance/1000}K"
+                } else if (balance < 1000) {
+                    (activity as MainActivity).binding.balance.text = balance.toString()
+                }
                 Log.d("TAG", "DocumentSnapshot successfully updated!")
             } else {
                 Toast.makeText(activity, "Vous n'avez pas assez d'argent !", Toast.LENGTH_SHORT).show()
