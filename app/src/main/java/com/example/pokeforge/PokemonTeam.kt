@@ -20,7 +20,7 @@ object PokemonTeam {
     fun getTeamWthoutEgg(): ArrayList<Pokemon> {
         val teamWithoutEgg = ArrayList<Pokemon>()
         for (pokemon in team) {
-            if (pokemon.name != "Egg") {
+            if (!pokemon.isEgg) {
                 teamWithoutEgg.add(pokemon)
             }
         }

@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -48,7 +49,7 @@ class RemoteSelectionActivity : AppCompatActivity() {
 
         NearbyManager.setActivity(this)
 
-        pokemons = PokemonTeam.getTeam()
+        pokemons = PokemonTeam.getTeamWthoutEgg()
 
         recyclerView.adapter = PokemonAdapter(this, pokemons, this)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
@@ -144,6 +145,13 @@ class RemoteSelectionActivity : AppCompatActivity() {
 
     fun setRemoteValidation(validate : Boolean) {
         remoteValidation = validate
+        if (localValidation && remoteValidation) {
+            val dna1 = selectedPokemon?.dna
+            val dna2 = remoteDna
+            if (dna1 != null) {
+                fusion(dna1, dna2)
+            }
+        }
     }
 
     private fun fusion(dna1 : List<Int>, dna2 :List<Int> ) {
@@ -162,7 +170,7 @@ class RemoteSelectionActivity : AppCompatActivity() {
 
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.label_image_dialog)
-        dialog.findViewById<Button>(R.id.accept).setOnClickListener {
+        dialog.findViewById<ImageButton>(R.id.accept).setOnClickListener {
             val egg = hashMapOf(
                 "name" to "",
                 "dna" to listOf(dnaA, dnaB).shuffled(),

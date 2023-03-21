@@ -56,7 +56,7 @@
         android:id="@+id/pokemon_sprite"
         android:layout_width="255dp"
         android:layout_height="170dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="12dp"
         android:contentDescription="@string/pokemon_sprite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
@@ -170,7 +170,8 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="@string/statistiques"
         android:textColor="@color/black"
         android:textSize="22sp"
@@ -327,14 +328,14 @@
         android:id="@+id/evolve_button"
         android:layout_width="200dp"
         android:layout_height="60dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/evoluer"
-        android:visibility="gone"
+        android:layout_marginTop="8dp"
         android:background="@drawable/btn_evo"
+        android:contentDescription="@string/button_evoluer"
+        android:text="@string/evoluer"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11"
-        android:contentDescription="@string/button_evoluer" />
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
